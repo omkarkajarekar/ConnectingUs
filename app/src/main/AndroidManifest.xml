@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
         <activity
+            android:name=".HomePage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -18,8 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NumberVerify"/>
-        <activity android:name=".OTPVerify"/>
+        <activity android:name=".NumberVerify" />
+        <activity android:name=".OTPVerify" />
     </application>
 
 </manifest>

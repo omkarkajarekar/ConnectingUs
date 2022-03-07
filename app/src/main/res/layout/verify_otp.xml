@@ -49,7 +49,7 @@
         app:layout_constraintStart_toStartOf="@+id/wrong_number"
         app:layout_constraintTop_toBottomOf="@+id/wrong_number" />
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -59,9 +59,7 @@
         app:layout_constraintEnd_toEndOf="@+id/info"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/info"
-        app:layout_constraintTop_toBottomOf="@+id/info"
-        app:prefixText="+91"
-        app:startIconDrawable="@drawable/telephone">
+        app:layout_constraintTop_toBottomOf="@+id/info">
 
         <EditText
             android:id="@+id/digit1"
@@ -105,16 +103,28 @@
             android:inputType="number"
             android:maxLength="1" />
 
-    </LinearLayout>
+    </LinearLayout> -->
+
+    <EditText
+        android:id="@+id/linear"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/info"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/info"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
 
     <View
         android:id="@+id/space"
         android:layout_width="125dp"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="#7FA850"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintEnd_toEndOf="@+id/linear"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="@+id/linear"
         app:layout_constraintTop_toBottomOf="@+id/linear" />
 

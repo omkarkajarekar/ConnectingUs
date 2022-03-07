@@ -9,40 +9,64 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 public class OTPVerify extends AppCompatActivity {
     ConstraintLayout layout;
     Button resend_sms,wrong_number;
     TextView timer;
     TextView ph_number;
-    String number;
+    String number,verificationID;
     Button btn_continue;
-    EditText digit1,digit2,digit3,digit4,digit5,digit6;
+    String OTP;
+    FirebaseAuth firebaseAuth;
+    //EditText digit1,digit2,digit3,digit4,digit5,digit6;
+    EditText linear;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verify_otp);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
         timer = findViewById(R.id.timer);
         resend_sms = findViewById(R.id.resend_sms);
         wrong_number = findViewById(R.id.wrong_number);
         layout = findViewById(R.id.layout);
         ph_number = findViewById(R.id.ph_number);
+        linear = findViewById(R.id.linear);
+        /*digit1 = findViewById(R.id.digit1);
+        digit2 = findViewById(R.id.digit2);
+        digit3 = findViewById(R.id.digit3);
+        digit4 = findViewById(R.id.digit4);
+        digit5 = findViewById(R.id.digit5);
+        digit6 = findViewById(R.id.digit6);*/
+        btn_continue = findViewById(R.id.btn_continue);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             number = extras.getString("number");
+            verificationID = extras.getString("verificationID");
         }
-        ph_number.setText("Verify +91 "+number);
+        ph_number.setText("Verify +91"+number);
         setTimer();
         resend_sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resend_sms.setEnabled(false);
+                new NumberVerify().verifyPhoneNumber("+91"+number);
                 setTimer();
             }
         });
@@ -53,14 +77,7 @@ public class OTPVerify extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        digit1 = findViewById(R.id.digit1);
-        digit2 = findViewById(R.id.digit2);
-        digit3 = findViewById(R.id.digit3);
-        digit4 = findViewById(R.id.digit4);
-        digit5 = findViewById(R.id.digit5);
-        digit6 = findViewById(R.id.digit6);
-        btn_continue = findViewById(R.id.btn_continue);
-        digit1.addTextChangedListener(new TextWatcher() {
+        /*digit1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
@@ -143,6 +160,27 @@ public class OTPVerify extends AppCompatActivity {
                     digit5.requestFocus();
                 }
             }
+        });*/
+
+        btn_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*OTP = digit1.getText().toString() + digit2.getText().toString() + digit3.getText().toString()
+                        + digit4.getText().toString() + digit5.getText().toString() + digit6.getText().toString();*/
+                OTP = linear.getText().toString();
+                if(OTP.length()==6){
+                    //try {
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(NumberVerify.verificationID, OTP);
+                        authenticateUser(credential);
+                    //}
+                    /*catch (Exception e){
+                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                    }*/
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Enter Valid OTP",Toast.LENGTH_LONG).show();
+                }
+            }
         });
     }
     public void setTimer(){
@@ -156,5 +194,22 @@ public class OTPVerify extends AppCompatActivity {
                 resend_sms.setEnabled(true);
             }
         }.start();
+    }
+    public void authenticateUser(PhoneAuthCredential credential){
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(OTPVerify.this,HomePage.class);
+                startActivity(intent);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
