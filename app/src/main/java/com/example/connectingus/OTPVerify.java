@@ -1,5 +1,6 @@
 package com.example.connectingus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 public class OTPVerify extends AppCompatActivity {
+    static Context context;
     ConstraintLayout layout;
     Button resend_sms,wrong_number;
     TextView timer;
@@ -40,7 +42,7 @@ public class OTPVerify extends AppCompatActivity {
         setContentView(R.layout.verify_otp);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
+        context = getApplicationContext();
         timer = findViewById(R.id.timer);
         resend_sms = findViewById(R.id.resend_sms);
         wrong_number = findViewById(R.id.wrong_number);
@@ -73,8 +75,9 @@ public class OTPVerify extends AppCompatActivity {
         wrong_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),NumberVerify.class);
+                Intent intent = new Intent(context,NumberVerify.class);
                 startActivity(intent);
+                finish();
             }
         });
         /*digit1.addTextChangedListener(new TextWatcher() {
@@ -169,16 +172,16 @@ public class OTPVerify extends AppCompatActivity {
                         + digit4.getText().toString() + digit5.getText().toString() + digit6.getText().toString();*/
                 OTP = linear.getText().toString();
                 if(OTP.length()==6){
-                    //try {
+                    try {
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(NumberVerify.verificationID, OTP);
                         authenticateUser(credential);
-                    //}
-                    /*catch (Exception e){
-                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                    }*/
+                    }
+                    catch (Exception e){
+                        Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                    }
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Enter Valid OTP",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"Enter Valid OTP",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -200,15 +203,16 @@ public class OTPVerify extends AppCompatActivity {
         firebaseAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(OTPVerify.this,HomePage.class);
-                startActivity(intent);
+                Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context,HomePage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }

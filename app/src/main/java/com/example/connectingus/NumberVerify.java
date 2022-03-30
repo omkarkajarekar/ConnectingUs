@@ -1,6 +1,7 @@
 package com.example.connectingus;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
 public class NumberVerify extends AppCompatActivity {
+    static Context context;
     ConstraintLayout layout;
     Button next;
     String number;
@@ -48,6 +50,7 @@ public class NumberVerify extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        context = getApplicationContext();
         next = findViewById(R.id.next);
         phone_number = findViewById(R.id.phone_number);
         ph_label = findViewById(R.id.ph_label);
@@ -65,6 +68,7 @@ public class NumberVerify extends AppCompatActivity {
                     intent.putExtra("number", number);
                     intent.putExtra("verificationID", verificationID);
                     startActivity(intent);
+                    finish();
                 }
                 else{
                     ph_label.setError("Please Enter Valid Phone Number");
@@ -105,7 +109,7 @@ public class NumberVerify extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
 
             @Override
