@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,24 +15,32 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.connectingus.models.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class OTPVerify extends AppCompatActivity {
     static Context context;
+    static String number;
     ConstraintLayout layout;
     Button resend_sms,wrong_number;
     TextView timer;
     TextView ph_number;
-    String number,verificationID;
+    String verificationID;
     Button btn_continue;
     String OTP;
     FirebaseAuth firebaseAuth;
-    //EditText digit1,digit2,digit3,digit4,digit5,digit6;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     EditText linear;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +55,6 @@ public class OTPVerify extends AppCompatActivity {
         layout = findViewById(R.id.layout);
         ph_number = findViewById(R.id.ph_number);
         linear = findViewById(R.id.linear);
-        /*digit1 = findViewById(R.id.digit1);
-        digit2 = findViewById(R.id.digit2);
-        digit3 = findViewById(R.id.digit3);
-        digit4 = findViewById(R.id.digit4);
-        digit5 = findViewById(R.id.digit5);
-        digit6 = findViewById(R.id.digit6);*/
         btn_continue = findViewById(R.id.btn_continue);
 
         Bundle extras = getIntent().getExtras();
@@ -80,96 +80,9 @@ public class OTPVerify extends AppCompatActivity {
                 finish();
             }
         });
-        /*digit1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit1.getText().toString().length() == 1) {
-                    digit2.requestFocus();
-                }
-            }
-        });
-        digit2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit2.getText().toString().length() == 1) {
-                    digit3.requestFocus();
-                }
-                if (digit2.getText().toString().length() == 0) {
-                    digit1.requestFocus();
-                }
-            }
-        });
-        digit3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit3.getText().toString().length() == 1) {
-                    digit4.requestFocus();
-                }
-                if (digit3.getText().toString().length() == 0) {
-                    digit2.requestFocus();
-                }
-            }
-        });
-        digit4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit4.getText().toString().length() == 1) {
-                    digit5.requestFocus();
-                }
-                if (digit4.getText().toString().length() == 0) {
-                    digit3.requestFocus();
-                }
-            }
-        });
-        digit5.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit5.getText().toString().length() == 1) {
-                    digit6.requestFocus();
-                }
-                if (digit5.getText().toString().length() == 0) {
-                    digit4.requestFocus();
-                }
-            }
-        });
-        digit6.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (digit6.getText().toString().length() == 0) {
-                    digit5.requestFocus();
-                }
-            }
-        });*/
-
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*OTP = digit1.getText().toString() + digit2.getText().toString() + digit3.getText().toString()
-                        + digit4.getText().toString() + digit5.getText().toString() + digit6.getText().toString();*/
                 OTP = linear.getText().toString();
                 if(OTP.length()==6){
                     try {
@@ -204,7 +117,7 @@ public class OTPVerify extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context,HomePage.class);
+                Intent intent = new Intent(context, ProfileEdit.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
                 finish();
