@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/Search"
+        android:title="Search"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/NewGroup"
+        android:title="New Group"/>
+
+    <item
+        android:id="@+id/Star"
+        android:title="Starred Messages"/>
+
+    <item
+        android:id="@+id/Settings"
+        android:title="Settings"/>
+</menu>

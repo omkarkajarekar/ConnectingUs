@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -94,6 +95,9 @@ public class ProfileEdit extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             databaseReference.setValue(users);
                             Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
+                            Intent intent=new Intent(getApplicationContext(), ConversationList.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                         @Override

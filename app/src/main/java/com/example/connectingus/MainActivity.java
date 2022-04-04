@@ -14,12 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseAuth firebaseAuth;
     Button agree;
     Intent intent;
-    TextInputEditText phone_number;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         agree = findViewById(R.id.agree);
-        firebaseAuth = FirebaseAuth.getInstance();
 
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,15 +32,5 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(firebaseAuth.getCurrentUser() != null){
-            intent = new Intent(MainActivity.this, ProfileEdit.class);
-            startActivity(intent);
-            finish();
-        }
     }
 }
