@@ -1,4 +1,4 @@
-package com.example.chats;
+package com.example.connectingus;
 
 import android.content.Context;
 import android.content.Intent;
