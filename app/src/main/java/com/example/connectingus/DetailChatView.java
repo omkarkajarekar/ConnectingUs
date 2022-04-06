@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.connectingus.models.User;
+
 public class DetailChatView extends AppCompatActivity {
 
     ImageView ivProf;
