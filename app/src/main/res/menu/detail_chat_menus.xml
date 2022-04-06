@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_in_chat"
+        android:title="Search"/>
+    <item
         android:id="@+id/clear_chat"
-        android:title="Clear Chat"
-        />
+        android:title="Clear Chat"/>
     <item
         android:id="@+id/block"
         android:title="Block"/>
