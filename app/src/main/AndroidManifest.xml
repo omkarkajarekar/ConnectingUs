@@ -41,7 +41,7 @@
             android:parentActivityName=".conversation.ConversationList" />
         <activity
             android:name=".DetailChatView"
-            android:exported="true"/>
+            android:parentActivityName=".conversation.ConversationList"/>
     </application>
 
 </manifest>
