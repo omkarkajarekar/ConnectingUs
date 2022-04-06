@@ -15,7 +15,11 @@
             android:exported="false" />
         <activity
             android:name=".ProfileEdit"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="false">

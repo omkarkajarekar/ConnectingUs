@@ -33,7 +33,7 @@ public class ProfileEdit extends AppCompatActivity {
     TextInputEditText about;
     TextInputEditText phone;
     String userID,deviceID;
-    String user_number,user_name,user_about;
+    String user_number,user_name,user_about,user_profile_pic;
     Intent intent;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -43,9 +43,10 @@ public class ProfileEdit extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_OK && data!= null){
+        if(requestCode == 3 && data!= null){
            Uri selectedImage = data.getData();
            profile_pic.setImageURI(selectedImage);
+           user_profile_pic = selectedImage.getPath();
         }
     }
 
@@ -87,7 +88,7 @@ public class ProfileEdit extends AppCompatActivity {
                 else if(about.getText().toString().isEmpty())
                     about.setError("Please fill about");
                 else{
-                    Users users = new Users(user_number,userID,user_name,user_about,deviceID,"");
+                    Users users = new Users(user_number,userID,user_name,user_about,deviceID,user_profile_pic);
                     firebaseDatabase = FirebaseDatabase.getInstance();
                     databaseReference = firebaseDatabase.getReference("users").child(userID);
                     databaseReference.addValueEventListener(new ValueEventListener() {
