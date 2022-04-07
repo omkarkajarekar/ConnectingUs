@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "430053141971",
+    "firebase_url": "https://connectingus-d5471-default-rtdb.firebaseio.com",
+    "project_id": "connectingus-d5471",
+    "storage_bucket": "connectingus-d5471.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430053141971:android:5c4ddb267cb86afaced326",
+        "android_client_info": {
+          "package_name": "com.example.connectingus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430053141971-ksa53mkpmpnchoov6m75s11qbdt5fbjc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.connectingus",
+            "certificate_hash": "a1b6edd5e722bd9ed32f47b03daf749caeb5c1b4"
+          }
+        },
+        {
+          "client_id": "430053141971-412aievtu6h5k6oh0o77g818bfgk18qe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALXek0jTOKVtQtvyJz1cSYOo0O9DPF-LM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430053141971-412aievtu6h5k6oh0o77g818bfgk18qe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
