@@ -1,4 +1,4 @@
-package com.example.connectingus;
+package com.example.connectingus.authentication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.connectingus.R;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
 import com.google.android.material.imageview.ShapeableImageView;

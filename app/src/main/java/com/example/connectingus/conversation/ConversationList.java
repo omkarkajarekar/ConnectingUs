@@ -6,14 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
-import com.example.connectingus.Settings;
+import com.example.connectingus.profile.Settings;
 import com.example.connectingus.adapters.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 

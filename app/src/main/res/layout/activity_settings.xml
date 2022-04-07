@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings"
+    tools:context=".profile.Settings"
     android:orientation="vertical">
 
     <ImageView
@@ -113,19 +113,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/line1"
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#83BFBFBF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_edit" />
+            android:layout_height="wrap_content"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/invite_friend"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="70dp"
+            android:clickable="true"
+            android:longClickable="true"
+            android:forceHasOverlappingRendering="true">
 
             <ImageView
                 android:id="@+id/invite_icon"

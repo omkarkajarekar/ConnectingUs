@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import com.example.connectingus.authentication.FirstActivity;
 import com.example.connectingus.conversation.ConversationList;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), FirstActivity.class);
                     //Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
                     startActivity(intent);
                     finish();

@@ -1,4 +1,4 @@
-package com.example.connectingus;
+package com.example.connectingus.conversation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.connectingus.R;
 import com.example.connectingus.models.User;
 
 public class DetailChatView extends AppCompatActivity {

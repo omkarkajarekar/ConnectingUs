@@ -21,12 +21,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.connectingus.DetailChatView;
-import com.example.connectingus.conversation.ChatActivity;
+import com.example.connectingus.conversation.DetailChatView;
 import com.example.connectingus.R;
 import com.example.connectingus.contact.SyncContacts;
-import com.example.connectingus.models.User;
 import com.example.connectingus.databinding.FragmentChatsBinding;
+import com.example.connectingus.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
