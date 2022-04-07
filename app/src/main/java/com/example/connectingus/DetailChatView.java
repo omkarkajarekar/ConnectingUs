@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +17,11 @@ import com.example.connectingus.models.User;
 public class DetailChatView extends AppCompatActivity {
 
     ImageView ivProf;
+    ImageView ivSend;
+
     TextView tvUname;
+
+    EditText msg_field;
 
     User user;
 
@@ -43,6 +48,17 @@ public class DetailChatView extends AppCompatActivity {
             ivProf.setImageResource(user.getImageId());
             tvUname.setText(user.getName());
         }
+
+        msg_field=findViewById(R.id.edMsg);
+
+        ivSend=findViewById(R.id.sendButton);
+
+        ivSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     //Menu
