@@ -1,5 +1,7 @@
 package com.example.connectingus.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -114,6 +116,20 @@ public class ChatsFragment extends Fragment {
             username.setText(itemsModelListFiltered.get(i).getName());
             lastMsg.setText(itemsModelListFiltered.get(i).getLastMessage());
             time.setText(itemsModelListFiltered.get(i).getLastMsgTime());
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog=new Dialog(getContext());
+                    dialog.setContentView(R.layout.profile_pic_expand);
+                    dialog.setTitle(itemsModelListFiltered.get(i).getName());
+                    dialog.setCanceledOnTouchOutside(true);
+                    dialog.setCancelable(true);
+                    ImageView expanded_pic = dialog.findViewById(R.id.expand_pic);
+                    expanded_pic.setImageResource(itemsModelListFiltered.get(i).getImageId());
+                    dialog.show();
+                }
+            });
 
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override

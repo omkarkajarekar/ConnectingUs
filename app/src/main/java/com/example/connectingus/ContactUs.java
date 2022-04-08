@@ -46,7 +46,7 @@ public class ContactUs extends AppCompatActivity {
                     email_context = help.getText().toString().trim();
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"pdat.pbl.group15@email.com"});
+                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"pdat.pbl.group15@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, email_subject);
                 intent.putExtra(Intent.EXTRA_TEXT, email_context);
                 intent.setType("message/rfc822");

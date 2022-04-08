@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
+import com.example.connectingus.animation.MyBounceInterpolator;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -39,7 +42,7 @@ public class ProfileEdit extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    ShapeableImageView profile_pic;
+    ShapeableImageView profile_pic,image_selector;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -66,9 +69,15 @@ public class ProfileEdit extends AppCompatActivity {
         phone.setText(user_number);
         deviceID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
         userID = firebaseAuth.getCurrentUser().getUid();
-        profile_pic = findViewById(R.id.profile_pic);
+        profile_pic = findViewById(R.id.profile_image);
 
-        profile_pic.setOnClickListener(new View.OnClickListener() {
+        image_selector = findViewById(R.id.image_selector);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+        myAnim.setInterpolator(interpolator);
+        image_selector.startAnimation(myAnim);
+
+        image_selector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -110,7 +119,6 @@ public class ProfileEdit extends AppCompatActivity {
                 }
             }
         });
-
         /*signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
