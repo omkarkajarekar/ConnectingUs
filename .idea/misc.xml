@@ -3,12 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/drawable/received_background.xml" value="0.1" />
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/drawable/recv_btn.xml" value="0.1055" />
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/drawable/sent_background.xml" value="0.1" />
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/layout/activity_detailchatview.xml" value="0.1527777777777778" />
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/layout/receiver.xml" value="0.33" />
-        <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/layout/sender.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/ConnectingUs/app/src/main/res/menu/detail_chat_menus.xml" value="0.1527777777777778" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/avatar.xml" value="0.1925" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/circular.xml" value="0.1" />
@@ -17,6 +11,7 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_contact_us.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_conversation_list.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_detailchatview.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_expand_image.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_home_page.xml" value="0.33" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_profile_edit.xml" value="0.22447916666666667" />

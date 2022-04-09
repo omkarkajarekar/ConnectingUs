@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,6 +23,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.animation.MyBounceInterpolator;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
+import com.example.connectingus.profile.ExpandImageActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,6 +87,23 @@ public class ProfileEdit extends AppCompatActivity {
                 startActivityForResult(gallery,3);
             }
         });
+
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExpandImageActivity.class);
+                intent.putExtra("name","Profile Photo");
+                intent.putExtra("calling_activity","ProfileEdit");
+                Pair pair = new Pair(profile_pic,"imageTransition");
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation(ProfileEdit.this, pair);
+                }
+                startActivity(intent,options.toBundle());
+                finish();
+            }
+        });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

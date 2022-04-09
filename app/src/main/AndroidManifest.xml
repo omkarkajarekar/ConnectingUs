@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.connectingus" >
+    package="com.example.connectingus">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -11,7 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/whatsapp512px"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ConnectingUs" >
+        android:theme="@style/Theme.ConnectingUs">
+        <activity
+            android:name=".profile.ExpandImageActivity"
+            android:exported="true"/>
         <activity
             android:name=".ContactUs"
             android:exported="true"
@@ -22,7 +25,7 @@
             android:parentActivityName=".conversation.ConversationList" />
         <activity
             android:name=".authentication.ProfileEdit"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <data android:mimeType="image/*" />
             </intent-filter>
@@ -32,7 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

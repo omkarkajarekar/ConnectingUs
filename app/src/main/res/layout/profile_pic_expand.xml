@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="fitCenter"
-        android:transitionName="expand"
+        android:transitionName="imageTransition"
         android:src="@drawable/sample_dp"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
