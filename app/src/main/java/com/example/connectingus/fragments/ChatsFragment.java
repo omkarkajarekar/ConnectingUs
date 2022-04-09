@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import android.transition.AutoTransition;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +24,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.connectingus.conversation.DetailChatView;
 import com.example.connectingus.R;
@@ -121,11 +124,39 @@ public class ChatsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     final Dialog dialog=new Dialog(getContext());
+                    Intent intent;
                     dialog.setContentView(R.layout.profile_pic_expand);
                     dialog.setTitle(itemsModelListFiltered.get(i).getName());
                     dialog.setCanceledOnTouchOutside(true);
                     dialog.setCancelable(true);
                     ImageView expanded_pic = dialog.findViewById(R.id.expand_pic);
+                    ImageView message = dialog.findViewById(R.id.message);
+                    ImageView call = dialog.findViewById(R.id.call);
+                    ImageView info = dialog.findViewById(R.id.info);
+                    message.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(getActivity(), DetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                        }
+                    });
+                    call.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getActivity(),"Calling "+itemsModelListFiltered.get(i),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    info.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getActivity(),"Displaying info "+itemsModelListFiltered.get(i),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    expanded_pic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
                     expanded_pic.setImageResource(itemsModelListFiltered.get(i).getImageId());
                     dialog.show();
                 }
