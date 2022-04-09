@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.connectingus.conversation.DetailChatView;
 import com.example.connectingus.R;
 import com.example.connectingus.contact.SyncContacts;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.databinding.FragmentChatsBinding;
 import com.example.connectingus.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -165,7 +166,7 @@ public class ChatsFragment extends Fragment {
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), DetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                    startActivity(new Intent(getActivity(), TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
                 }
             });
             return view1;
