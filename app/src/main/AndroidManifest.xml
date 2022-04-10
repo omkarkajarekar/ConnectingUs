@@ -29,7 +29,8 @@
         </activity>
         <activity
             android:name=".authentication.FirstActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:parentActivityName=".SplashActivity"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true">
