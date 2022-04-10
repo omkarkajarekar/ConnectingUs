@@ -1,7 +1,13 @@
 package com.example.connectingus.fragments;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
+import android.transition.AutoTransition;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,20 +29,26 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.connectingus.conversation.DetailChatView;
 import com.example.connectingus.R;
 import com.example.connectingus.contact.SyncContacts;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.databinding.FragmentChatsBinding;
 import com.example.connectingus.models.User;
+import com.example.connectingus.profile.ExpandImageActivity;
+import com.example.connectingus.profile.Settings;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ChatsFragment extends Fragment {
 
+    static Activity activity;
     private FragmentChatsBinding binding;
     FloatingActionButton fab;
     CustomAdapter customAdapter;
@@ -45,7 +60,7 @@ public class ChatsFragment extends Fragment {
         //View v=inflater.inflate(R.layout.list_item,container,false);
         binding=FragmentChatsBinding.inflate(inflater,container,false);
         View view=binding.getRoot();
-
+        activity = getActivity();
         int[] imageId={R.drawable.shrishti,R.drawable.ansar,R.drawable.kalpana,R.drawable.marie,R.drawable.muniba,R.drawable.rahi,R.drawable.sandeep,R.drawable.sunita,R.drawable.tina};
         String[] name={"Shrishti","Ansar","Kalpana","Marie","Muniba","Rahi","Sandeep","Sunita","Tina"};
         String[] lastMessage={"How are you?","Hi","Yes","I know","That's nice!","Good day!","I know","Why not?","See you!"};
@@ -115,10 +130,63 @@ public class ChatsFragment extends Fragment {
             lastMsg.setText(itemsModelListFiltered.get(i).getLastMessage());
             time.setText(itemsModelListFiltered.get(i).getLastMsgTime());
 
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog=new Dialog(activity);
+                    Intent intent;
+                    dialog.setContentView(R.layout.profile_pic_expand);
+                    dialog.setTitle(itemsModelListFiltered.get(i).getName());
+                    dialog.setCanceledOnTouchOutside(true);
+                    dialog.setCancelable(true);
+                    ImageView expanded_pic = dialog.findViewById(R.id.expand_pic);
+                    ImageView message = dialog.findViewById(R.id.message);
+                    ImageView call = dialog.findViewById(R.id.call);
+                    ImageView info = dialog.findViewById(R.id.info);
+                    message.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                        }
+                    });
+                    call.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(activity,"Calling "+itemsModelListFiltered.get(i).getName(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    info.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(activity,"Displaying info "+itemsModelListFiltered.get(i).getName(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    expanded_pic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(activity, ExpandImageActivity.class);
+                            intent.putExtra("name",itemsModelListFiltered.get(i).getName());
+                            intent.putExtra("calling_activity","ConversationList");
+                            intent.putExtra("image",itemsModelListFiltered.get(i).getImageId());
+                            //intent.putExtra("image",);
+                            Pair pair = new Pair(expanded_pic,"imageTransition");
+                            ActivityOptions options = null;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                                options = ActivityOptions.makeSceneTransitionAnimation(activity, pair);
+                            }
+                            startActivity(intent,options.toBundle());
+                            dialog.hide();
+                        }
+                    });
+                    expanded_pic.setImageResource(itemsModelListFiltered.get(i).getImageId());
+                    dialog.show();
+                }
+            });
+
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), DetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
                 }
             });
             return view1;

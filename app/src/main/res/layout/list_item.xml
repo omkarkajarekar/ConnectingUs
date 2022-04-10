@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/linear"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,32 +21,34 @@
                 android:id="@+id/profile_pic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/shrishti"
+                android:layout_marginStart="20dp"
                 android:scaleType="centerCrop"
-                android:layout_marginStart="20dp"/>
+                android:transitionName="expand"
+                android:src="@drawable/shrishti"
+                android:layout_marginLeft="20dp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/personName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shrishti"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lastMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="How are you?"/>
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/personName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shrishti"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lastMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="How are you?" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -53,8 +56,8 @@
             android:id="@+id/msgtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
             android:layout_alignParentRight="true"
-            android:text="1:45pm"/>
+            android:padding="15dp"
+            android:text="1:45pm" />
     </RelativeLayout>
 </LinearLayout>
