@@ -7,10 +7,7 @@
     app:showAsAction="always"
     android:icon="@drawable/search_icon"
     app:actionViewClass="android.widget.SearchView"/>
-    <item
-        android:id="@+id/refresh"
-        android:title="Refresh"
-        />
+
     <item
         android:id="@+id/invite"
         android:title="Invite"/>
