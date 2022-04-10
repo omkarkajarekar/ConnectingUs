@@ -67,8 +67,8 @@ public class ProfileEdit extends AppCompatActivity {
         phone = findViewById(R.id.phone);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        //ActionBar actionBar = getSupportActionBar();
-        //actionBar.hide();
+        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         user_number = firebaseAuth.getCurrentUser().getPhoneNumber();
         phone.setText(user_number);
         deviceID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
