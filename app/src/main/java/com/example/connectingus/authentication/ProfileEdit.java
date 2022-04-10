@@ -65,9 +65,10 @@ public class ProfileEdit extends AppCompatActivity {
         name = findViewById(R.id.name);
         about = findViewById(R.id.about);
         phone = findViewById(R.id.phone);
+
         firebaseAuth = FirebaseAuth.getInstance();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.hide();
         user_number = firebaseAuth.getCurrentUser().getPhoneNumber();
         phone.setText(user_number);
         deviceID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
@@ -107,6 +108,7 @@ public class ProfileEdit extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //flag=true;
                 user_name = name.getText().toString().trim();
                 user_about = about.getText().toString().trim();
                 if(name.getText().toString().isEmpty() && about.getText().toString().isEmpty()){
@@ -121,14 +123,16 @@ public class ProfileEdit extends AppCompatActivity {
                     Users users = new Users(user_number,userID,user_name,user_about,deviceID,user_profile_pic);
                     firebaseDatabase = FirebaseDatabase.getInstance();
                     databaseReference = firebaseDatabase.getReference("users").child(userID);
+                    databaseReference.setValue(users);
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            databaseReference.setValue(users);
-                            Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
-                            Intent intent=new Intent(getApplicationContext(), ConversationList.class);
-                            startActivity(intent);
-                            finish();
+                            if(snapshot.hasChildren())
+                            {
+                                Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
+
+                            }
+
                         }
 
                         @Override
@@ -137,6 +141,9 @@ public class ProfileEdit extends AppCompatActivity {
                         }
                     });
                 }
+                Intent intent=new Intent(getApplicationContext(), ConversationList.class);
+                startActivity(intent);
+                finish();
             }
         });
         /*signout.setOnClickListener(new View.OnClickListener() {

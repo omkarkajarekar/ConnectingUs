@@ -17,8 +17,8 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.hide();
         agree = findViewById(R.id.agree);
 
         agree.setOnClickListener(new View.OnClickListener() {
