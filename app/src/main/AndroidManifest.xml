@@ -13,9 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
         <activity
+            android:name=".profile.ExpandImageActivity"
+            android:exported="true"/>
+        <activity
             android:name=".ContactUs"
             android:exported="true"
-            android:parentActivityName=".profile.Settings"/>
+            android:parentActivityName=".profile.Settings" />
         <activity
             android:name=".profile.Settings"
             android:exported="false"
@@ -29,8 +32,7 @@
         </activity>
         <activity
             android:name=".authentication.FirstActivity"
-            android:exported="false"
-            android:parentActivityName=".SplashActivity"/>
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -54,6 +56,9 @@
             android:parentActivityName=".conversation.ConversationList" />
         <activity
             android:name=".conversation.DetailChatView"
+            android:parentActivityName=".conversation.ConversationList" />
+        <activity
+            android:name=".conversation.TempDetailChatView"
             android:parentActivityName=".conversation.ConversationList" />
     </application>
 

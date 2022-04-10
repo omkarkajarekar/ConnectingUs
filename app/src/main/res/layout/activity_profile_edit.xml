@@ -6,7 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".authentication.ProfileEdit">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <include layout="@layout/button_on_image"
+        android:id="@+id/profile_pic"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/sample_dp"/>
+
+    <!--<com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
         android:layout_width="144dp"
         android:layout_height="144dp"
@@ -18,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/sample_dp" />
+        app:srcCompat="@drawable/sample_dp" /> -->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_label"
