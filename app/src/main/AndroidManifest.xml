@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -13,12 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
         <activity
+            android:name=".profile.ChatProfile"
+            android:exported="false" />
+        <activity
             android:name=".profile.ExpandImageActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ContactUs"
             android:exported="true"
-            android:parentActivityName=".profile.Settings" />
+            android:parentActivityName=".profile.Settings"/>
         <activity
             android:name=".profile.Settings"
             android:exported="false"
@@ -60,7 +64,7 @@
             android:parentActivityName=".conversation.ConversationList" />
         <activity
             android:name=".conversation.TempDetailChatView"
-            android:parentActivityName=".conversation.ConversationList" />
+            android:parentActivityName=".conversation.ConversationList"/>
     </application>
 
 </manifest>

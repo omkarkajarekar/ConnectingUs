@@ -18,7 +18,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        this.setTitle("ConnectingUS");
+        this.setTitle("ConnectingUs");
         imageView=findViewById(R.id.imageViewItem);
         personName=findViewById(R.id.personName);
         lastMessage=findViewById(R.id.lastMessage);

@@ -37,6 +37,7 @@ import com.example.connectingus.contact.SyncContacts;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.databinding.FragmentChatsBinding;
 import com.example.connectingus.models.User;
+import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.profile.ExpandImageActivity;
 import com.example.connectingus.profile.Settings;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -147,6 +148,7 @@ public class ChatsFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                            dialog.cancel();
                         }
                     });
                     call.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +160,12 @@ public class ChatsFragment extends Fragment {
                     info.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(activity,"Displaying info "+itemsModelListFiltered.get(i).getName(),Toast.LENGTH_LONG).show();
+                            Intent goChatProf = new Intent(activity, ChatProfile.class);
+                            goChatProf.putExtra("UserDetails",itemsModelListFiltered.get(i));
+                            goChatProf.putExtra("calling_activity","ConversationList");
+                            dialog.cancel();
+                            startActivity(goChatProf);
+
                         }
                     });
                     expanded_pic.setOnClickListener(new View.OnClickListener() {
