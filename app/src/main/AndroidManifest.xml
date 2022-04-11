@@ -29,7 +29,8 @@
             android:parentActivityName=".conversation.ConversationList" />
         <activity
             android:name=".authentication.ProfileEdit"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName=".profile.Settings">
             <intent-filter>
                 <data android:mimeType="image/*" />
             </intent-filter>

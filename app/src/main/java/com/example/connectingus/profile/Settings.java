@@ -194,7 +194,6 @@ public class Settings extends AppCompatActivity {
         progressDialog.setMessage("We are deleting your account");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
         FirebaseDatabase.getInstance().getReference("users")
                 .child(userID).removeValue()
                 //.setValue(null)
