@@ -34,7 +34,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("ConnectingUS");
+        this.setTitle("ConnectingUs");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
@@ -157,7 +157,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
             Intent intent=new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
 
-            String sub="Download the connectingus chat application \n https://play.google.com/store/apps/details?id=com.whatsapp";
+            String sub="Download the ConnectingUs chat application \n https://play.google.com/store/apps/details?id=com.whatsapp";
 
             intent.putExtra(Intent.EXTRA_TEXT,sub);
             startActivity(Intent.createChooser(intent,"Share using"));

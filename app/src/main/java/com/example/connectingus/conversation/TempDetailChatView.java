@@ -1,5 +1,6 @@
 package com.example.connectingus.conversation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.adapters.TempMsgAdapter;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.models.User;
+import com.example.connectingus.profile.ChatProfile;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,7 @@ public class TempDetailChatView extends AppCompatActivity {
     EditText etM;
     User user;
     RecyclerView recyclerView;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,7 @@ public class TempDetailChatView extends AppCompatActivity {
         View view=layoutInflater.inflate(R.layout.custom_appbar,null);
         getSupportActionBar().setCustomView(view);
 
+        relativeLayout=findViewById(R.id.reltvlyout);
         ivProf=findViewById(R.id.iv_prof_pic);
         tvUname=findViewById(R.id.tv_uname);
 
@@ -88,6 +93,15 @@ public class TempDetailChatView extends AppCompatActivity {
                 etM.setText("");
             }
         });
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentChatProf =new Intent(getApplicationContext(), ChatProfile.class);
+                intentChatProf.putExtra("UserDetails",user);
+                startActivity(intentChatProf);
+            }
+        });
     }
 
     //Menu
@@ -96,4 +110,5 @@ public class TempDetailChatView extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.detail_chat_menus,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 }

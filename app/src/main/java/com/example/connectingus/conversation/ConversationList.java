@@ -24,7 +24,7 @@ public class ConversationList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_list);
-        this.setTitle("ConnectingUS");
+        this.setTitle("ConnectingUs");
         tabLayout=findViewById(R.id.tablayout);
         viewPager2=findViewById(R.id.viewpager2);
         ActionBar actionBar = getSupportActionBar();
