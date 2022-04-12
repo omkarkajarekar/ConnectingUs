@@ -3,7 +3,18 @@ package com.example.connectingus.models;
 public class ContactModel {
     public ContactModel()
     {}
-    public String name,number;
+    public String name;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String number;
+    public String userId;
 
     public String getName() {
         return name;
