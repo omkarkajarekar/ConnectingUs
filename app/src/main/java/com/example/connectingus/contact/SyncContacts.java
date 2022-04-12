@@ -90,7 +90,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        Toast.makeText(this,model.getName(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
 
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

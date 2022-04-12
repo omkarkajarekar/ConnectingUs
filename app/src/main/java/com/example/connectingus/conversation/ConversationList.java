@@ -25,6 +25,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.contact.SyncContacts;
 import com.example.connectingus.models.ContactModel;
+import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.Settings;
 import com.example.connectingus.adapters.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +42,7 @@ public class ConversationList extends AppCompatActivity {
     ViewPager2 viewPager2;
     PagerAdapter pagerAdapter;
     Thread thread;
+    String verifyNumber;
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
     @Override
@@ -147,7 +149,7 @@ public class ConversationList extends AppCompatActivity {
                     //initialize contact model
                     ContactModel model=new ContactModel();
 
-                    String verifyNumber;
+
                     verifyNumber =number.replaceAll("\\s", "");
                     if(!verifyNumber.contains("+91")) {
                         verifyNumber="+91"+verifyNumber;
@@ -169,10 +171,15 @@ public class ConversationList extends AppCompatActivity {
                                                    public void onDataChange(@NonNull DataSnapshot dsnapshot) {
                                                        for(DataSnapshot datas1:dsnapshot.getChildren())
                                                        {
-                                                           for(DataSnapshot datas2:datas1.getChildren())
-                                                           {
-                                                               model.setUserId(datas2.getValue().toString());
-                                                           }
+
+                                                               Users user=datas1.getValue(Users.class);
+                                                               if(user.getPhone().equals(verifyNumber))
+                                                               {
+                                                                   model.setUserId(user.getUserID());
+                                                                   break;
+                                                               }
+
+
 
                                                        }
 
