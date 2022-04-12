@@ -28,6 +28,7 @@ import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.profile.Settings;
 import com.example.connectingus.adapters.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -162,6 +163,27 @@ public class ConversationList extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                    if(snapshot.exists())
                                    {
+                                       FirebaseDatabase.getInstance().getReference("users")
+                                               .addValueEventListener(new ValueEventListener() {
+                                                   @Override
+                                                   public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+                                                       for(DataSnapshot datas1:dsnapshot.getChildren())
+                                                       {
+                                                           for(DataSnapshot datas2:datas1.getChildren())
+                                                           {
+                                                               model.setUserId(datas2.getValue().toString());
+                                                           }
+
+                                                       }
+
+                                                   }
+
+                                                   @Override
+                                                   public void onCancelled(@NonNull DatabaseError error) {
+
+                                                   }
+                                               });
+
                                        //set name and number
                                        model.setName(name);
                                        model.setNumber(number);
