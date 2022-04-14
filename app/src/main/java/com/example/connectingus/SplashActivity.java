@@ -23,7 +23,6 @@ public class SplashActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
         firebaseAuth = FirebaseAuth.getInstance();
-        Toast.makeText(getApplicationContext(),"Finally I could pull request on github",Toast.LENGTH_LONG).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

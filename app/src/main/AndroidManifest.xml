@@ -13,6 +13,12 @@
         android:roundIcon="@drawable/whatsapp512px"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
+        <activity android:name=".About"
+            android:exported="false"
+            android:parentActivityName=".CurrentProfile"/>
+        <activity android:name=".CurrentProfile"
+            android:exported="false"
+            android:parentActivityName=".profile.Settings"/>
         <activity
             android:name=".profile.ChatProfile"
             android:exported="false" />
