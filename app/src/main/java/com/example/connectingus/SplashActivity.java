@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.connectingus.authentication.FirstActivity;
 import com.example.connectingus.conversation.ConversationList;
@@ -13,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class SplashActivity extends AppCompatActivity {
-    private static int SPLASH_SCREEN=1000;
+    private static int SPLASH_SCREEN=500;
     FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
         firebaseAuth = FirebaseAuth.getInstance();
+        Toast.makeText(getApplicationContext(),"Finally I could pull request on github",Toast.LENGTH_LONG).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
