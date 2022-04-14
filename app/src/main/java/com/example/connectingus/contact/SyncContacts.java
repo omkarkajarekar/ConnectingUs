@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.ConversationList;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.profile.Settings;
 import com.google.firebase.database.DataSnapshot;
@@ -90,7 +92,12 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
+        Intent goToTempChatDetail= new Intent(getApplicationContext(),TempDetailChatView.class);
+        goToTempChatDetail.putExtra("SelectedContact",arrayList.get(position));
+        startActivity(goToTempChatDetail);
+        finish();
+        //startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user",arrayList.get(position)));
+        //Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
 
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

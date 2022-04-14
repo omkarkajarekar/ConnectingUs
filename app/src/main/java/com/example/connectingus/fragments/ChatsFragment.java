@@ -36,6 +36,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.contact.SyncContacts;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.databinding.FragmentChatsBinding;
+import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.User;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.profile.ExpandImageActivity;
@@ -67,12 +68,12 @@ public class ChatsFragment extends Fragment {
         String[] lastMessage={"How are you?","Hi","Yes","I know","That's nice!","Good day!","I know","Why not?","See you!"};
         String[] lastmsgTime={"1:45am","1:30am","12:00am","11:45pm","11:30pm","11:15pm","11:00pm","10:05pm","09:05pm"};
 
-        ArrayList<User> userArrayList=new ArrayList<>();
+        ArrayList<ContactModel> userArrayList=new ArrayList<>();
 
         for(int i=0;i<imageId.length;i++)
         {
-            User user=new User(name[i],lastMessage[i],lastmsgTime[i],imageId[i]);
-            userArrayList.add(user);
+            ContactModel contactModel=new ContactModel(name[i],lastMessage[i],lastmsgTime[i],imageId[i]);
+            userArrayList.add(contactModel);
         }
 
         //ListAdapter listAdapter=new ListAdapter(getActivity(), userArrayList);
@@ -93,11 +94,11 @@ public class ChatsFragment extends Fragment {
 
     public class CustomAdapter extends BaseAdapter implements Filterable
     {
-        private List<User> itemsModelList;
-        private List<User> itemsModelListFiltered;
+        private List<ContactModel> itemsModelList;
+        private List<ContactModel> itemsModelListFiltered;
         private Context context;
 
-        public CustomAdapter(List<User> itemsModelList, Context context) {
+        public CustomAdapter(List<ContactModel> itemsModelList, Context context) {
             this.itemsModelList = itemsModelList;
             this.itemsModelListFiltered=itemsModelList;
             this.context = context;
@@ -193,7 +194,7 @@ public class ChatsFragment extends Fragment {
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("SelectedContact",itemsModelListFiltered.get(i)));
                 }
             });
             return view1;
@@ -213,12 +214,12 @@ public class ChatsFragment extends Fragment {
                     else
                     {
                         String searchStr=charSequence.toString().toLowerCase();
-                        List<User> resultData=new ArrayList<>();
-                        for(User user:itemsModelList)
+                        List<ContactModel> resultData=new ArrayList<>();
+                        for(ContactModel contactModel:itemsModelList)
                         {
-                            if (user.getName().toLowerCase().contains(searchStr))
+                            if (contactModel.getName().toLowerCase().contains(searchStr))
                             {
-                                resultData.add(user);
+                                resultData.add(contactModel);
                             }
                             filterResults.count=resultData.size();
                             filterResults.values=resultData;
@@ -229,7 +230,7 @@ public class ChatsFragment extends Fragment {
 
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                    itemsModelListFiltered=(List<User>) filterResults.values;
+                    itemsModelListFiltered=(List<ContactModel>) filterResults.values;
                     notifyDataSetChanged();
                 }
             };

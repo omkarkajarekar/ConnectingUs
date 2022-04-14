@@ -14,11 +14,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
@@ -96,7 +100,6 @@ public class ConversationList extends AppCompatActivity {
             thread=new Thread(new Runnable() {
                 @Override
                 public void run() {
-                           arrayList.clear();
                             checkPermission();
                 }
             });
@@ -125,6 +128,7 @@ public class ConversationList extends AppCompatActivity {
     }
 
     private void getContactList() {
+        arrayList.clear();
         Uri uri= ContactsContract.Contacts.CONTENT_URI;
         String sort=ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC";
         Cursor cursor=getContentResolver().query(uri,null,null,null,sort);
@@ -148,7 +152,7 @@ public class ConversationList extends AppCompatActivity {
                     @SuppressLint("Range") String number=phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     //initialize contact model
                     ContactModel model=new ContactModel();
-
+                    ImageView ivContactProf = findViewById(R.id.iv_image_item_contact);
 
                     verifyNumber =number.replaceAll("\\s", "");
                     if(!verifyNumber.contains("+91")) {
@@ -178,11 +182,7 @@ public class ConversationList extends AppCompatActivity {
                                                                    model.setUserId(user.getUserID());
                                                                    break;
                                                                }
-
-
-
                                                        }
-
                                                    }
 
                                                    @Override
@@ -194,6 +194,8 @@ public class ConversationList extends AppCompatActivity {
                                        //set name and number
                                        model.setName(name);
                                        model.setNumber(number);
+                                      // Bitmap bitmap=((BitmapDrawable)ivContactProf.getDrawable()).getBitmap();
+                                       //model.setImage(bitmap);
                                        //add model in array list
                                        arrayList.add(model);
                                    }
