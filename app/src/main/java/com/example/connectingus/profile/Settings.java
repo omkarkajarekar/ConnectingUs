@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.connectingus.ContactUs;
+import com.example.connectingus.CurrentProfile;
 import com.example.connectingus.R;
 import com.example.connectingus.SplashActivity;
 import com.example.connectingus.authentication.FirstActivity;
@@ -81,6 +82,10 @@ public class Settings extends AppCompatActivity {
                        {
                            userDetails.add(Dsnapshot.getValue().toString());
                        }
+                       String strname=snapshot.child("name").getValue().toString();
+                       String strabout=snapshot.child("about").getValue().toString();
+                       name.setText(strname);
+                       about.setText(strabout);
             }
 
             @Override
@@ -93,7 +98,7 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
+                /*Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
                 Pair pair[]= new Pair[3];
                 pair[0] = new Pair(profile_pic,"imageTransition");
                 pair[1] = new Pair(name,"nameTransition");
@@ -102,7 +107,9 @@ public class Settings extends AppCompatActivity {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     options = ActivityOptions.makeSceneTransitionAnimation(Settings.this, pair);
                 }
-                startActivity(intent,options.toBundle());
+                startActivity(intent,options.toBundle());*/
+                Intent intent = new Intent(getApplicationContext(), CurrentProfile.class);
+                startActivity(intent);
             }
         });
         invite_friend.setOnClickListener(new View.OnClickListener() {
