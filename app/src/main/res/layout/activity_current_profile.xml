@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CurrentProfile">
+    tools:context=".profile.CurrentProfile">
 
-    <include layout="@layout/button_on_image"
+    <include
         android:id="@+id/profile_pic"
+        layout="@layout/button_on_image"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="16dp"
@@ -17,128 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/sample_dp"/>
-
-    <!--<TextView
-        android:id="@+id/textviewname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="16dp"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="@+id/profile_pic"
-        app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_label"
-        android:layout_width="277dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/textviewname"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/textviewname"
-        app:layout_constraintTop_toBottomOf="@+id/textviewname"
-        android:layout_marginTop="2dp"
-        app:helperText="This name will be visible to your ConnectingUS contacts"
-        app:startIconDrawable="@drawable/username_icon"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/pencil">
-
-        <EditText
-            android:id="@+id/currentusername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <TextView
-        android:id="@+id/textviewabout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="122dp"
-        android:layout_marginLeft="122dp"
-        android:layout_marginTop="16dp"
-        android:text="About"
-        app:layout_constraintStart_toStartOf="@+id/name_label"
-        app:layout_constraintTop_toBottomOf="@+id/name_label" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/about_label"
-        android:layout_width="277dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/textviewabout"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/textviewabout"
-        app:layout_constraintTop_toBottomOf="@+id/textviewabout"
-        android:layout_marginTop="2dp"
-        app:startIconDrawable="@drawable/info"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/pencil"
-        >
-
-        <EditText
-            android:id="@+id/currentuserabout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/textviewphone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="122dp"
-        android:layout_marginLeft="122dp"
-        android:layout_marginTop="16dp"
-        android:text="Phone"
-        app:layout_constraintStart_toStartOf="@+id/about_label"
-        app:layout_constraintTop_toBottomOf="@+id/about_label" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phone_label"
-        android:layout_width="277dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/textviewphone"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/textviewphone"
-        app:layout_constraintTop_toBottomOf="@+id/textviewphone"
-        android:layout_marginTop="2dp"
-        app:startIconDrawable="@drawable/ic_baseline_call_24"
-        >
-
-        <EditText
-            android:id="@+id/currentuserphone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout> -->
+        app:srcCompat="@drawable/sample_dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

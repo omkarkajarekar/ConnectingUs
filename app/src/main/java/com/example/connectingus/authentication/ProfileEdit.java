@@ -2,11 +2,12 @@ package com.example.connectingus.authentication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
@@ -24,6 +24,8 @@ import com.example.connectingus.animation.MyBounceInterpolator;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.ExpandImageActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +34,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class ProfileEdit extends AppCompatActivity {
@@ -45,18 +54,35 @@ public class ProfileEdit extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    StorageReference storageReference;
+    Uri selectedImage;
+    File localFile;
     ShapeableImageView profile_pic,image_selector;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 3 && data!= null){
-           Uri selectedImage = data.getData();
-           profile_pic.setImageURI(selectedImage);
-           user_profile_pic = selectedImage.getPath();
+            selectedImage = data.getData();
+            profile_pic.setImageURI(selectedImage);
+           //user_profile_pic = selectedImage.getPath();
+            uploadImageToFireStorage();
         }
     }
-
+    public  void uploadImageToFireStorage(){
+        StorageReference fileref = storageReference.child(userID).child("profile.jpg");
+        fileref.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getApplicationContext(),"Profile Picture Updated",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +93,7 @@ public class ProfileEdit extends AppCompatActivity {
         phone = findViewById(R.id.phone);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         user_number = firebaseAuth.getCurrentUser().getPhoneNumber();
@@ -76,6 +103,27 @@ public class ProfileEdit extends AppCompatActivity {
         profile_pic = findViewById(R.id.profile_image);
 
         image_selector = findViewById(R.id.image_selector);
+        StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+
+        try {
+            localFile = File.createTempFile("profile", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                profile_pic.setImageBitmap(bmImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
         myAnim.setInterpolator(interpolator);

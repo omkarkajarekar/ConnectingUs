@@ -187,6 +187,7 @@ public class ChatsFragment extends Fragment {
                         }
                     });
                     expanded_pic.setImageResource(itemsModelListFiltered.get(i).getImageId());
+
                     dialog.show();
                 }
             });

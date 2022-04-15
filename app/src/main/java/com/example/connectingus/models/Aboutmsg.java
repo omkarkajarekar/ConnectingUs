@@ -1,4 +1,4 @@
-package com.example.connectingus;
+package com.example.connectingus.models;
 
 import java.io.Serializable;
 

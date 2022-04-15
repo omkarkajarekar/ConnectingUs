@@ -8,8 +8,8 @@
 
     <include layout="@layout/button_on_image"
         android:id="@+id/profile_pic"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,20 +19,6 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
         app:srcCompat="@drawable/sample_dp"/>
 
-    <!--<com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:transitionName="imageTransition"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/sample_dp" /> -->
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_label"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -40,7 +26,6 @@
         android:layout_height="wrap_content"
         android:transitionName="nameTransition"
         android:layout_marginTop="6dp"
-
         app:endIconCheckable="true"
         app:endIconDrawable="@drawable/pencil"
         app:errorEnabled="true"
@@ -54,6 +39,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
+            android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -80,6 +66,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/about"
+            android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -105,6 +92,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phone"
+            android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -116,7 +104,7 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="20dp"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
