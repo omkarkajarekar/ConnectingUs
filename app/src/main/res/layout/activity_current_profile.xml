@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CurrentProfile">
+
+    <include layout="@layout/button_on_image"
+        android:id="@+id/profile_pic"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/sample_dp"/>
+
+    <!--<TextView
+        android:id="@+id/textviewname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="16dp"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="@+id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_label"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/textviewname"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/textviewname"
+        app:layout_constraintTop_toBottomOf="@+id/textviewname"
+        android:layout_marginTop="2dp"
+        app:helperText="This name will be visible to your ConnectingUS contacts"
+        app:startIconDrawable="@drawable/username_icon"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/pencil">
+
+        <EditText
+            android:id="@+id/currentusername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/textviewabout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="122dp"
+        android:layout_marginLeft="122dp"
+        android:layout_marginTop="16dp"
+        android:text="About"
+        app:layout_constraintStart_toStartOf="@+id/name_label"
+        app:layout_constraintTop_toBottomOf="@+id/name_label" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/about_label"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/textviewabout"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/textviewabout"
+        app:layout_constraintTop_toBottomOf="@+id/textviewabout"
+        android:layout_marginTop="2dp"
+        app:startIconDrawable="@drawable/info"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/pencil"
+        >
+
+        <EditText
+            android:id="@+id/currentuserabout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textviewphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="122dp"
+        android:layout_marginLeft="122dp"
+        android:layout_marginTop="16dp"
+        android:text="Phone"
+        app:layout_constraintStart_toStartOf="@+id/about_label"
+        app:layout_constraintTop_toBottomOf="@+id/about_label" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phone_label"
+        android:layout_width="277dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/textviewphone"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/textviewphone"
+        app:layout_constraintTop_toBottomOf="@+id/textviewphone"
+        android:layout_marginTop="2dp"
+        app:startIconDrawable="@drawable/ic_baseline_call_24"
+        >
+
+        <EditText
+            android:id="@+id/currentuserphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout> -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_label">
+
+            <ImageView
+                android:id="@+id/iconperson"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_person"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textviewname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currentusername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textviewname"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textviewname"
+                app:layout_constraintTop_toBottomOf="@+id/textviewname"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/iconpensil1"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pencil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/helpertext1"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                android:singleLine="false"
+                android:text="This name will be visible to your ConnectingUS contacts"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/currentusername"
+                app:layout_constraintTop_toBottomOf="@+id/currentusername" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/helpertext1"
+                app:layout_constraintTop_toBottomOf="@+id/helpertext1"
+                android:layout_marginTop="10dp"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/about_label"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/iconinfo"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.511" />
+
+            <TextView
+                android:id="@+id/textviewabout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currentuserabout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:minLines="1"
+                android:singleLine="false"
+                android:text="Your About"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textviewabout"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textviewabout"
+                app:layout_constraintTop_toBottomOf="@+id/textviewabout"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/iconpensil2"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pencil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/currentuserabout"
+                app:layout_constraintTop_toBottomOf="@+id/currentuserabout"
+                android:layout_marginTop="10dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_label"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/iconphone"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_baseline_call_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.511" />
+
+            <TextView
+                android:id="@+id/textviewphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currentuserphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Phone"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textviewphone"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textviewphone"
+                app:layout_constraintTop_toBottomOf="@+id/textviewphone"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/currentuserphone"
+                app:layout_constraintTop_toBottomOf="@+id/currentuserphone"
+                android:layout_marginTop="10dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
