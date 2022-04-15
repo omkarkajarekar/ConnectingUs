@@ -28,13 +28,11 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if(firebaseAuth.getCurrentUser() != null){
                     Intent intent = new Intent(getApplicationContext(), ConversationList.class);
-                    //Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
                     startActivity(intent);
                     finish();
                 }
                 else{
                     Intent intent = new Intent(getApplicationContext(), FirstActivity.class);
-                    //Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
                     startActivity(intent);
                     finish();
                 }
