@@ -58,11 +58,30 @@ public class ConversationList extends AppCompatActivity {
     StorageReference storageReference;
     File localFile;
     String userID;
+
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        thread=null;
+        try {
+            thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    checkPermission();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(ConversationList.this,e.toString(),Toast.LENGTH_LONG).show();
+
+        }
+
+        thread.start();
+
         setContentView(R.layout.activity_conversation_list);
         this.setTitle("ConnectingUs");
         tabLayout=findViewById(R.id.tablayout);
@@ -106,22 +125,7 @@ public class ConversationList extends AppCompatActivity {
         viewPager2.setCurrentItem(1);
 
 
-        thread=null;
-        try {
-            thread=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                            checkPermission();
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(ConversationList.this,e.toString(),Toast.LENGTH_LONG).show();
 
-        }
-
-        thread.start();
     }
 
 
@@ -139,6 +143,7 @@ public class ConversationList extends AppCompatActivity {
     }
 
     private void getContactList() {
+
         arrayList.clear();
         Uri uri= ContactsContract.Contacts.CONTENT_URI;
         String sort=ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC";
@@ -163,7 +168,7 @@ public class ConversationList extends AppCompatActivity {
                     @SuppressLint("Range") String number=phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     //initialize contact model
                     ContactModel model=new ContactModel();
-                    ImageView ivContactProf = findViewById(R.id.iv_image_item_contact);
+                    //ImageView ivContactProf = findViewById(R.id.iv_image_item_contact);
 
                     verifyNumber =number.replaceAll("\\s", "");
                     if(!verifyNumber.contains("+91")) {
@@ -184,16 +189,72 @@ public class ConversationList extends AppCompatActivity {
                                                .addValueEventListener(new ValueEventListener() {
                                                    @Override
                                                    public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+
+
                                                        for(DataSnapshot datas1:dsnapshot.getChildren())
                                                        {
+
+                                                           Users user=datas1.getValue(Users.class);
+                                                           if(user.getPhone().equals(verifyNumber))
+                                                           {
+                                                               Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+verifyNumber+"  userID:"+user.getUserID()+" name:"+user.getName());
+                                                           }
+
+
+                                                         /*  if(user.getPhone().equals(verifyNumber))
+                                                           {
+                                                               model.setUserId(user.getUserID());
+                                                               userID = user.getUserID();
+                                                               Log.d("qnppy details", "  name: "+user.getName()+" user Id:  "+userID);
+                                                               break;
+                                                           }*/
+
+                                                       }
+
+                                                       if(dsnapshot.getValue(Users.class)!=null)
+                                                       {
+
+
+                                                       }
+
+                                                      /* while(true)
+                                                       {
+                                                           DataSnapshot datas1= (DataSnapshot) dsnapshot.getChildren();
+                                                           if(datas1.hasChildren())
+                                                           {
                                                                Users user=datas1.getValue(Users.class);
+
                                                                if(user.getPhone().equals(verifyNumber))
                                                                {
                                                                    model.setUserId(user.getUserID());
                                                                    userID = user.getUserID();
+                                                                   userids="name: "+user.getName()+"user ID: "+userID+"     "+userids;
                                                                    break;
                                                                }
-                                                       }
+
+                                                           }
+                                                           else
+                                                           {
+                                                               break;
+                                                           }
+
+
+                                                       }*/
+                                                     /*  for(DataSnapshot datas1:dsnapshot.getChildren())
+                                                       {
+
+                                                           Users user=datas1.getValue(Users.class);
+
+                                                         if(user.getPhone().equals(verifyNumber))
+                                                               {
+                                                                   model.setUserId(user.getUserID());
+                                                                   userID = user.getUserID();
+                                                                   Log.d("qnppy details", "  name: "+user.getName()+" user Id:  "+userID);
+                                                                   break;
+                                                               }
+
+                                                       }*/
+                                                       //userids+=" COUNT="+dsnapshot.getChildrenCount();
                                                    }
 
                                                    @Override
@@ -247,6 +308,7 @@ public class ConversationList extends AppCompatActivity {
             }
             cursor.close();
         }
+       // Log.d("list of userids", userids);
     }
 
 
