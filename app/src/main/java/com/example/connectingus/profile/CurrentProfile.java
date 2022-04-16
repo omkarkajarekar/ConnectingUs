@@ -1,34 +1,37 @@
-package com.example.connectingus.authentication;
+package com.example.connectingus.profile;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
 import com.example.connectingus.animation.MyBounceInterpolator;
-import com.example.connectingus.conversation.ConversationList;
-import com.example.connectingus.models.Users;
-import com.example.connectingus.profile.ExpandImageActivity;
+import com.example.connectingus.authentication.ProfileEdit;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,30 +45,26 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 
+public class CurrentProfile extends AppCompatActivity {
 
-public class ProfileEdit extends AppCompatActivity {
-    Button next;
-    TextInputEditText name;
-    TextInputEditText about;
-    TextInputEditText phone;
-    String userID,deviceID;
-    String user_number,user_name,user_about,user_profile_pic;
-    Intent intent;
     FirebaseAuth firebaseAuth;
-    FirebaseDatabase firebaseDatabase;
+    FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
+    TextView name,about,phone;
+    ConstraintLayout layoutname,layoutabout;
+    String strname,strabout,strphone;
     StorageReference storageReference;
-    Uri selectedImage;
+    String userID;
     File localFile;
+    Uri selectedImage;
     ShapeableImageView profile_pic,image_selector;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 3 && data!= null){
             selectedImage = data.getData();
             profile_pic.setImageURI(selectedImage);
-           //user_profile_pic = selectedImage.getPath();
+            //user_profile_pic = selectedImage.getPath();
             uploadImageToFireStorage();
         }
     }
@@ -83,26 +82,26 @@ public class ProfileEdit extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_edit);
-        next = findViewById(R.id.next);
-        name = findViewById(R.id.name);
-        about = findViewById(R.id.about);
-        phone = findViewById(R.id.phone);
+        setContentView(R.layout.activity_current_profile);
+        this.setTitle("Profile");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        name=findViewById(R.id.currentusername);
+        about=findViewById(R.id.currentuserabout);
+        phone=findViewById(R.id.currentuserphone);
+        layoutname=findViewById(R.id.name_label);
+        layoutabout=findViewById(R.id.about_label);
+        profile_pic = findViewById(R.id.profile_image);
+        image_selector = findViewById(R.id.image_selector);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
-        getSupportActionBar().setTitle("Profile");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        user_number = firebaseAuth.getCurrentUser().getPhoneNumber();
-        phone.setText(user_number);
-        deviceID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
         userID = firebaseAuth.getCurrentUser().getUid();
-        profile_pic = findViewById(R.id.profile_image);
-
-        image_selector = findViewById(R.id.image_selector);
         StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
 
         try {
@@ -142,66 +141,89 @@ public class ProfileEdit extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ExpandImageActivity.class);
                 intent.putExtra("name","Profile Photo");
-                intent.putExtra("calling_activity","ProfileEdit");
+                intent.putExtra("calling_activity","CurrentProfile");
                 Pair pair = new Pair(profile_pic,"imageTransition");
                 ActivityOptions options = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    options = ActivityOptions.makeSceneTransitionAnimation(ProfileEdit.this, pair);
+                    options = ActivityOptions.makeSceneTransitionAnimation(CurrentProfile.this, pair);
                 }
                 startActivity(intent,options.toBundle());
                 finish();
             }
         });
+        //String uabout;
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid());
 
-        next.setOnClickListener(new View.OnClickListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                //flag=true;
-                user_name = name.getText().toString().trim();
-                user_about = about.getText().toString().trim();
-                if(name.getText().toString().isEmpty() && about.getText().toString().isEmpty()){
-                    name.setError("Please fill name");
-                    about.setError("Please fill about");
-                }
-                else if(name.getText().toString().isEmpty())
-                    name.setError("Please fill name");
-                else if(about.getText().toString().isEmpty())
-                    about.setError("Please fill about");
-                else{
-                    Users users = new Users(user_number,userID,user_name,user_about,deviceID,user_profile_pic);
-                    firebaseDatabase = FirebaseDatabase.getInstance();
-                    databaseReference = firebaseDatabase.getReference("users").child(userID);
-                    databaseReference.setValue(users);
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChildren())
-                            {
-                                Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                strname=snapshot.child("name").getValue().toString();
+                strabout=snapshot.child("about").getValue().toString();
+                strphone=snapshot.child("phone").getValue().toString();
+                name.setText(strname);
+                about.setText(strabout);
+                phone.setText(strphone);
+            }
 
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(getApplicationContext(),"Failed to add data",Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                Intent intent=new Intent(getApplicationContext(), ConversationList.class);
-                startActivity(intent);
-                finish();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-        /*signout.setOnClickListener(new View.OnClickListener() {
+
+        layoutname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                firebaseAuth.signOut();
-                intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-                finish();
+                AlertDialog.Builder builder=new AlertDialog.Builder(CurrentProfile.this);
+                final View customLayout=getLayoutInflater().inflate(R.layout.dialog_name,null);
+                builder.setView(customLayout);
+                builder.setTitle("Enter your name");
+                builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText editText=customLayout.findViewById(R.id.editname);
+                        String uname=editText.getText().toString().trim();
+                        if(uname.isEmpty())
+                        {
+                            Toast.makeText(getApplicationContext(),"Name can't be empty",Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            updatename(firebaseUser.getUid(),uname);
+                            name.setText(uname);
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().getAttributes().windowAnimations=R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
-        });*/
+        });
+
+        layoutabout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), About.class);
+                String previousabout=about.getText().toString();
+                intent.putExtra("about",previousabout);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private boolean updatename(String uid,String name)
+    {
+        databaseReference=FirebaseDatabase.getInstance().getReference("users").child(uid).child("name");
+        databaseReference.setValue(name);
+        return true;
     }
 }

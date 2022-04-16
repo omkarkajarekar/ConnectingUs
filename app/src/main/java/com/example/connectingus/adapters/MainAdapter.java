@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.R;
 import com.example.connectingus.contact.RecyclerViewInterface;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
          ContactModel model=arrayList.get(position);
          holder.tvName.setText(model.getName());
          holder.tvNumber.setText(model.getNumber());
-
+         //holder.ivImage.setImageBitmap(model.getImage());
     }
 
     @Override
@@ -94,10 +95,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName,tvNumber;
+        ShapeableImageView ivImage;
         public ViewHolder(@NonNull View itemView,RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             tvName=itemView.findViewById(R.id.tv_name);
             tvNumber=itemView.findViewById(R.id.tv_number);
+            //ivImage=itemView.findViewById(R.id.iv_image_item_contact);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

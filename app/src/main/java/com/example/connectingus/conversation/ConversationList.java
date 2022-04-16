@@ -14,11 +14,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
@@ -28,13 +33,20 @@ import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.Settings;
 import com.example.connectingus.adapters.PagerAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ConversationList extends AppCompatActivity {
@@ -43,6 +55,9 @@ public class ConversationList extends AppCompatActivity {
     PagerAdapter pagerAdapter;
     Thread thread;
     String verifyNumber;
+    StorageReference storageReference;
+    File localFile;
+    String userID;
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
     @Override
@@ -96,7 +111,6 @@ public class ConversationList extends AppCompatActivity {
             thread=new Thread(new Runnable() {
                 @Override
                 public void run() {
-                           arrayList.clear();
                             checkPermission();
                 }
             });
@@ -125,6 +139,7 @@ public class ConversationList extends AppCompatActivity {
     }
 
     private void getContactList() {
+        arrayList.clear();
         Uri uri= ContactsContract.Contacts.CONTENT_URI;
         String sort=ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC";
         Cursor cursor=getContentResolver().query(uri,null,null,null,sort);
@@ -148,14 +163,14 @@ public class ConversationList extends AppCompatActivity {
                     @SuppressLint("Range") String number=phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     //initialize contact model
                     ContactModel model=new ContactModel();
-
+                    ImageView ivContactProf = findViewById(R.id.iv_image_item_contact);
 
                     verifyNumber =number.replaceAll("\\s", "");
                     if(!verifyNumber.contains("+91")) {
                         verifyNumber="+91"+verifyNumber;
                     }
 
-
+                    storageReference = FirebaseStorage.getInstance().getReference();
                     FirebaseDatabase.getInstance()
                                .getReference("users")
                             .orderByChild("phone")
@@ -171,18 +186,14 @@ public class ConversationList extends AppCompatActivity {
                                                    public void onDataChange(@NonNull DataSnapshot dsnapshot) {
                                                        for(DataSnapshot datas1:dsnapshot.getChildren())
                                                        {
-
-                                                           Users user=datas1.getValue(Users.class);
+                                                               Users user=datas1.getValue(Users.class);
                                                                if(user.getPhone().equals(verifyNumber))
                                                                {
                                                                    model.setUserId(user.getUserID());
+                                                                   userID = user.getUserID();
                                                                    break;
                                                                }
-
-
-
                                                        }
-
                                                    }
 
                                                    @Override
@@ -194,6 +205,30 @@ public class ConversationList extends AppCompatActivity {
                                        //set name and number
                                        model.setName(name);
                                        model.setNumber(number);
+                                      // Bitmap bitmap=((BitmapDrawable)ivContactProf.getDrawable()).getBitmap();
+                                       //model.setImage(bitmap);
+                                       /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+
+                                       try {
+                                           localFile = File.createTempFile("profile", "jpg");
+                                       } catch (IOException e) {
+                                           e.printStackTrace();
+                                       }
+
+                                       pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                           @Override
+                                           public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                               Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                               model.setImage(bmImg);
+                                           }
+                                       }).addOnFailureListener(new OnFailureListener() {
+                                           @Override
+                                           public void onFailure(@NonNull Exception exception) {
+                                               Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                                               model.setImage(image);
+                                           }
+                                       });*/
+                                      //Toast.makeText(getApplicationContext(),"UserID = "+userID,Toast.LENGTH_SHORT).show();
                                        //add model in array list
                                        arrayList.add(model);
                                    }
@@ -212,9 +247,8 @@ public class ConversationList extends AppCompatActivity {
             }
             cursor.close();
         }
-
-
     }
+
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

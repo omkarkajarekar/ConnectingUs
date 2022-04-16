@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -17,11 +19,9 @@ import android.widget.Toast;
 
 import com.example.connectingus.ContactUs;
 import com.example.connectingus.R;
-import com.example.connectingus.SplashActivity;
 import com.example.connectingus.authentication.FirstActivity;
-import com.example.connectingus.authentication.ProfileEdit;
-import com.example.connectingus.conversation.ConversationList;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -32,7 +32,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -53,6 +58,8 @@ public class Settings extends AppCompatActivity {
     String userID;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    StorageReference storageReference;
+    File localFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +76,32 @@ public class Settings extends AppCompatActivity {
         about = findViewById(R.id.about);
 
         firebaseAuth=FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userID);
+
+        StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+
+        try {
+            localFile = File.createTempFile("profile", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                profile_pic.setImageBitmap(bmImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -81,6 +111,10 @@ public class Settings extends AppCompatActivity {
                        {
                            userDetails.add(Dsnapshot.getValue().toString());
                        }
+                       String strname=snapshot.child("name").getValue().toString();
+                       String strabout=snapshot.child("about").getValue().toString();
+                       name.setText(strname);
+                       about.setText(strabout);
             }
 
             @Override
@@ -93,11 +127,18 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
+                /*Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
                 Pair pair[]= new Pair[3];
                 pair[0] = new Pair(profile_pic,"imageTransition");
                 pair[1] = new Pair(name,"nameTransition");
                 pair[2] = new Pair(about,"aboutTransition");
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation(Settings.this, pair);
+                }
+                startActivity(intent,options.toBundle());*/
+                Intent intent = new Intent(getApplicationContext(), CurrentProfile.class);
+                Pair pair = new Pair(profile_pic,"imageTransition");
                 ActivityOptions options = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     options = ActivityOptions.makeSceneTransitionAnimation(Settings.this, pair);

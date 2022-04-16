@@ -13,6 +13,12 @@
         android:roundIcon="@drawable/whatsapp512px"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
+        <activity android:name=".profile.About"
+            android:exported="false"
+            android:parentActivityName=".profile.CurrentProfile"/>
+        <activity android:name=".profile.CurrentProfile"
+            android:exported="false"
+            android:parentActivityName=".profile.Settings"/>
         <activity
             android:name=".profile.ChatProfile"
             android:exported="false" />
@@ -30,6 +36,7 @@
         <activity
             android:name=".authentication.ProfileEdit"
             android:exported="true"
+            android:largeHeap="true"
             android:parentActivityName=".profile.Settings">
             <intent-filter>
                 <data android:mimeType="image/*" />

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.TempMsgAdapter;
+import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.models.User;
 import com.example.connectingus.profile.ChatProfile;
@@ -34,7 +36,7 @@ public class TempDetailChatView extends AppCompatActivity {
     ImageButton ibRecv;
     TextView tvUname;
     EditText etM;
-    User user;
+    ContactModel contactModel;
     RecyclerView recyclerView;
     RelativeLayout relativeLayout;
     @Override
@@ -64,9 +66,10 @@ public class TempDetailChatView extends AppCompatActivity {
         Intent intent=getIntent();
         if(intent.getExtras()!=null)
         {
-            user= (User) intent.getSerializableExtra("user");
-            ivProf.setImageResource(user.getImageId());
-            tvUname.setText(user.getName());
+            contactModel= (ContactModel) intent.getSerializableExtra("SelectedContact");
+            ivProf.setImageBitmap(contactModel.getImage());
+            ivProf.setImageResource(contactModel.getImageId());
+            tvUname.setText(contactModel.getName());
         }
 
         etM=findViewById(R.id.edMsg);
@@ -132,7 +135,7 @@ public class TempDetailChatView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentChatProf = new Intent(getApplicationContext(), ChatProfile.class);
-                intentChatProf.putExtra("UserDetails",user);
+                intentChatProf.putExtra("UserDetails", contactModel);
                 intentChatProf.putExtra("calling_activity","TempDetailChatView");
                 startActivity(intentChatProf);
                 finish();
