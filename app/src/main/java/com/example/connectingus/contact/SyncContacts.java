@@ -59,7 +59,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("ConnectingUs");
+        getSupportActionBar().setTitle("Select contact");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_sync_contacts);
@@ -72,6 +72,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
         adapter=new MainAdapter(this,arrayList,this);
         //set adapter
         recyclerView.setAdapter(adapter);
+        getSupportActionBar().setSubtitle(adapter.getItemCount()+" contacts");
 
     }
 
