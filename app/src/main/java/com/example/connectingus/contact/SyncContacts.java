@@ -1,5 +1,6 @@
 package com.example.connectingus.contact;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -13,28 +14,38 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.ConversationList;
-import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
+import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.Settings;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SyncContacts extends AppCompatActivity implements RecyclerViewInterface {
@@ -43,15 +54,17 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
     MainAdapter adapter;
     Thread thread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setTitle("ConnectingUs");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
         arrayList= ConversationList.getArrayList();
-
+      getUserIDs();
         // set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //initialize adapter
@@ -61,8 +74,51 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
 
     }
 
+    public void getImages(String userID)
+    {
+        Log.d("qn","Retrived Userid : "+ userID);
+    }
+
+public void getUserIDs()
+{
+
+    FirebaseDatabase.getInstance().getReference("users")
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+
+                    Users user=null;
+                    for(DataSnapshot datas1:dsnapshot.getChildren())
+                    {
+
+                        user=datas1.getValue(Users.class);
+                        for(ContactModel model:arrayList)
+                        {
+                            if(user.getPhone().equals(model.getNumber()))
+                            {
+                                model.setUserId(user.getUserID());
+
+                               Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
+                                getImages(model.getUserId());
+
+                            }
+                        }
+                        user=null;
 
 
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+}
 
 
     @Override
@@ -92,12 +148,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        Intent goToTempChatDetail= new Intent(getApplicationContext(),TempDetailChatView.class);
-        goToTempChatDetail.putExtra("SelectedContact",arrayList.get(position));
-        startActivity(goToTempChatDetail);
-        finish();
-        //startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user",arrayList.get(position)));
-        //Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
 
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

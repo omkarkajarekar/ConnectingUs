@@ -142,6 +142,41 @@ public class ConversationList extends AppCompatActivity {
 
     }
 
+    public String getUserIDs(String number)
+    {
+
+        FirebaseDatabase.getInstance().getReference("users")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+
+
+                        for(DataSnapshot datas1:dsnapshot.getChildren())
+                        {
+
+                            Users user=datas1.getValue(Users.class);
+
+                                if(user.getPhone().equals(number))
+                                {
+                                    Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+user.getPhone()+"  userID:"+user.getUserID()+" name:"+user.getName());
+                                }
+
+
+
+
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        return "hi";
+    }
     private void getContactList() {
 
         arrayList.clear();
@@ -185,7 +220,8 @@ public class ConversationList extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                    if(snapshot.exists())
                                    {
-                                       FirebaseDatabase.getInstance().getReference("users")
+                                           // getUserIDs(verifyNumber);
+                                      /* FirebaseDatabase.getInstance().getReference("users")
                                                .addValueEventListener(new ValueEventListener() {
                                                    @Override
                                                    public void onDataChange(@NonNull DataSnapshot dsnapshot) {
@@ -207,11 +243,11 @@ public class ConversationList extends AppCompatActivity {
                                                                userID = user.getUserID();
                                                                Log.d("qnppy details", "  name: "+user.getName()+" user Id:  "+userID);
                                                                break;
-                                                           }*/
+                                                           }
 
-                                                       }
+                                                       }*/
 
-                                                       if(dsnapshot.getValue(Users.class)!=null)
+                                                    /*   if(dsnapshot.getValue(Users.class)!=null)
                                                        {
 
 
@@ -253,7 +289,7 @@ public class ConversationList extends AppCompatActivity {
                                                                    break;
                                                                }
 
-                                                       }*/
+                                                       }
                                                        //userids+=" COUNT="+dsnapshot.getChildrenCount();
                                                    }
 
@@ -261,11 +297,11 @@ public class ConversationList extends AppCompatActivity {
                                                    public void onCancelled(@NonNull DatabaseError error) {
 
                                                    }
-                                               });
+                                               });*/
 
                                        //set name and number
                                        model.setName(name);
-                                       model.setNumber(number);
+                                       model.setNumber(verifyNumber);
                                       // Bitmap bitmap=((BitmapDrawable)ivContactProf.getDrawable()).getBitmap();
                                        //model.setImage(bitmap);
                                        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
