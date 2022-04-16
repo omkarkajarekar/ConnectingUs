@@ -6,6 +6,19 @@ public class Users {
     private String name;
     private String about;
     private String deviceID;
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "phone='" + phone + '\'' +
+                ", userID='" + userID + '\'' +
+                ", name='" + name + '\'' +
+                ", about='" + about + '\'' +
+                ", deviceID='" + deviceID + '\'' +
+                ", profile_pic='" + profile_pic + '\'' +
+                '}';
+    }
+
     private String profile_pic;
     public Users(){ }
     public Users(String phone, String userID){
