@@ -172,7 +172,7 @@ public class ConversationList extends AppCompatActivity {
                                                        for(DataSnapshot datas1:dsnapshot.getChildren())
                                                        {
 
-                                                               Users user=datas1.getValue(Users.class);
+                                                           Users user=datas1.getValue(Users.class);
                                                                if(user.getPhone().equals(verifyNumber))
                                                                {
                                                                    model.setUserId(user.getUserID());
