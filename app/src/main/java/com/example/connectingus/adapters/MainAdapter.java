@@ -45,7 +45,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
          ContactModel model=arrayList.get(position);
          holder.tvName.setText(model.getName());
          holder.tvNumber.setText(model.getNumber());
-         //holder.ivImage.setImageBitmap(model.getImage());
+         holder.ivImage.setImageBitmap(model.getImage());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
             super(itemView);
             tvName=itemView.findViewById(R.id.tv_name);
             tvNumber=itemView.findViewById(R.id.tv_number);
-            //ivImage=itemView.findViewById(R.id.iv_image_item_contact);
+            ivImage=itemView.findViewById(R.id.iv_image_item_contact);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
