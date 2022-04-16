@@ -11,4 +11,7 @@
     <item
         android:id="@+id/invite"
         android:title="Invite"/>
+    <item
+        android:id="@+id/refresh"
+        android:title="Refresh"/>
 </menu>
