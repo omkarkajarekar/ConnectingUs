@@ -47,6 +47,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SyncContacts extends AppCompatActivity implements RecyclerViewInterface {
 
@@ -58,69 +59,80 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("ConnectingUs");
+        getSupportActionBar().setTitle("Select contact");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
         arrayList= ConversationList.getArrayList();
-      getUserIDs();
+        getUserIDs();
         // set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //initialize adapter
         adapter=new MainAdapter(this,arrayList,this);
         //set adapter
         recyclerView.setAdapter(adapter);
+        getSupportActionBar().setSubtitle(adapter.getItemCount()+" contacts");
 
     }
 
     public void getImages(ContactModel model)
     {
-        Log.d("qn","Retrived Userid : "+ model.getUserId());
+        File localFile = null;
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference pathReference = storageReference.child(model.getUserId()).child("profile.jpg");
+
+        try {
+            localFile = File.createTempFile("profile", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File finalLocalFile = localFile;
+        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Bitmap bmImg = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                model.setImage(bmImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                model.setImage(image);
+            }
+        });
     }
 
 public void getUserIDs()
 {
-
-    FirebaseDatabase.getInstance().getReference("users")
-            .addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dsnapshot) {
-
-                    Users user=null;
-                    for(DataSnapshot datas1:dsnapshot.getChildren())
+    FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+                Users user=null;
+                for(DataSnapshot datas1:dsnapshot.getChildren())
+                {
+                    user=datas1.getValue(Users.class);
+                    for(ContactModel model:arrayList)
                     {
-
-                        user=datas1.getValue(Users.class);
-                        for(ContactModel model:arrayList)
+                        if(user.getPhone().equals(model.getNumber()))
                         {
-                           // Log.d("qnqq", "Reach one "+user.getPhone()+"    "+model.getNumber());
-                           if(user.getPhone().equals(model.getNumber()))
-                            {
-                                model.setUserId(user.getUserID());
-                               // Toast.makeText(SyncContacts.this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
-
-                                Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
-                                getImages(model);
-
-                            }
-                           // Log.d("qnqq", "Reach two "+user);
+                            model.setUserId(user.getUserID());
+                            Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
+                            getImages(model);
                         }
-
-
-
-
-
                     }
-
-
+                    user=null;
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 }
 
 

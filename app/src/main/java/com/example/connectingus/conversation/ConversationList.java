@@ -220,6 +220,33 @@ public class ConversationList extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                    if(snapshot.exists())
                                    {
+                                       /*FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+                                           @Override
+                                           public void onDataChange(@NonNull DataSnapshot dsnapshot) {
+                                               Users user=null;
+                                               for(DataSnapshot datas1:dsnapshot.getChildren())
+                                               {
+                                                   user=datas1.getValue(Users.class);
+                                                   for(ContactModel model:arrayList)
+                                                   {
+                                                       if(user.getPhone().equals(model.getNumber()))
+                                                       {
+                                                           model.setUserId(user.getUserID());
+                                                           Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
+                                                           getImages(model);
+                                                       }
+                                                   }
+                                                   user=null;
+                                               }
+
+
+                                           }
+
+                                           @Override
+                                           public void onCancelled(@NonNull DatabaseError error) {
+
+                                           }
+                                       });*/
                                            // getUserIDs(verifyNumber);
                                       /* FirebaseDatabase.getInstance().getReference("users")
                                                .addValueEventListener(new ValueEventListener() {
@@ -301,9 +328,7 @@ public class ConversationList extends AppCompatActivity {
 
                                        //set name and number
                                        model.setName(name);
-                                       String tempnum;
-
-                                       tempnum=number.replaceAll("\\s", "");
+                                       String tempnum =number.replaceAll("\\s", "");
                                        if(!tempnum.contains("+91")) {
                                            tempnum="+91"+tempnum;
                                        }
@@ -353,6 +378,33 @@ public class ConversationList extends AppCompatActivity {
        // Log.d("list of userids", userids);
     }
 
+    public void getImages(ContactModel model)
+    {
+        File localFile = null;
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference pathReference = storageReference.child(model.getUserId()).child("profile.jpg");
+
+        try {
+            localFile = File.createTempFile("profile", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File finalLocalFile = localFile;
+        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Bitmap bmImg = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                model.setImage(bmImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                model.setImage(image);
+            }
+        });
+    }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
