@@ -74,9 +74,9 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
 
     }
 
-    public void getImages(String userID)
+    public void getImages(ContactModel model)
     {
-        Log.d("qn","Retrived Userid : "+ userID);
+        Log.d("qn","Retrived Userid : "+ model.getUserId());
     }
 
 public void getUserIDs()
@@ -94,16 +94,19 @@ public void getUserIDs()
                         user=datas1.getValue(Users.class);
                         for(ContactModel model:arrayList)
                         {
-                            if(user.getPhone().equals(model.getNumber()))
+                           // Log.d("qnqq", "Reach one "+user.getPhone()+"    "+model.getNumber());
+                           if(user.getPhone().equals(model.getNumber()))
                             {
                                 model.setUserId(user.getUserID());
+                               // Toast.makeText(SyncContacts.this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
 
-                               Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
-                                getImages(model.getUserId());
+                                Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
+                                getImages(model);
 
                             }
+                           // Log.d("qnqq", "Reach two "+user);
                         }
-                        user=null;
+
 
 
 

@@ -301,7 +301,13 @@ public class ConversationList extends AppCompatActivity {
 
                                        //set name and number
                                        model.setName(name);
-                                       model.setNumber(verifyNumber);
+                                       String tempnum;
+
+                                       tempnum=number.replaceAll("\\s", "");
+                                       if(!tempnum.contains("+91")) {
+                                           tempnum="+91"+tempnum;
+                                       }
+                                       model.setNumber(tempnum);
                                       // Bitmap bitmap=((BitmapDrawable)ivContactProf.getDrawable()).getBitmap();
                                        //model.setImage(bitmap);
                                        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
