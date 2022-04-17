@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -106,15 +107,18 @@ public class Settings extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       userDetails.clear();
+                        userDetails.clear();
+                       Log.d("enpp", "at line no 111");
                        for(DataSnapshot Dsnapshot:snapshot.getChildren())
                        {
                            userDetails.add(Dsnapshot.getValue().toString());
+
+                           String strname=snapshot.child("name").getValue().toString();
+                           String strabout=snapshot.child("about").getValue().toString();
+                           name.setText(strname);
+                           about.setText(strabout);
                        }
-                       String strname=snapshot.child("name").getValue().toString();
-                       String strabout=snapshot.child("about").getValue().toString();
-                       name.setText(strname);
-                       about.setText(strabout);
+
             }
 
             @Override
@@ -235,23 +239,29 @@ public class Settings extends AppCompatActivity {
         progressDialog.setMessage("We are deleting your account");
         progressDialog.setCancelable(false);
         progressDialog.show();
+        Log.d("enpp", "after progress bar shown"+userID);
         FirebaseDatabase.getInstance().getReference("users")
                 .child(userID).removeValue()
                 //.setValue(null)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        Log.d("enpp", "line no 247");
                        firebaseAuth.getCurrentUser().delete()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("enpp", "line no 252");
                                         if (task.isSuccessful())
                                         {
+                                            Log.d("enpp", "line no 255");
                                             progressDialog.dismiss();
+                                            Log.d("enpp", "after progress bar dismissed");
                                             Intent intent=new Intent(Settings.this, FirstActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                                     | Intent.FLAG_ACTIVITY_CLEAR_TOP
                                                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            Log.d("enpp", "line no 262");
                                             startActivity(intent);
                                             finish();
 
