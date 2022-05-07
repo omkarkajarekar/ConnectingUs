@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
@@ -41,52 +43,161 @@ import com.example.connectingus.models.User;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.profile.ExpandImageActivity;
 import com.example.connectingus.profile.Settings;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ChatsFragment extends Fragment {
+    DatabaseReference databaseReference;
+    StorageReference storageReference;
+    File localFile;
+    ShapeableImageView profile_pic;
 
     static Activity activity;
     private FragmentChatsBinding binding;
     FloatingActionButton fab;
     CustomAdapter customAdapter;
+    String userId="";
+    TextView tv;
+    ArrayList<String> listuserId=new ArrayList<>();
+    ArrayList<Bitmap> image=new ArrayList<>();
+    ArrayList<String> name=new ArrayList<>();
+    ArrayList<String> lastMessage=new ArrayList<>();
+    ArrayList<String> lastmsgTime=new ArrayList<>();
+    ArrayList<ContactModel> userArrayList=new ArrayList<>();
+    int j;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //getActivity();
-        //View v=inflater.inflate(R.layout.list_item,container,false);
         binding=FragmentChatsBinding.inflate(inflater,container,false);
         View view=binding.getRoot();
         activity = getActivity();
-        int[] imageId={R.drawable.shrishti,R.drawable.ansar,R.drawable.kalpana,R.drawable.marie,R.drawable.muniba,R.drawable.rahi,R.drawable.sandeep,R.drawable.sunita,R.drawable.tina};
-        String[] name={"Shrishti","Ansar","Kalpana","Marie","Muniba","Rahi","Sandeep","Sunita","Tina"};
-        String[] lastMessage={"How are you?","Hi","Yes","I know","That's nice!","Good day!","I know","Why not?","See you!"};
-        String[] lastmsgTime={"1:45am","1:30am","12:00am","11:45pm","11:30pm","11:15pm","11:00pm","10:05pm","09:05pm"};
-
-        ArrayList<ContactModel> userArrayList=new ArrayList<>();
-
-        for(int i=0;i<imageId.length;i++)
+        for(String id : ShareIds.getInstance().getUserId())
         {
-            ContactModel contactModel=new ContactModel(name[i],lastMessage[i],lastmsgTime[i],imageId[i]);
+            listuserId.add(id);
+            Toast.makeText(getActivity(),"got userid :"+id,Toast.LENGTH_LONG).show();
+        }
+        for(String uid : listuserId)
+        {
+            userId=uid;
+            try
+            {
+                databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+                storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference pathReference = storageReference.child(userId).child("profile.jpg");
+
+                try {
+                    localFile = File.createTempFile("profile", "jpg");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        try {
+                            if(!userId.isEmpty())
+                            {
+                                //image.add(0,bmImg);           // problematic item won't get added to listview
+                                image.add(0,null);  //added temporary
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            exp.printStackTrace();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                        image.add(0,bmImg);
+                    }
+                });
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        try {
+                            if(!userId.isEmpty()) {
+                                String nm=snapshot.child("name").getValue().toString();
+                                for(j=0;j<userArrayList.size();j++)
+                                {
+                                    if(nm.equals(userArrayList.get(j).getName()))
+                                    {
+                                        userArrayList.remove(j);
+                                        break;
+                                    }
+                                }
+                                String nam="";
+                                for(ContactModel cm : userArrayList)
+                                {
+                                    nam+=cm.getName()+" ";
+                                }
+                                Toast.makeText(getActivity(),"Before adding object at 0 : "+nam,Toast.LENGTH_LONG).show();
+                                name.add(0, nm);
+                                lastmsgTime.add(0,"");
+                                lastMessage.add(0,"");
+                                ContactModel contactModel=new ContactModel();
+                                contactModel.setName(name.get(0));
+                                contactModel.setLastMessage(lastMessage.get(0));
+                                contactModel.setLastMsgTime(lastmsgTime.get(0));
+                                //contactModel.setImage(image.get(0));
+                                contactModel.setUserId(userId);
+                                userArrayList.add(0,contactModel);
+                                nam="";
+                                for(ContactModel cm : userArrayList)
+                                {
+                                    nam+=cm.getName()+" ";
+                                }
+                                Toast.makeText(getActivity(),"After adding object at 0 : "+nam,Toast.LENGTH_LONG).show();
+                                customAdapter=new CustomAdapter(userArrayList,getActivity());
+                                customAdapter.notifyDataSetChanged();
+                                binding.listview.setAdapter(customAdapter);
+                            }
+                        }
+                        catch(Exception exp)
+                        {
+                            exp.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            catch(Exception exp)
+            {
+                exp.printStackTrace();
+            }
+        }
+        /*for(int i=0;i<name.size();i++)
+        {
+            ContactModel contactModel=new ContactModel(name.get(i),lastMessage.get(i),lastmsgTime.get(i),image.get(i));
             userArrayList.add(contactModel);
         }
-
-        //ListAdapter listAdapter=new ListAdapter(getActivity(), userArrayList);
-        //binding.listview.setAdapter(listAdapter);
         customAdapter=new CustomAdapter(userArrayList,getActivity());
-        binding.listview.setAdapter(customAdapter);
+        binding.listview.setAdapter(customAdapter);*/
         binding.listview.setClickable(true);
-        //binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    @Override
-        //    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //        Toast.makeText(getActivity(),"Open "+name[i]+"'s chat activity!",Toast.LENGTH_LONG).show();
-        //    }
-        //});
         setHasOptionsMenu(true);
         //return inflater.inflate(R.layout.fragment_chats, container, false);
         return view;
@@ -126,7 +237,7 @@ public class ChatsFragment extends Fragment {
             TextView username=view1.findViewById(R.id.personName);
             TextView lastMsg=view1.findViewById(R.id.lastMessage);
             TextView time=view1.findViewById(R.id.msgtime);
-
+            profile_pic=(ShapeableImageView)view1.findViewById(R.id.profile_pic);
             imageView.setImageResource(itemsModelListFiltered.get(i).getImageId());
             username.setText(itemsModelListFiltered.get(i).getName());
             lastMsg.setText(itemsModelListFiltered.get(i).getLastMessage());
@@ -148,7 +259,8 @@ public class ChatsFragment extends Fragment {
                     message.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",itemsModelListFiltered.get(i)));
+                            ContactModel model=itemsModelListFiltered.get(i);
+                            startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",model));
                             dialog.cancel();
                         }
                     });
@@ -195,7 +307,8 @@ public class ChatsFragment extends Fragment {
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("SelectedContact",itemsModelListFiltered.get(i)));
+                    ContactModel model=itemsModelListFiltered.get(i);
+                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",model));
                 }
             });
             return view1;
@@ -254,7 +367,14 @@ public class ChatsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                customAdapter.getFilter().filter(newText);
+                try
+                {
+                    customAdapter.getFilter().filter(newText);
+                }
+                catch(Exception exp)
+                {
+                    exp.printStackTrace();
+                }
                 return true;
             }
         });

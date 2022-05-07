@@ -15,13 +15,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.TempMsgAdapter;
+import com.example.connectingus.fragments.ChatsFragment;
+import com.example.connectingus.fragments.ShareIds;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.models.User;
@@ -39,6 +44,7 @@ public class TempDetailChatView extends AppCompatActivity {
     ContactModel contactModel;
     RecyclerView recyclerView;
     RelativeLayout relativeLayout;
+    String userId="";   //BWeN36Tlv3PeshBphBdkhafBhL73//vIHAf4DYO2Vu8pbikfpMKv1yNp82//wgX0rZSyWlOhoSgw0EShyUCS1YL2
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +72,12 @@ public class TempDetailChatView extends AppCompatActivity {
         Intent intent=getIntent();
         if(intent.getExtras()!=null)
         {
-            contactModel= (ContactModel) intent.getSerializableExtra("SelectedContact");
+            contactModel= (ContactModel) intent.getSerializableExtra("user");
             ivProf.setImageBitmap(contactModel.getImage());
             ivProf.setImageResource(contactModel.getImageId());
             tvUname.setText(contactModel.getName());
+            userId=contactModel.getUserId();
+            Toast.makeText(getApplicationContext(),"Received id : "+userId+"!",Toast.LENGTH_LONG).show();
         }
 
         etM=findViewById(R.id.edMsg);
@@ -116,6 +124,7 @@ public class TempDetailChatView extends AppCompatActivity {
                 tempMsgModels.add(tempMsgModel);
                 tempMsgAdapter.notifyDataSetChanged();
                 etM.setText("");
+                ShareIds.getInstance().setUserId(userId);
             }
         });
 

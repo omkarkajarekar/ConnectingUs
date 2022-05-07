@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -57,8 +61,8 @@ public class ConversationList extends AppCompatActivity {
     String verifyNumber;
     StorageReference storageReference;
     File localFile;
-    String userID;
-
+    String userId;
+    BroadcastReceiver mReceiver;
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
     @Override
@@ -123,13 +127,7 @@ public class ConversationList extends AppCompatActivity {
 
         tabLayout.setScrollPosition(1,0f,true);
         viewPager2.setCurrentItem(1);
-
-
-
     }
-
-
-
     public  void checkPermission() {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED)
         {
