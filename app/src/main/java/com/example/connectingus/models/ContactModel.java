@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class ContactModel implements Serializable {
     public int imageId;
     public Bitmap image;
+    public byte[] byteArray;
     public String name;
     public String number;
     public String userId;
@@ -39,6 +40,10 @@ public class ContactModel implements Serializable {
     public void setImage(Bitmap image) {
         this.image = image;
     }
+
+    public byte[] getByteImage(){ return byteArray;}
+
+    public void setByteImage(byte[] byteArray){ this.byteArray = byteArray;}
 
     public String getName() {
         return name;

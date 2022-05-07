@@ -45,8 +45,10 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -90,11 +92,21 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
         }
 
         File finalLocalFile = localFile;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                ByteArrayOutputStream stream = null;
                 Bitmap bmImg = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                model.setImage(bmImg);
+                //bmImg.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                //byte[] byteArray = stream.toByteArray();
+                //model.setByteImage(byteArray);
+                if(bmImg != null)
+                    model.setImage(bmImg);
+                else{
+                    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                    model.setImage(image);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -164,8 +176,15 @@ public void getUserIDs()
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user",model));
-
+        //startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user", model));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap image = model.getImage();
+        byte[] byteArray = null;
+        if(image!=null) {
+            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+        }
+        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("imageByte", byteArray).putExtra("phone", model.getNumber()).putExtra("userID", model.getUserId()).putExtra("name", model.getName()));
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemid = item.getItemId();
