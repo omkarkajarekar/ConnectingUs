@@ -2,6 +2,7 @@ package com.example.connectingus.models;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -16,11 +17,11 @@ public class ContactModel implements Serializable {
 
     public ContactModel(){}
 
-    public ContactModel(String name, String lastMessage, String lastMsgTime, int imageId) {
+    public ContactModel(String name, String lastMessage, String lastMsgTime, Bitmap image) {
         this.name = name;
         this.lastMessage = lastMessage;
         this.lastMsgTime = lastMsgTime;
-        this.imageId = imageId;
+        this.image=image;
     }
 
     public int getImageId() {

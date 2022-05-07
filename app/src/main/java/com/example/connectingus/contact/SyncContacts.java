@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.ConversationList;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.Settings;
@@ -163,7 +164,7 @@ public void getUserIDs()
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        Toast.makeText(this,model.getName()+",userId="+model.getUserId(),Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user",model));
 
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
