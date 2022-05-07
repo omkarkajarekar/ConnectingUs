@@ -1,5 +1,7 @@
 package com.example.connectingus.fragments;
 
+import com.example.connectingus.models.ContactModel;
+
 import java.util.ArrayList;
 
 public class ShareIds {
@@ -9,15 +11,13 @@ public class ShareIds {
     {
         return instance;
     }
-    private ArrayList<String> userId=new ArrayList<>();
+    private ArrayList<ContactModel> userIdobj=new ArrayList<>();
 
-    public ArrayList<String> getUserId() {
-        return userId;
+    public ArrayList<ContactModel> getUserId() {
+        return userIdobj;
     }
 
-    public void setUserId(String userId) {
-        this.userId.add(userId);
+    public void setUserId(ContactModel userId) {
+        this.userIdobj.add(userId);
     }
-
-    public int getArraySize(){return this.userId.size();}
 }

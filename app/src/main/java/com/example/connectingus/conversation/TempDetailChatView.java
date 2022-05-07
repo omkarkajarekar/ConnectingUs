@@ -77,7 +77,6 @@ public class TempDetailChatView extends AppCompatActivity {
             ivProf.setImageResource(contactModel.getImageId());
             tvUname.setText(contactModel.getName());
             userId=contactModel.getUserId();
-            Toast.makeText(getApplicationContext(),"Received id : "+userId+"!",Toast.LENGTH_LONG).show();
         }
 
         etM=findViewById(R.id.edMsg);
@@ -124,7 +123,7 @@ public class TempDetailChatView extends AppCompatActivity {
                 tempMsgModels.add(tempMsgModel);
                 tempMsgAdapter.notifyDataSetChanged();
                 etM.setText("");
-                ShareIds.getInstance().setUserId(userId);
+                ShareIds.getInstance().setUserId(contactModel);
             }
         });
 

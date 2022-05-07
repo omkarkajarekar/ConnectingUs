@@ -22,8 +22,6 @@ public class PagerAdapter extends FragmentStateAdapter {
         {
             case 0:
                 return new CameraFragment();
-            case 2:
-                return new QRFragment();
             default:
                 return new ChatsFragment();
         }
@@ -31,6 +29,6 @@ public class PagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

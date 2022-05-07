@@ -77,11 +77,7 @@ public class ChatsFragment extends Fragment {
     CustomAdapter customAdapter;
     String userId="";
     TextView tv;
-    ArrayList<String> listuserId=new ArrayList<>();
-    ArrayList<Bitmap> image=new ArrayList<>();
-    ArrayList<String> name=new ArrayList<>();
-    ArrayList<String> lastMessage=new ArrayList<>();
-    ArrayList<String> lastmsgTime=new ArrayList<>();
+    ArrayList<ContactModel> listuserId=new ArrayList<>();
     ArrayList<ContactModel> userArrayList=new ArrayList<>();
     int j;
     @Override
@@ -90,54 +86,24 @@ public class ChatsFragment extends Fragment {
         binding=FragmentChatsBinding.inflate(inflater,container,false);
         View view=binding.getRoot();
         activity = getActivity();
-        for(String id : ShareIds.getInstance().getUserId())
+        for(ContactModel idobj : ShareIds.getInstance().getUserId())
         {
-            listuserId.add(id);
-            Toast.makeText(getActivity(),"got userid :"+id,Toast.LENGTH_LONG).show();
+            listuserId.add(idobj);
         }
-        for(String uid : listuserId)
+        for(ContactModel uidobj : listuserId)
         {
-            userId=uid;
+            userId=uidobj.getUserId();
             try
             {
                 databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(userId);
                 storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference pathReference = storageReference.child(userId).child("profile.jpg");
-
-                try {
-                    localFile = File.createTempFile("profile", "jpg");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        try {
-                            if(!userId.isEmpty())
-                            {
-                                //image.add(0,bmImg);           // problematic item won't get added to listview
-                                image.add(0,null);  //added temporary
-                            }
-                        }
-                        catch (Exception exp)
-                        {
-                            exp.printStackTrace();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-                        image.add(0,bmImg);
-                    }
-                });
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         try {
                             if(!userId.isEmpty()) {
-                                String nm=snapshot.child("name").getValue().toString();
+                                String nm=uidobj.getName();
                                 for(j=0;j<userArrayList.size();j++)
                                 {
                                     if(nm.equals(userArrayList.get(j).getName()))
@@ -146,28 +112,7 @@ public class ChatsFragment extends Fragment {
                                         break;
                                     }
                                 }
-                                String nam="";
-                                for(ContactModel cm : userArrayList)
-                                {
-                                    nam+=cm.getName()+" ";
-                                }
-                                Toast.makeText(getActivity(),"Before adding object at 0 : "+nam,Toast.LENGTH_LONG).show();
-                                name.add(0, nm);
-                                lastmsgTime.add(0,"");
-                                lastMessage.add(0,"");
-                                ContactModel contactModel=new ContactModel();
-                                contactModel.setName(name.get(0));
-                                contactModel.setLastMessage(lastMessage.get(0));
-                                contactModel.setLastMsgTime(lastmsgTime.get(0));
-                                //contactModel.setImage(image.get(0));
-                                contactModel.setUserId(userId);
-                                userArrayList.add(0,contactModel);
-                                nam="";
-                                for(ContactModel cm : userArrayList)
-                                {
-                                    nam+=cm.getName()+" ";
-                                }
-                                Toast.makeText(getActivity(),"After adding object at 0 : "+nam,Toast.LENGTH_LONG).show();
+                                userArrayList.add(0,uidobj);
                                 customAdapter=new CustomAdapter(userArrayList,getActivity());
                                 customAdapter.notifyDataSetChanged();
                                 binding.listview.setAdapter(customAdapter);
@@ -190,13 +135,6 @@ public class ChatsFragment extends Fragment {
                 exp.printStackTrace();
             }
         }
-        /*for(int i=0;i<name.size();i++)
-        {
-            ContactModel contactModel=new ContactModel(name.get(i),lastMessage.get(i),lastmsgTime.get(i),image.get(i));
-            userArrayList.add(contactModel);
-        }
-        customAdapter=new CustomAdapter(userArrayList,getActivity());
-        binding.listview.setAdapter(customAdapter);*/
         binding.listview.setClickable(true);
         setHasOptionsMenu(true);
         //return inflater.inflate(R.layout.fragment_chats, container, false);
@@ -233,17 +171,16 @@ public class ChatsFragment extends Fragment {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             View view1=getLayoutInflater().inflate(R.layout.list_item,null);
-            ImageView imageView=view1.findViewById(R.id.profile_pic);
             TextView username=view1.findViewById(R.id.personName);
             TextView lastMsg=view1.findViewById(R.id.lastMessage);
             TextView time=view1.findViewById(R.id.msgtime);
             profile_pic=(ShapeableImageView)view1.findViewById(R.id.profile_pic);
-            imageView.setImageResource(itemsModelListFiltered.get(i).getImageId());
             username.setText(itemsModelListFiltered.get(i).getName());
             lastMsg.setText(itemsModelListFiltered.get(i).getLastMessage());
             time.setText(itemsModelListFiltered.get(i).getLastMsgTime());
+            profile_pic.setImageBitmap(itemsModelListFiltered.get(i).getImage());
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            profile_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final Dialog dialog=new Dialog(activity);

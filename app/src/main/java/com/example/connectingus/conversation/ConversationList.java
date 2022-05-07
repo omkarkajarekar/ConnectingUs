@@ -100,10 +100,6 @@ public class ConversationList extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-                //if(tab.getPosition()==0)
-                //{
-                //    tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_camera_alt_24);
-                //}
             }
 
             @Override
