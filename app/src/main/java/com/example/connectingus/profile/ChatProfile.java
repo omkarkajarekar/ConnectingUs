@@ -26,6 +26,7 @@ import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.User;
+import com.example.connectingus.support.CreateFolder;
 
 
 public class ChatProfile extends AppCompatActivity {
@@ -83,7 +84,7 @@ public class ChatProfile extends AppCompatActivity {
         Intent intent=getIntent();
         //Bitmap bitmap = (Bitmap) intent.getParcelableExtra("image");
         //
-        byteArray = intent.getByteArrayExtra("imageByte");
+        /*byteArray = intent.getByteArrayExtra("imageByte");
         Bitmap image = null;
         try {
             image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -96,17 +97,18 @@ public class ChatProfile extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         userid = intent.getStringExtra("userID");
         chatName.setText(name);
-        chatPhone.setText(phone);
+        chatPhone.setText(phone);*/
         calling_activity=intent.getStringExtra("calling_activity");
-        /*if(intent.getExtras()!=null)
+        if(intent.getExtras()!=null)
         {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
             calling_activity=intent.getStringExtra("calling_activity");
-            chatProf.setImageBitmap(contactModel.getImage());
-            chatProf.setImageResource(contactModel.getImageId());
+            //chatProf.setImageBitmap(contactModel.getImage());
+            //chatProf.setImageResource(contactModel.getImageId());
+            chatProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
             chatName.setText(contactModel.getName());
             chatPhone.setText(contactModel.getNumber());
-        }*/
+        }
 
 
     }
@@ -156,11 +158,11 @@ public class ChatProfile extends AppCompatActivity {
         else if(calling_activity.equals("TempDetailChatView"))
         {
             parent = new Intent(getApplicationContext(), TempDetailChatView.class);
-            //parent.putExtra("SelectedContact",contactModel);
-            parent.putExtra("userID",userid);
+            parent.putExtra("UserDetails",contactModel);
+            /*parent.putExtra("userID",userid);
             parent.putExtra("name",name);
             parent.putExtra("phone",phone);
-            parent.putExtra("imageByte",byteArray);
+            parent.putExtra("imageByte",byteArray);*/
         }
         parent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(parent);

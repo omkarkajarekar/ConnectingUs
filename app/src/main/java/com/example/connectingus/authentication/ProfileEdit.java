@@ -20,10 +20,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
+import com.example.connectingus.SplashActivity;
 import com.example.connectingus.animation.MyBounceInterpolator;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.ExpandImageActivity;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -65,6 +67,13 @@ public class ProfileEdit extends AppCompatActivity {
         if(requestCode == 3 && data!= null){
             selectedImage = data.getData();
             profile_pic.setImageURI(selectedImage);
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                Toast.makeText(ProfileEdit.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+            new CreateFolder().createFolderForProfile(ProfileEdit.this,firebaseAuth.getUid(),bitmap,CreateFolder.MY_PHOTO);
            //user_profile_pic = selectedImage.getPath();
             uploadImageToFireStorage();
         }

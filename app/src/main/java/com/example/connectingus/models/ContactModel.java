@@ -29,19 +29,19 @@ public class ContactModel implements Serializable {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
-
-    public byte[] getByteImage(){ return byteArray;}
+//    public void setImageId(int imageId) {
+//        this.imageId = imageId;
+//    }
+//
+//    public Bitmap getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(Bitmap image) {
+//        this.image = image;
+//    }
+//
+//    public byte[] getByteImage(){ return byteArray;}
 
     public void setByteImage(byte[] byteArray){ this.byteArray = byteArray;}
 

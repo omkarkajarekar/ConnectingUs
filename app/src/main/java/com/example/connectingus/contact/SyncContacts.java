@@ -108,15 +108,15 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onItemClick(int position) {
         ContactModel model=arrayList.get(position);
-        //startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("user", model));
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("UserDetails", model));
+        /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Bitmap image = model.getImage();
         byte[] byteArray = null;
         if(image!=null) {
             image.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteArray = stream.toByteArray();
         }
-        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("imageByte", byteArray).putExtra("phone", model.getNumber()).putExtra("userID", model.getUserId()).putExtra("name", model.getName()));
+        startActivity(new Intent(getApplicationContext(), TempDetailChatView.class).putExtra("imageByte", byteArray).putExtra("phone", model.getNumber()).putExtra("userID", model.getUserId()).putExtra("name", model.getName()));*/
     }
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemid = item.getItemId();

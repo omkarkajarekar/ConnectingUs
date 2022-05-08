@@ -26,6 +26,7 @@ import com.example.connectingus.authentication.FirstActivity;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.Users;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -162,13 +163,15 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 Bitmap bmImg = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                model.setImage(bmImg);
+                new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
+                //model.setImage(bmImg);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-                model.setImage(image);
+                Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+                new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
+                //model.setImage(bmImg);
             }
         });
     }

@@ -33,6 +33,7 @@ import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.models.User;
 import com.example.connectingus.profile.ChatProfile;
+import com.example.connectingus.support.CreateFolder;
 
 import java.util.ArrayList;
 
@@ -76,7 +77,7 @@ public class TempDetailChatView extends AppCompatActivity {
         Intent intent=getIntent();
         //Bitmap bitmap = (Bitmap) intent.getParcelableExtra("image");
         //
-        byteArray = intent.getByteArrayExtra("imageByte");
+        /*byteArray = intent.getByteArrayExtra("imageByte");
         Bitmap image = null;
         try {
             image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -88,16 +89,17 @@ public class TempDetailChatView extends AppCompatActivity {
         name = intent.getStringExtra("name");
         tvUname.setText(name);
         userId=intent.getStringExtra("userID");
-        phone = intent.getStringExtra("phone");
+        phone = intent.getStringExtra("phone");*/
 
-        /*if(intent.getExtras()!=null)
+        if(intent.getExtras()!=null)
         {
-            contactModel= (ContactModel) intent.getSerializableExtra("user");
-            ivProf.setImageBitmap(contactModel.getImage());
-            ivProf.setImageResource(contactModel.getImageId());
+            contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
+            //ivProf.setImageBitmap(contactModel.getImage());
+            //ivProf.setImageResource(contactModel.getImageId());
+            ivProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
             tvUname.setText(contactModel.getName());
             userId=contactModel.getUserId();
-        }*/
+        }
 
         etM=findViewById(R.id.edMsg);
 
@@ -163,10 +165,11 @@ public class TempDetailChatView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentChatProf = new Intent(getApplicationContext(), ChatProfile.class);
-                intentChatProf.putExtra("userID",userId);
+                intentChatProf.putExtra("UserDetails", contactModel);
+                /*intentChatProf.putExtra("userID",userId);
                 intentChatProf.putExtra("name",name);
                 intentChatProf.putExtra("phone",phone);
-                intentChatProf.putExtra("imageByte",byteArray);
+                intentChatProf.putExtra("imageByte",byteArray);*/
                 intentChatProf.putExtra("calling_activity","TempDetailChatView");
                 startActivity(intentChatProf);
                 finish();

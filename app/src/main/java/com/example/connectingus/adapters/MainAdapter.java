@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.R;
 import com.example.connectingus.contact.RecyclerViewInterface;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
          ContactModel model=arrayList.get(position);
          holder.tvName.setText(model.getName());
          holder.tvNumber.setText(model.getNumber());
-         holder.ivImage.setImageBitmap(model.getImage());
+         holder.ivImage.setImageDrawable(new CreateFolder().getLocalImage(model.getUserId(),CreateFolder.PROFILE_PHOTO));
+         //holder.ivImage.setImageBitmap(model.getImage());
     }
 
     @Override

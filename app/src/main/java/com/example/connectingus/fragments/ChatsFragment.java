@@ -43,6 +43,7 @@ import com.example.connectingus.models.User;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.profile.ExpandImageActivity;
 import com.example.connectingus.profile.Settings;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -178,7 +179,8 @@ public class ChatsFragment extends Fragment {
             username.setText(itemsModelListFiltered.get(i).getName());
             lastMsg.setText(itemsModelListFiltered.get(i).getLastMessage());
             time.setText(itemsModelListFiltered.get(i).getLastMsgTime());
-            profile_pic.setImageBitmap(itemsModelListFiltered.get(i).getImage());
+            profile_pic.setImageDrawable(new CreateFolder().getLocalImage(itemsModelListFiltered.get(i).getUserId(),CreateFolder.PROFILE_PHOTO));
+            //profile_pic.setImageBitmap(itemsModelListFiltered.get(i).getImage());
 
             profile_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
