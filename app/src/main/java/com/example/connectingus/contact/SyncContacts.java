@@ -29,6 +29,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.connectingus.R;
+import com.example.connectingus.SplashActivity;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.conversation.TempDetailChatView;
@@ -57,7 +58,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
     RecyclerView recyclerView;
     ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
     MainAdapter adapter;
-    Thread thread;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +68,7 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
 
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
-        arrayList= ConversationList.getArrayList();
-        getUserIDs();
+        arrayList= SplashActivity.getArrayList();
         // set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //initialize adapter
@@ -79,74 +79,6 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
 
     }
 
-    public void getImages(ContactModel model)
-    {
-        File localFile = null;
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference pathReference = storageReference.child(model.getUserId()).child("profile.jpg");
-
-        try {
-            localFile = File.createTempFile("profile", "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File finalLocalFile = localFile;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                ByteArrayOutputStream stream = null;
-                Bitmap bmImg = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                //bmImg.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                //byte[] byteArray = stream.toByteArray();
-                //model.setByteImage(byteArray);
-                if(bmImg != null)
-                    model.setImage(bmImg);
-                else{
-                    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-                    model.setImage(image);
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-                model.setImage(image);
-            }
-        });
-    }
-
-public void getUserIDs()
-{
-    FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dsnapshot) {
-                Users user=null;
-                for(DataSnapshot datas1:dsnapshot.getChildren())
-                {
-                    user=datas1.getValue(Users.class);
-                    for(ContactModel model:arrayList)
-                    {
-                        if(user.getPhone().equals(model.getNumber()))
-                        {
-                            model.setUserId(user.getUserID());
-                            Log.d("qnqq", "number from firebase: "+user.getPhone()+"  :::"+model.getNumber()+"  userID:"+model.getUserId()+" name:"+model.getName());
-                            getImages(model);
-                        }
-                    }
-                    user=null;
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-}
 
 
     @Override
