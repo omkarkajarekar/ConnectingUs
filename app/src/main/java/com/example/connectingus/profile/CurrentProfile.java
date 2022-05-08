@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.connectingus.R;
 import com.example.connectingus.animation.MyBounceInterpolator;
 import com.example.connectingus.authentication.ProfileEdit;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -64,6 +65,13 @@ public class CurrentProfile extends AppCompatActivity {
         if(requestCode == 3 && data!= null){
             selectedImage = data.getData();
             profile_pic.setImageURI(selectedImage);
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                Toast.makeText(CurrentProfile.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+            new CreateFolder().createFolderForProfile(CurrentProfile.this,firebaseAuth.getUid(),bitmap,CreateFolder.MY_PHOTO);
             //user_profile_pic = selectedImage.getPath();
             uploadImageToFireStorage();
         }
@@ -102,7 +110,8 @@ public class CurrentProfile extends AppCompatActivity {
         firebaseUser=firebaseAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
-        StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
+        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
 
         try {
             localFile = File.createTempFile("profile", "jpg");
@@ -121,7 +130,7 @@ public class CurrentProfile extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
             }
-        });
+        });*/
 
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
@@ -225,5 +234,11 @@ public class CurrentProfile extends AppCompatActivity {
         databaseReference=FirebaseDatabase.getInstance().getReference("users").child(uid).child("name");
         databaseReference.setValue(name);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
     }
 }

@@ -17,6 +17,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.authentication.ProfileEdit;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.fragments.ChatsFragment;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +46,8 @@ public class ExpandImageActivity extends AppCompatActivity {
         firebaseAuth= FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
+        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
 
         try {
             localFile = File.createTempFile("profile", "jpg");
@@ -64,7 +66,7 @@ public class ExpandImageActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
             }
-        });
+        });*/
         calling_activity = intent.getStringExtra("calling_activity");
         getSupportActionBar().setTitle(intent.getStringExtra("name"));
 
@@ -105,5 +107,11 @@ public class ExpandImageActivity extends AppCompatActivity {
         else if(calling_activity.equals("CurrentProfile"))
             startActivity(new Intent(getApplicationContext(), CurrentProfile.class));
         //finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
     }
 }

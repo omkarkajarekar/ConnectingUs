@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.connectingus.ContactUs;
 import com.example.connectingus.R;
 import com.example.connectingus.authentication.FirstActivity;
+import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,8 +82,8 @@ public class Settings extends AppCompatActivity {
         userID = firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userID);
-
-        StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
+        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
 
         try {
             localFile = File.createTempFile("profile", "jpg");
@@ -101,7 +102,7 @@ public class Settings extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
             }
-        });
+        });*/
 
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -276,5 +277,11 @@ public class Settings extends AppCompatActivity {
                                 });
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
     }
 }
