@@ -60,7 +60,7 @@ public class ProfileEdit extends AppCompatActivity {
     Uri selectedImage;
     File localFile;
     ShapeableImageView profile_pic,image_selector;
-
+    static boolean flag = false;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -166,16 +166,26 @@ public class ProfileEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //flag=true;
+
                 user_name = name.getText().toString().trim();
                 user_about = about.getText().toString().trim();
+                if(profile_pic.getDrawable() == null) {
+                    Toast.makeText(ProfileEdit.this, "Please Select Profile Photo", Toast.LENGTH_LONG).show();
+                    flag = false;
+                }
                 if(name.getText().toString().isEmpty() && about.getText().toString().isEmpty()){
                     name.setError("Please fill name");
                     about.setError("Please fill about");
+                    flag = false;
                 }
-                else if(name.getText().toString().isEmpty())
+                else if(name.getText().toString().isEmpty()) {
                     name.setError("Please fill name");
-                else if(about.getText().toString().isEmpty())
+                    flag = false;
+                }
+                else if(about.getText().toString().isEmpty()) {
                     about.setError("Please fill about");
+                    flag = false;
+                }
                 else{
                     Users users = new Users(user_number,userID,user_name,user_about,deviceID,user_profile_pic);
                     firebaseDatabase = FirebaseDatabase.getInstance();
@@ -186,6 +196,7 @@ public class ProfileEdit extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.hasChildren())
                             {
+                                flag = true;
                                 Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
 
                             }
@@ -199,8 +210,10 @@ public class ProfileEdit extends AppCompatActivity {
                     });
                 }
                 Intent intent=new Intent(getApplicationContext(), ConversationList.class);
-                startActivity(intent);
-                finish();
+                if(flag == true) {
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
         /*signout.setOnClickListener(new View.OnClickListener() {

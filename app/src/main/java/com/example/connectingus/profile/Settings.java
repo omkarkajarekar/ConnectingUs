@@ -149,6 +149,7 @@ public class Settings extends AppCompatActivity {
                     options = ActivityOptions.makeSceneTransitionAnimation(Settings.this, pair);
                 }
                 startActivity(intent,options.toBundle());
+
             }
         });
         invite_friend.setOnClickListener(new View.OnClickListener() {
