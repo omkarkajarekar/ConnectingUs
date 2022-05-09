@@ -199,7 +199,7 @@ public class ChatsFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             ContactModel model=itemsModelListFiltered.get(i);
-                            startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",model));
+                            startActivity(new Intent(activity, TempDetailChatView.class).putExtra("UserDetails",model));
                             dialog.cancel();
                         }
                     });
@@ -247,7 +247,7 @@ public class ChatsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     ContactModel model=itemsModelListFiltered.get(i);
-                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("user",model));
+                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("UserDetails",model));
                 }
             });
             return view1;

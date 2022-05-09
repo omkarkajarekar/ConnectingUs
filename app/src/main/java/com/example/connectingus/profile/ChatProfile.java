@@ -97,8 +97,8 @@ public class ChatProfile extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         userid = intent.getStringExtra("userID");
         chatName.setText(name);
-        chatPhone.setText(phone);*/
-        calling_activity=intent.getStringExtra("calling_activity");
+        chatPhone.setText(phone);
+        calling_activity=intent.getStringExtra("calling_activity");*/
         if(intent.getExtras()!=null)
         {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
