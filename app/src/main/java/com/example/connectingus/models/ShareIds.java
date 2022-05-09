@@ -1,6 +1,4 @@
-package com.example.connectingus.fragments;
-
-import com.example.connectingus.models.ContactModel;
+package com.example.connectingus.models;
 
 import java.util.ArrayList;
 
