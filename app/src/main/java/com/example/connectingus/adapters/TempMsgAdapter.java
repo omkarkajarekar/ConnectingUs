@@ -1,5 +1,6 @@
 package com.example.connectingus.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.connectingus.R;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.TempMsgModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 public class TempMsgAdapter extends RecyclerView.Adapter
 {
     ArrayList<TempMsgModel> tempMsgModels;
     Context context;
-
+    static int flag = 0;
+    public static HashSet<Integer> positions = new HashSet<>();
+    public TempMsgAdapter(){}
     public TempMsgAdapter(ArrayList<TempMsgModel> tempMsgModels, Context context) {
         this.tempMsgModels = tempMsgModels;
         this.context = context;
@@ -57,8 +62,30 @@ public class TempMsgAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         TempMsgModel tempMsgModel=tempMsgModels.get(position);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                tempMsgModel.setSelected(!tempMsgModel.isSelected());
+                if(tempMsgModel.isSelected()) {
+                    holder.itemView.setBackgroundResource(R.color.blue_background);
+                    flag++;
+                    positions.add(position);
+                    TempDetailChatView.delete_selected.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.itemView.setBackgroundResource(R.color.chat_background);
+                    flag--;
+                    positions.remove(position);
+                    //int i = positions.indexOf(position);
+                    if(flag==0)
+                        TempDetailChatView.delete_selected.setVisibility(View.INVISIBLE);
+                }
+                return false;
+            }
+
+        });
         if(holder.getClass()==SenderViewHolder.class)
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
@@ -93,14 +120,15 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         }
     }
 
-    public  class SenderViewHolder extends RecyclerView.ViewHolder  {
+    public  class SenderViewHolder extends RecyclerView.ViewHolder {
 
         TextView senderMsg;
         TextView senderTime;
+
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
-            senderMsg=itemView.findViewById(R.id.textSent);
-            senderTime=itemView.findViewById(R.id.textSentTime);
+            senderMsg = itemView.findViewById(R.id.textSent);
+            senderTime = itemView.findViewById(R.id.textSentTime);
         }
     }
 }

@@ -2,17 +2,20 @@ package com.example.connectingus.conversation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,11 +42,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TempDetailChatView extends AppCompatActivity {
-
     String name,userid,phone;
     byte[] byteArray;
     ImageView ivProf;
-    ImageButton ibSend;
+    public static ImageView delete_selected;
+    Button ibSend;
     TextView tvUname;
     EditText etM;
     ContactModel contactModel;
@@ -61,7 +64,8 @@ public class TempDetailChatView extends AppCompatActivity {
         setContentView(R.layout.activity_detailchatview);
         ibSend=findViewById(R.id.sendButton);
 
-        ibSend.setVisibility(View.INVISIBLE);
+        //ibSend.setVisibility(View.INVISIBLE);
+        ibSend.setEnabled(false);
 
         recyclerView=findViewById(R.id.recyclerview1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);  // back button
@@ -76,6 +80,9 @@ public class TempDetailChatView extends AppCompatActivity {
         relativeLayout=findViewById(R.id.reltvlyout);
         ivProf=findViewById(R.id.iv_prof_pic);
         tvUname=findViewById(R.id.tv_uname);
+        delete_selected = findViewById(R.id.delete_selected);
+        delete_selected.setVisibility(View.INVISIBLE);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -105,11 +112,13 @@ public class TempDetailChatView extends AppCompatActivity {
                 String str=etM.getText().toString().trim();
                 if(!str.isEmpty())
                 {
-                    ibSend.setVisibility(View.VISIBLE);
+                    ibSend.setEnabled(true);
+                    //ibSend.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    ibSend.setVisibility(View.INVISIBLE);
+                    ibSend.setEnabled(false);
+                    //ibSend.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -119,15 +128,23 @@ public class TempDetailChatView extends AppCompatActivity {
             }
         });
 
+
+
         final ArrayList<TempMsgModel> tempMsgModels=new ArrayList<>();
         final TempMsgAdapter tempMsgAdapter=new TempMsgAdapter(tempMsgModels,this);
         final String senderRoom = senderID + receiverID;
         final String receiverRoom = receiverID + senderID;
 
         recyclerView.setAdapter(tempMsgAdapter);
-
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
+        delete_selected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Selected : "+TempMsgAdapter.positions.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         databaseReference.child("Chats")
                 .child(senderRoom)
@@ -183,7 +200,6 @@ public class TempDetailChatView extends AppCompatActivity {
                                         });
                             }
                         });
-
                 ShareIds.getInstance().setUserId(contactModel);
             }
         });
@@ -200,6 +216,11 @@ public class TempDetailChatView extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     /*//Menu
     @Override

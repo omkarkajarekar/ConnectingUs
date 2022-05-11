@@ -48,6 +48,7 @@
         <entry key="..\:/PBL/ConnectingUs/app/src/main/res/menu/home_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/avatar.xml" value="0.1925" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/circular.xml" value="0.1" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/enter_msg_background.xml" value="0.213" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/image.xml" value="0.1" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_chat.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_contact_us.xml" value="0.25" />
@@ -61,10 +62,12 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_settings.xml" value="0.33" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_splash.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/button_on_image.xml" value="0.22447916666666667" />
-        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/custom_appbar.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/custom_appbar.xml" value="0.5" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/fragment_chats.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/list_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/profile_pic_expand.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/receiver.xml" value="0.209375" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/sender.xml" value="0.209375" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/verify_otp.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/verify_phone.xml" value="0.22" />
       </map>
