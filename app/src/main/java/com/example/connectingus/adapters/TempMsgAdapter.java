@@ -1,10 +1,12 @@
 package com.example.connectingus.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +61,19 @@ public class TempMsgAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         TempMsgModel tempMsgModel=tempMsgModels.get(position);
+        if(tempMsgModel.isSelected())
+            holder.itemView.setBackgroundResource(R.color.blue_background);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(context.getApplicationContext(),"Long Pressed",Toast.LENGTH_SHORT).show();
+                tempMsgModel.setSelected(!tempMsgModel.isSelected());
+                //holder.itemView.setBackgroundColor(tempMsgModel.isSelected() ? Color.CYAN : Color.WHITE);
+                if(tempMsgModel.isSelected())
+                    holder.itemView.setBackgroundResource(R.color.blue_background);
+                return false;
+            }
+        });
         if(holder.getClass()==SenderViewHolder.class)
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
@@ -82,7 +97,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         return tempMsgModels.size();
     }
 
-    public  class ReceiverViewHolder extends RecyclerView.ViewHolder {
+    public  class ReceiverViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         TextView receiverMsg;
         TextView receiverTime;
@@ -91,9 +106,15 @@ public class TempMsgAdapter extends RecyclerView.Adapter
             receiverMsg=itemView.findViewById(R.id.textReceived);
             receiverTime=itemView.findViewById(R.id.textReceivedTime);
         }
+
+        @Override
+        public boolean onLongClick(View view) {
+            Toast.makeText(context.getApplicationContext(),"Position : "+getAdapterPosition(),Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
-    public  class SenderViewHolder extends RecyclerView.ViewHolder  {
+    public  class SenderViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         TextView senderMsg;
         TextView senderTime;
@@ -101,6 +122,11 @@ public class TempMsgAdapter extends RecyclerView.Adapter
             super(itemView);
             senderMsg=itemView.findViewById(R.id.textSent);
             senderTime=itemView.findViewById(R.id.textSentTime);
+        }
+        @Override
+        public boolean onLongClick(View view) {
+            Toast.makeText(context.getApplicationContext(),"Position : "+getAdapterPosition(),Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

@@ -8,11 +8,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +45,8 @@ public class TempDetailChatView extends AppCompatActivity {
     String name,userid,phone;
     byte[] byteArray;
     ImageView ivProf;
-    ImageButton ibSend;
+    //ImageButton ibSend;
+    Button ibSend;
     TextView tvUname;
     EditText etM;
     ContactModel contactModel;
@@ -61,7 +64,8 @@ public class TempDetailChatView extends AppCompatActivity {
         setContentView(R.layout.activity_detailchatview);
         ibSend=findViewById(R.id.sendButton);
 
-        ibSend.setVisibility(View.INVISIBLE);
+        //ibSend.setVisibility(View.INVISIBLE);
+        ibSend.setEnabled(false);
 
         recyclerView=findViewById(R.id.recyclerview1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);  // back button
@@ -105,11 +109,13 @@ public class TempDetailChatView extends AppCompatActivity {
                 String str=etM.getText().toString().trim();
                 if(!str.isEmpty())
                 {
-                    ibSend.setVisibility(View.VISIBLE);
+                    ibSend.setEnabled(true);
+                    //ibSend.setVisibility(View.VISIBLE);
                 }
                 else
                 {
-                    ibSend.setVisibility(View.INVISIBLE);
+                    ibSend.setEnabled(false);
+                    //ibSend.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -125,7 +131,6 @@ public class TempDetailChatView extends AppCompatActivity {
         final String receiverRoom = receiverID + senderID;
 
         recyclerView.setAdapter(tempMsgAdapter);
-
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -183,7 +188,6 @@ public class TempDetailChatView extends AppCompatActivity {
                                         });
                             }
                         });
-
                 ShareIds.getInstance().setUserId(contactModel);
             }
         });

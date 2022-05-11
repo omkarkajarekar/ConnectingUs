@@ -6,6 +6,7 @@ public class TempMsgModel {
     int id;
     long timestamp;
     String senderID;
+    private boolean isSelected = false;
 
     public TempMsgModel(String message, int id) {
         this.message = message;
@@ -46,5 +47,12 @@ public class TempMsgModel {
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+    public boolean isSelected() {
+        return isSelected;
     }
 }
