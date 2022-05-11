@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -33,6 +36,7 @@ import com.example.connectingus.databinding.FragmentChatsBinding;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.ShareIds;
 import com.example.connectingus.profile.ChatProfile;
+import com.example.connectingus.profile.CurrentProfile;
 import com.example.connectingus.profile.ExpandImageActivity;
 import com.example.connectingus.support.CreateFolder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,8 +58,11 @@ public class ChatsFragment extends Fragment {
     DatabaseReference databaseReference;
     StorageReference storageReference;
     File localFile;
+    public MenuItem deleteitem;
+    ContactModel delete_model;
+    String delete_name;
     ShapeableImageView profile_pic;
-
+    public boolean openchat=true;
     static Activity activity;
     private FragmentChatsBinding binding;
     FloatingActionButton fab;
@@ -65,12 +72,28 @@ public class ChatsFragment extends Fragment {
     ArrayList<ContactModel> listuserId=new ArrayList<>();
     ArrayList<ContactModel> userArrayList=new ArrayList<>();
     int j;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentChatsBinding.inflate(inflater,container,false);
         View view=binding.getRoot();
         activity = getActivity();
+        updateList();
+        binding.listview.setClickable(true);
+        setHasOptionsMenu(true);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateList();
+    }
+
+    public void updateList()
+    {
+        listuserId.clear();
         for(ContactModel idobj : ShareIds.getInstance().getUserId())
         {
             listuserId.add(idobj);
@@ -120,10 +143,6 @@ public class ChatsFragment extends Fragment {
                 exp.printStackTrace();
             }
         }
-        binding.listview.setClickable(true);
-        setHasOptionsMenu(true);
-        //return inflater.inflate(R.layout.fragment_chats, container, false);
-        return view;
     }
 
     public class CustomAdapter extends BaseAdapter implements Filterable
@@ -132,6 +151,7 @@ public class ChatsFragment extends Fragment {
         private List<ContactModel> itemsModelListFiltered;
         private Context context;
 
+        public CustomAdapter(){}
         public CustomAdapter(List<ContactModel> itemsModelList, Context context) {
             this.itemsModelList = itemsModelList;
             this.itemsModelListFiltered=itemsModelList;
@@ -230,10 +250,25 @@ public class ChatsFragment extends Fragment {
             view1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ContactModel model=itemsModelListFiltered.get(i);
-                    startActivity(new Intent(activity, TempDetailChatView.class).putExtra("UserDetails",model));
+                    if(openchat)
+                    {
+                        ContactModel model=itemsModelListFiltered.get(i);
+                        startActivity(new Intent(activity, TempDetailChatView.class).putExtra("UserDetails",model));
+                    }
                 }
             });
+
+            view1.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    openchat=false;
+                    deleteitem.setVisible(true);
+                    delete_model=itemsModelListFiltered.get(i);
+                    delete_name=delete_model.getName();
+                    return false;
+                }
+            });
+
             return view1;
         }
 
@@ -280,6 +315,7 @@ public class ChatsFragment extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.home_menu,menu);
         MenuItem item=menu.findItem(R.id.Search);
+        deleteitem=menu.findItem(R.id.Delete);
         //item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
         SearchView searchView=(SearchView) item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -309,6 +345,47 @@ public class ChatsFragment extends Fragment {
         if(id==R.id.Search)
         {
             return true;
+        }
+        if(id==R.id.Delete)
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+            builder.setTitle("Delete this chat?");
+            builder.setMessage("Messages will only be removed from this device and your devices on the newer version of ConnectingUs");
+            builder.setPositiveButton("DELETE CHAT", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    for(j=0;j<userArrayList.size();j++)
+                    {
+                        if(delete_name.equals(userArrayList.get(j).getName()))
+                        {
+                            userArrayList.remove(j);
+                            break;
+                        }
+                    }
+                    for(int k=0;k<ShareIds.getInstance().userIdobj.size();k++)
+                    {
+                        if(delete_name.equals(ShareIds.getInstance().userIdobj.get(k).getName()))
+                        {
+                            ShareIds.getInstance().userIdobj.remove(k);
+                        }
+                    }
+                    customAdapter=new CustomAdapter(userArrayList,getActivity());
+                    customAdapter.notifyDataSetChanged();
+                    binding.listview.setAdapter(customAdapter);
+                    deleteitem.setVisible(false);
+                    openchat=true;
+                }
+            });
+
+            builder.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    openchat=true;
+                    deleteitem.setVisible(false);
+                }
+            });
+            AlertDialog dialog=builder.create();
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

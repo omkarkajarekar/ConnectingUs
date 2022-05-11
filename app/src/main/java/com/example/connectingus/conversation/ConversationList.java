@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.connectingus.R;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.contact.SyncContacts;
+import com.example.connectingus.fragments.ChatsFragment;
 import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.Users;
 import com.example.connectingus.profile.Settings;
@@ -129,4 +130,17 @@ public class ConversationList extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ChatsFragment chatsFragment = new ChatsFragment();
+        if(chatsFragment.deleteitem.isVisible())
+        {
+            chatsFragment.openchat=true;
+            chatsFragment.deleteitem.setVisible(false);
+            Intent intent=new Intent(ConversationList.this,ConversationList.class);
+            startActivity(intent);
+        }
+    }*/
 }

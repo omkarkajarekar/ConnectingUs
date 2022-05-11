@@ -9,7 +9,7 @@ public class ShareIds {
     {
         return instance;
     }
-    private ArrayList<ContactModel> userIdobj=new ArrayList<>();
+    public ArrayList<ContactModel> userIdobj=new ArrayList<>();
 
     public ArrayList<ContactModel> getUserId() {
         return userIdobj;
