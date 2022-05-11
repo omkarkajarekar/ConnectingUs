@@ -44,7 +44,6 @@ public class TempDetailChatView extends AppCompatActivity {
     byte[] byteArray;
     ImageView ivProf;
     ImageButton ibSend;
-    ImageButton ibRecv;
     TextView tvUname;
     EditText etM;
     ContactModel contactModel;
@@ -61,10 +60,8 @@ public class TempDetailChatView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailchatview);
         ibSend=findViewById(R.id.sendButton);
-        ibRecv=findViewById(R.id.receiveButton);
 
         ibSend.setVisibility(View.INVISIBLE);
-        ibRecv.setVisibility(View.INVISIBLE);
 
         recyclerView=findViewById(R.id.recyclerview1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);  // back button
@@ -86,27 +83,9 @@ public class TempDetailChatView extends AppCompatActivity {
         senderID = firebaseAuth.getUid();
 
         Intent intent=getIntent();
-        //Bitmap bitmap = (Bitmap) intent.getParcelableExtra("image");
-        //
-        /*byteArray = intent.getByteArrayExtra("imageByte");
-        Bitmap image = null;
-        try {
-            image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            ivProf.setImageBitmap(image);
-        }
-        catch (Exception e){
-            ivProf.setImageResource(R.drawable.ic_baseline_person_24);
-        }
-        name = intent.getStringExtra("name");
-        tvUname.setText(name);
-        userId=intent.getStringExtra("userID");
-        phone = intent.getStringExtra("phone");*/
-
         if(intent.getExtras()!=null)
         {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
-            //ivProf.setImageBitmap(contactModel.getImage());
-            //ivProf.setImageResource(contactModel.getImageId());
             receiverID = contactModel.getUserId();
             ivProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
             tvUname.setText(contactModel.getName());
@@ -127,12 +106,10 @@ public class TempDetailChatView extends AppCompatActivity {
                 if(!str.isEmpty())
                 {
                     ibSend.setVisibility(View.VISIBLE);
-                    ibRecv.setVisibility(View.VISIBLE);
                 }
                 else
                 {
                     ibSend.setVisibility(View.INVISIBLE);
-                    ibRecv.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -211,27 +188,11 @@ public class TempDetailChatView extends AppCompatActivity {
             }
         });
 
-        ibRecv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msg=etM.getText().toString().trim();
-                TempMsgModel tempMsgModel=new TempMsgModel(msg,2);
-                tempMsgModels.add(tempMsgModel);
-                tempMsgAdapter.notifyDataSetChanged();
-                etM.setText("");
-            }
-        });
-
-
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentChatProf = new Intent(getApplicationContext(), ChatProfile.class);
                 intentChatProf.putExtra("UserDetails", contactModel);
-                /*intentChatProf.putExtra("userID",userId);
-                intentChatProf.putExtra("name",name);
-                intentChatProf.putExtra("phone",phone);
-                intentChatProf.putExtra("imageByte",byteArray);*/
                 intentChatProf.putExtra("calling_activity","TempDetailChatView");
                 startActivity(intentChatProf);
                 finish();
@@ -240,11 +201,10 @@ public class TempDetailChatView extends AppCompatActivity {
     }
 
 
-    //Menu
+    /*//Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_chat_menus,menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
+    }*/
 }

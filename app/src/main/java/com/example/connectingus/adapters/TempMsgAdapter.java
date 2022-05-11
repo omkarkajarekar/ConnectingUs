@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.connectingus.R;
 import com.example.connectingus.models.TempMsgModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TempMsgAdapter extends RecyclerView.Adapter
 {
@@ -60,10 +62,18 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         if(holder.getClass()==SenderViewHolder.class)
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
+            Date date=new Date(tempMsgModel.getTimestamp());
+            SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
+            String time=formatTime.format(date);
+            ((SenderViewHolder)holder).senderTime.setText(time);
         }
         else
         {
             ((ReceiverViewHolder)holder).receiverMsg.setText(tempMsgModel.getMessage());
+            Date date=new Date(tempMsgModel.getTimestamp());
+            SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
+            String time=formatTime.format(date);
+            ((ReceiverViewHolder)holder).receiverTime.setText(time);
         }
     }
 

@@ -4,7 +4,7 @@ public class TempMsgModel {
 
     String message;
     int id;
-    Long timestamp;
+    long timestamp;
     String senderID;
 
     public TempMsgModel(String message, int id) {
