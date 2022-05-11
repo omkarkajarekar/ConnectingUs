@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:background="@color/chat_background"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,13 +28,16 @@
 
         <TextView
             android:id="@+id/textSent"
+            android:textIsSelectable="true"
+            android:nestedScrollingEnabled="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:baselineAligned="false"
             android:layout_margin="8dp"
-            android:padding="5dp"
-            android:inputType="textLongMessage|textMultiLine"
             android:maxWidth="260dp"
             android:minWidth="50dp"
+            android:padding="5dp"
             android:text="SentSentSentSentSentSentSentSentSentSentSent"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/textSentTime"
@@ -47,11 +51,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="00:00 A.M."
-            android:textSize="10dp"
-            android:textColor="@color/white"
             android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline1"/>
+            app:layout_constraintEnd_toStartOf="@+id/guideline1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

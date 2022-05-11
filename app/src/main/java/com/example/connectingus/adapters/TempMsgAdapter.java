@@ -1,28 +1,31 @@
 package com.example.connectingus.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.connectingus.R;
+import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.TempMsgModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 public class TempMsgAdapter extends RecyclerView.Adapter
 {
     ArrayList<TempMsgModel> tempMsgModels;
     Context context;
-
+    static int flag = 0;
+    public static HashSet<Integer> positions = new HashSet<>();
+    public TempMsgAdapter(){}
     public TempMsgAdapter(ArrayList<TempMsgModel> tempMsgModels, Context context) {
         this.tempMsgModels = tempMsgModels;
         this.context = context;
@@ -59,20 +62,29 @@ public class TempMsgAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         TempMsgModel tempMsgModel=tempMsgModels.get(position);
-        if(tempMsgModel.isSelected())
-            holder.itemView.setBackgroundResource(R.color.blue_background);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(context.getApplicationContext(),"Long Pressed",Toast.LENGTH_SHORT).show();
                 tempMsgModel.setSelected(!tempMsgModel.isSelected());
-                //holder.itemView.setBackgroundColor(tempMsgModel.isSelected() ? Color.CYAN : Color.WHITE);
-                if(tempMsgModel.isSelected())
+                if(tempMsgModel.isSelected()) {
                     holder.itemView.setBackgroundResource(R.color.blue_background);
+                    flag++;
+                    positions.add(position);
+                    TempDetailChatView.delete_selected.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.itemView.setBackgroundResource(R.color.chat_background);
+                    flag--;
+                    positions.remove(position);
+                    //int i = positions.indexOf(position);
+                    if(flag==0)
+                        TempDetailChatView.delete_selected.setVisibility(View.INVISIBLE);
+                }
                 return false;
             }
+
         });
         if(holder.getClass()==SenderViewHolder.class)
         {
@@ -97,7 +109,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         return tempMsgModels.size();
     }
 
-    public  class ReceiverViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    public  class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         TextView receiverMsg;
         TextView receiverTime;
@@ -106,27 +118,17 @@ public class TempMsgAdapter extends RecyclerView.Adapter
             receiverMsg=itemView.findViewById(R.id.textReceived);
             receiverTime=itemView.findViewById(R.id.textReceivedTime);
         }
-
-        @Override
-        public boolean onLongClick(View view) {
-            Toast.makeText(context.getApplicationContext(),"Position : "+getAdapterPosition(),Toast.LENGTH_SHORT).show();
-            return false;
-        }
     }
 
-    public  class SenderViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
+    public  class SenderViewHolder extends RecyclerView.ViewHolder {
 
         TextView senderMsg;
         TextView senderTime;
+
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
-            senderMsg=itemView.findViewById(R.id.textSent);
-            senderTime=itemView.findViewById(R.id.textSentTime);
-        }
-        @Override
-        public boolean onLongClick(View view) {
-            Toast.makeText(context.getApplicationContext(),"Position : "+getAdapterPosition(),Toast.LENGTH_SHORT).show();
-            return false;
+            senderMsg = itemView.findViewById(R.id.textSent);
+            senderTime = itemView.findViewById(R.id.textSentTime);
         }
     }
 }

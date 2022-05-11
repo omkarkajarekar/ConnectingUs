@@ -2,6 +2,7 @@ package com.example.connectingus.conversation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,11 +42,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TempDetailChatView extends AppCompatActivity {
-
     String name,userid,phone;
     byte[] byteArray;
     ImageView ivProf;
-    //ImageButton ibSend;
+    public static ImageView delete_selected;
     Button ibSend;
     TextView tvUname;
     EditText etM;
@@ -80,6 +80,9 @@ public class TempDetailChatView extends AppCompatActivity {
         relativeLayout=findViewById(R.id.reltvlyout);
         ivProf=findViewById(R.id.iv_prof_pic);
         tvUname=findViewById(R.id.tv_uname);
+        delete_selected = findViewById(R.id.delete_selected);
+        delete_selected.setVisibility(View.INVISIBLE);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -125,6 +128,8 @@ public class TempDetailChatView extends AppCompatActivity {
             }
         });
 
+
+
         final ArrayList<TempMsgModel> tempMsgModels=new ArrayList<>();
         final TempMsgAdapter tempMsgAdapter=new TempMsgAdapter(tempMsgModels,this);
         final String senderRoom = senderID + receiverID;
@@ -132,7 +137,14 @@ public class TempDetailChatView extends AppCompatActivity {
 
         recyclerView.setAdapter(tempMsgAdapter);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
+        delete_selected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Selected : "+TempMsgAdapter.positions.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         databaseReference.child("Chats")
                 .child(senderRoom)
@@ -204,6 +216,11 @@ public class TempDetailChatView extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     /*//Menu
     @Override
