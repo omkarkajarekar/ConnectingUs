@@ -15,6 +15,7 @@ public class CreateFolder {
     public static final String MY_PHOTO = "My Photo";
     public void createFolderForProfile(Context context, String userID, Bitmap bitmap,String SubFolder){
         String folder_main = "ConnectingUs";
+        //File f = Environment.getExternalStoragePublicDirectory(folder_main);
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
         if (!f.exists()) {
             f.mkdirs();
