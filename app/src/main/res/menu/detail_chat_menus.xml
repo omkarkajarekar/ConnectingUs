@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/search_in_chat"
-        android:title="Search"/>
+        android:id="@+id/search_chat_action"
+        android:title="Search"
+        app:showAsAction="always"
+        android:icon="@drawable/search_icon"
+        app:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/clear_chat"
         android:title="Clear Chat"/>

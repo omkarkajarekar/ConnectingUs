@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -136,11 +137,11 @@ public class TempDetailChatView extends AppCompatActivity {
 
 
         tempMsgModels=new ArrayList<>();
-        tempMsgAdapter=new TempMsgAdapter(tempMsgModels,this);
+
         senderRoom = senderID + receiverID;
         receiverRoom = receiverID + senderID;
 
-        recyclerView.setAdapter(tempMsgAdapter);
+
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -162,6 +163,8 @@ public class TempDetailChatView extends AppCompatActivity {
                             TempMsgModel model = snapshot1.getValue(TempMsgModel.class);
                             tempMsgModels.add(model);
                         }
+                        tempMsgAdapter=new TempMsgAdapter(tempMsgModels,TempDetailChatView.this);
+                        recyclerView.setAdapter(tempMsgAdapter);
                         tempMsgAdapter.notifyDataSetChanged();
                     }
 
@@ -237,6 +240,22 @@ public class TempDetailChatView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_chat_menus,menu);
+        MenuItem menuItem=menu.findItem(R.id.search_chat_action);
+        SearchView searchView=(SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("Search accross the chat");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                tempMsgAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 

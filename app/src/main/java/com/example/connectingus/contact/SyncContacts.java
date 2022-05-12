@@ -132,6 +132,15 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
             startActivity(Intent.createChooser(intent,"Share using"));
 
         }
+        if(itemid==R.id.refresh)
+        {
+            /*SplashActivity obj=new SplashActivity();
+            SplashActivity.BgTaskContacts m=new SplashActivity().BgTaskContacts();
+            SplashActivity.BgTaskContacts mytask=new SplashActivity.BgTaskContacts();
+            //SplashActivity obj=new SplashActivity(mytask);
+            mytask.execute("null");*/
+            new SplashActivity().executeTask();
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +21,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
-public class TempMsgAdapter extends RecyclerView.Adapter
+public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
 {
     ArrayList<TempMsgModel> tempMsgModels;
+    ArrayList<TempMsgModel> tempMsgModelsFull;
     Context context;
     static int flag = 0;
     public static HashSet<Integer> positions = new HashSet<>();
     public TempMsgAdapter(){}
     public TempMsgAdapter(ArrayList<TempMsgModel> tempMsgModels, Context context) {
-        this.tempMsgModels = tempMsgModels;
+        this.tempMsgModelsFull = tempMsgModels;
+        this.tempMsgModels=new ArrayList<>(tempMsgModelsFull);
         this.context = context;
     }
 
@@ -60,6 +64,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         }
 
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -108,6 +113,44 @@ public class TempMsgAdapter extends RecyclerView.Adapter
     public int getItemCount() {
         return tempMsgModels.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return chatFilter;
+    }
+    private  final Filter chatFilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<TempMsgModel> filteredChatList=new ArrayList<>();
+            if(charSequence==null || charSequence.length()==0)
+            {
+                filteredChatList.addAll(tempMsgModelsFull);
+            }
+            else
+            {
+                String filterPattern=charSequence.toString().toLowerCase().trim();
+                for (TempMsgModel model:tempMsgModelsFull)
+                {
+                    if(model.getMessage().toLowerCase().contains(filterPattern))
+                    {
+                        filteredChatList.add(model);
+                    }
+                }
+            }
+            FilterResults results=new FilterResults();
+            results.values=filteredChatList;
+            results.count=filteredChatList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            tempMsgModels.clear();
+            tempMsgModels.addAll((ArrayList)filterResults.values);
+            notifyDataSetChanged();
+
+        }
+    };
 
     public  class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
