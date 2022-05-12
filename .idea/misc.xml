@@ -49,6 +49,7 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/avatar.xml" value="0.1925" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/circular.xml" value="0.1" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/enter_msg_background.xml" value="0.213" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.213" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/drawable/image.xml" value="0.1" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_chat.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_contact_us.xml" value="0.25" />
@@ -70,6 +71,8 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/sender.xml" value="0.209375" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/verify_otp.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/verify_phone.xml" value="0.22" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/menu/detail_chat_menus.xml" value="1.0" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/menu/home_menu.xml" value="0.22" />
       </map>
     </option>
   </component>
