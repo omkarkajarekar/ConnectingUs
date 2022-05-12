@@ -72,9 +72,7 @@
             android:name=".contact.SyncContacts"
             android:exported="false"
             android:parentActivityName=".conversation.ConversationList" />
-        <activity
-            android:name=".conversation.DetailChatView"
-            android:parentActivityName=".conversation.ConversationList" />
+
         <activity
             android:name=".conversation.TempDetailChatView"
             android:parentActivityName=".conversation.ConversationList"/>

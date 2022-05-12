@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
@@ -71,7 +72,7 @@ public class ProfileEdit extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
             } catch (IOException e) {
-                Toast.makeText(ProfileEdit.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                Log.d(getLocalClassName(),e.getMessage());
             }
             new CreateFolder().createFolderForProfile(ProfileEdit.this,firebaseAuth.getUid(),bitmap,CreateFolder.MY_PHOTO);
            //user_profile_pic = selectedImage.getPath();
@@ -88,7 +89,7 @@ public class ProfileEdit extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Profile Picture Updation Failed",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -216,14 +217,5 @@ public class ProfileEdit extends AppCompatActivity {
                 }
             }
         });
-        /*signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.signOut();
-                intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });*/
     }
 }

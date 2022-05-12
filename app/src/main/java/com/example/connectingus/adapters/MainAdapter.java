@@ -47,7 +47,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> im
          holder.tvName.setText(model.getName());
          holder.tvNumber.setText(model.getNumber());
          holder.ivImage.setImageDrawable(new CreateFolder().getLocalImage(model.getUserId(),CreateFolder.PROFILE_PHOTO));
-         //holder.ivImage.setImageBitmap(model.getImage());
     }
 
     @Override

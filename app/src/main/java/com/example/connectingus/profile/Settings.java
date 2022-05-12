@@ -272,7 +272,7 @@ public class Settings extends AppCompatActivity {
                                         }
                                         else
                                         {
-                                            Toast.makeText(Settings.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                            Log.d(getLocalClassName(),task.getException().getMessage());
                                         }
                                     }
                                 });
