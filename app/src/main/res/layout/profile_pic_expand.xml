@@ -10,7 +10,6 @@
         android:layout_height="250dp"
         android:scaleType="fitCenter"
         android:transitionName="imageTransition"
-        android:src="@drawable/sample_dp"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.connectingus.fragments.CameraFragment;
 import com.example.connectingus.fragments.ChatsFragment;
-import com.example.connectingus.fragments.QRFragment;
 
 public class PagerAdapter extends FragmentStateAdapter {
     public PagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
