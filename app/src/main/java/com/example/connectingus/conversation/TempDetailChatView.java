@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +46,8 @@ public class TempDetailChatView extends AppCompatActivity {
     String name,userid,phone;
     byte[] byteArray;
     ImageView ivProf;
+    TempMsgAdapter tempMsgAdapter;
+    ArrayList<TempMsgModel> tempMsgModels;
     public static ImageView delete_selected;
     Button ibSend;
     TextView tvUname;
@@ -58,6 +61,8 @@ public class TempDetailChatView extends AppCompatActivity {
     String userId="";   //BWeN36Tlv3PeshBphBdkhafBhL73//vIHAf4DYO2Vu8pbikfpMKv1yNp82//wgX0rZSyWlOhoSgw0EShyUCS1YL2
     String senderID;
     String receiverID;
+    String senderRoom;
+    String receiverRoom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,10 +135,10 @@ public class TempDetailChatView extends AppCompatActivity {
 
 
 
-        final ArrayList<TempMsgModel> tempMsgModels=new ArrayList<>();
-        final TempMsgAdapter tempMsgAdapter=new TempMsgAdapter(tempMsgModels,this);
-        final String senderRoom = senderID + receiverID;
-        final String receiverRoom = receiverID + senderID;
+        tempMsgModels=new ArrayList<>();
+        tempMsgAdapter=new TempMsgAdapter(tempMsgModels,this);
+        senderRoom = senderID + receiverID;
+        receiverRoom = receiverID + senderID;
 
         recyclerView.setAdapter(tempMsgAdapter);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
@@ -222,10 +227,34 @@ public class TempDetailChatView extends AppCompatActivity {
 
     }
 
-    /*//Menu
+    @Override
+    protected void onResume() {
+        //tempMsgAdapter.notifyDataSetChanged();
+        super.onResume();
+    }
+
+    //Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_chat_menus,menu);
         return super.onCreateOptionsMenu(menu);
-    }*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemid = item.getItemId();
+        if(itemid==R.id.clear_chat){
+            FirebaseDatabase.getInstance().getReference("Chats")
+            .child(senderRoom).removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                  @Override
+                  public void onSuccess(Void unused) {
+
+                  }
+              });
+            tempMsgModels.clear();
+            tempMsgAdapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
