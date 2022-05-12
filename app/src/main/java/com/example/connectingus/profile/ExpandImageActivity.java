@@ -17,6 +17,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.authentication.ProfileEdit;
 import com.example.connectingus.conversation.ConversationList;
 import com.example.connectingus.fragments.ChatsFragment;
+import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.support.CreateFolder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,7 +35,7 @@ public class ExpandImageActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     String userID;
     StorageReference storageReference;
-    File localFile;
+    ContactModel contactModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,28 +48,13 @@ public class ExpandImageActivity extends AppCompatActivity {
         userID = firebaseAuth.getCurrentUser().getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
         profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
-        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
-
-        try {
-            localFile = File.createTempFile("profile", "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                profile_pic.setImageBitmap(bmImg);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });*/
         calling_activity = intent.getStringExtra("calling_activity");
-        getSupportActionBar().setTitle(intent.getStringExtra("name"));
+        if(calling_activity.equals("ConversationList"))
+        {
+            contactModel= (ContactModel) intent.getSerializableExtra("user");
+            profile_pic.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
+            getSupportActionBar().setTitle(contactModel.getName());
+        }
 
     }
     private Intent getParentActivityIntentImplement() {
@@ -109,9 +95,9 @@ public class ExpandImageActivity extends AppCompatActivity {
         //finish();
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
-    }
+    }*/
 }

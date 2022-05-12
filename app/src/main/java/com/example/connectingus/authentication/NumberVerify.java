@@ -3,6 +3,7 @@ package com.example.connectingus.authentication;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -103,7 +104,8 @@ public class NumberVerify extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+
+                Log.d(getLocalClassName(),e.getMessage());
             }
 
             @Override
@@ -122,18 +124,4 @@ public class NumberVerify extends AppCompatActivity {
             }
         };
     }
-    /*public void authenticateUser(PhoneAuthCredential credential){
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-    }*/
 }

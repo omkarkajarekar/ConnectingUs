@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.connectingus.R;
 import com.example.connectingus.authentication.ProfileEdit;
@@ -30,8 +29,6 @@ import com.example.connectingus.support.CreateFolder;
 
 
 public class ChatProfile extends AppCompatActivity {
-    String name,userid,phone;
-    byte[] byteArray;
     static final int callRequest=1;
     String calling_activity;
     ImageView chatProf;
@@ -68,7 +65,7 @@ public class ChatProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), TempDetailChatView.class);
-                intent.putExtra("SelectedContact", contactModel);
+                intent.putExtra("UserDetails", contactModel);
                 startActivity(intent);
                 finish();
             }
@@ -82,29 +79,10 @@ public class ChatProfile extends AppCompatActivity {
         });
 
         Intent intent=getIntent();
-        //Bitmap bitmap = (Bitmap) intent.getParcelableExtra("image");
-        //
-        /*byteArray = intent.getByteArrayExtra("imageByte");
-        Bitmap image = null;
-        try {
-            image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            chatProf.setImageBitmap(image);
-        }
-        catch (Exception e){
-            chatProf.setImageResource(R.drawable.ic_baseline_person_24);
-        }
-        name = intent.getStringExtra("name");
-        phone = intent.getStringExtra("phone");
-        userid = intent.getStringExtra("userID");
-        chatName.setText(name);
-        chatPhone.setText(phone);
-        calling_activity=intent.getStringExtra("calling_activity");*/
         if(intent.getExtras()!=null)
         {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
             calling_activity=intent.getStringExtra("calling_activity");
-            //chatProf.setImageBitmap(contactModel.getImage());
-            //chatProf.setImageResource(contactModel.getImageId());
             chatProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
             chatName.setText(contactModel.getName());
             chatPhone.setText(contactModel.getNumber());
@@ -159,10 +137,6 @@ public class ChatProfile extends AppCompatActivity {
         {
             parent = new Intent(getApplicationContext(), TempDetailChatView.class);
             parent.putExtra("UserDetails",contactModel);
-            /*parent.putExtra("userID",userid);
-            parent.putExtra("name",name);
-            parent.putExtra("phone",phone);
-            parent.putExtra("imageByte",byteArray);*/
         }
         parent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(parent);

@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.connectingus.authentication.FirstActivity;
 import com.example.connectingus.conversation.ConversationList;
@@ -319,7 +318,6 @@ public  void executeTask()
         else
         {
             //when permission is denied
-            Toast.makeText(this,"Permission Denied.",Toast.LENGTH_SHORT).show();
             //call check permission method
             checkPermission();
         }

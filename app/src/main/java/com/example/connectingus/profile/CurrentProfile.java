@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
@@ -69,10 +70,10 @@ public class CurrentProfile extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
             } catch (IOException e) {
-                Toast.makeText(CurrentProfile.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                Log.d(getLocalClassName(),e.getMessage());
             }
             new CreateFolder().createFolderForProfile(CurrentProfile.this,firebaseAuth.getUid(),bitmap,CreateFolder.MY_PHOTO);
-            //user_profile_pic = selectedImage.getPath();
+
             uploadImageToFireStorage();
         }
     }
@@ -86,7 +87,7 @@ public class CurrentProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Profile Picture Updation Failed",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -111,26 +112,6 @@ public class CurrentProfile extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         userID = firebaseAuth.getCurrentUser().getUid();
         profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
-        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
-
-        try {
-            localFile = File.createTempFile("profile", "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                profile_pic.setImageBitmap(bmImg);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });*/
 
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
@@ -176,7 +157,7 @@ public class CurrentProfile extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                Log.d(getLocalClassName(),error.getMessage());
             }
         });
 
