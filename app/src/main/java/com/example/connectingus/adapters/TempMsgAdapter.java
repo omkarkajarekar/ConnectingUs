@@ -2,6 +2,7 @@ package com.example.connectingus.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
         if(holder.getClass()==SenderViewHolder.class)
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
+            Linkify.addLinks(((SenderViewHolder)holder).senderMsg,Linkify.ALL);
             Date date=new Date(tempMsgModel.getTimestamp());
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
@@ -102,6 +104,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
         else
         {
             ((ReceiverViewHolder)holder).receiverMsg.setText(tempMsgModel.getMessage());
+            Linkify.addLinks(((ReceiverViewHolder)holder).receiverMsg, Linkify.ALL);
             Date date=new Date(tempMsgModel.getTimestamp());
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
