@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="chat_background">#F6F6F6</color>
     <color name="blue_background">#AB5B9EEF</color>
+    <color name="transparent">#00000000 </color>
     <color name="apptheme">#AF4444</color>
 </resources>

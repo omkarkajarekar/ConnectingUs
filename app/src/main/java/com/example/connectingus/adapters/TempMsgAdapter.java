@@ -81,7 +81,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
                     TempDetailChatView.delete_selected.setVisibility(View.VISIBLE);
                 }
                 else {
-                    holder.itemView.setBackgroundResource(R.color.chat_background);
+                    holder.itemView.setBackgroundResource(R.color.transparent);
                     flag--;
                     positions.remove(position);
                     //int i = positions.indexOf(position);
