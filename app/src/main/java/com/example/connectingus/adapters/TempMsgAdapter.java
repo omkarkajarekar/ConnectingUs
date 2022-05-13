@@ -96,6 +96,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
             Linkify.addLinks(((SenderViewHolder)holder).senderMsg,Linkify.ALL);
+
             Date date=new Date(tempMsgModel.getTimestamp());
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
