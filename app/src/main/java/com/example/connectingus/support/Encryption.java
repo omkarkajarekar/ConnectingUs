@@ -1,77 +1,27 @@
 package com.example.connectingus.support;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Date;
+import com.scottyab.aescrypt.AESCrypt;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
+import java.security.GeneralSecurityException;
 
 public class Encryption {
-    Cipher cipher;
-    Cipher decipher;
-    SecretKeySpec secretKeySpec;
-    private byte encryptionKey[] = {9, 115, 51, 86, 105, 4, -31, -23, -68, 88, 17, 20, 3, -105, 119, -53};
-    public Encryption(){
+    public static final String PASSWORD = "1123581321345589";
+    public String encrypt(String plaintext){
+        String encrypted = "1";
         try {
-            cipher = Cipher.getInstance("AES");
-            decipher = Cipher.getInstance("AES");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
+            encrypted = AESCrypt.encrypt(PASSWORD,plaintext);
+        }catch (GeneralSecurityException e){
             e.printStackTrace();
         }
-        secretKeySpec = new SecretKeySpec(encryptionKey, "AES");
+        return encrypted;
     }
-
-    private String AESEncryptionMethod(String string){
-        byte[] stringByte = string.getBytes();
-        byte[] encryptedByte = new byte[stringByte.length];
-
+    public String decrypt(String ciphertext){
+        String decrypted = "1";
         try {
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-            encryptedByte = cipher.doFinal(stringByte);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
+            decrypted = AESCrypt.decrypt(PASSWORD,ciphertext);
+        }catch (GeneralSecurityException e){
             e.printStackTrace();
         }
-
-        String returnString = null;
-
-        try {
-            returnString = new String(encryptedByte, "ISO-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return returnString;
-    }
-
-    private String AESDecryptionMethod(String string) throws UnsupportedEncodingException {
-        byte[] EncryptedByte = string.getBytes("ISO-8859-1");
-        String decryptedString = string;
-
-        byte[] decryption;
-
-        try {
-            decipher.init(cipher.DECRYPT_MODE, secretKeySpec);
-            decryption = decipher.doFinal(EncryptedByte);
-            decryptedString = new String(decryption);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
-        return decryptedString;
+        return decrypted;
     }
 }

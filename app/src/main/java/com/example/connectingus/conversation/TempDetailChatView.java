@@ -29,6 +29,7 @@ import com.example.connectingus.models.ContactModel;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.support.CreateFolder;
+import com.example.connectingus.support.Encryption;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -149,6 +150,8 @@ public class TempDetailChatView extends AppCompatActivity {
             }
         });
 
+        Encryption encrypt = new Encryption();
+
         databaseReference.child("Chats")
                 .child(senderRoom)
                 .addValueEventListener(new ValueEventListener() {
@@ -156,8 +159,8 @@ public class TempDetailChatView extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         tempMsgModels.clear();
                         for(DataSnapshot snapshot1:snapshot.getChildren()){
-
                             TempMsgModel model = snapshot1.getValue(TempMsgModel.class);
+                            model.setMessage(encrypt.decrypt(model.getMessage()));
                             tempMsgModels.add(model);
                         }
                         tempMsgAdapter=new TempMsgAdapter(tempMsgModels,TempDetailChatView.this);
@@ -172,6 +175,7 @@ public class TempDetailChatView extends AppCompatActivity {
                 });
 
 
+
         ibSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,8 +183,8 @@ public class TempDetailChatView extends AppCompatActivity {
                 //TempMsgModel tempMsgModel=new TempMsgModel(msg,1);
                 //tempMsgModels.add(tempMsgModel);
                 //tempMsgAdapter.notifyDataSetChanged();
-
-                TempMsgModel model = new TempMsgModel(senderID,msg);
+                msg = encrypt.encrypt(msg);
+                final TempMsgModel model = new TempMsgModel(senderID,msg);
                 model.setId(1);
                 model.setTimestamp(new Date().getTime());
                 etM.setText("");
