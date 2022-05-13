@@ -2,7 +2,7 @@
     <string name="app_name">ConnectingUs</string>
     <string name="welcome">Welcome to ConnectingUs</string>
     <string name="agree_terms">Agree and Continue</string>
-    <string name="terms">Tap on \'Agree and Continue\' to accept the ConnectingUs> Terms of Service and Privacy Policy </string>
+    <string name="terms">Click on \'Agree and Continue\' to accept the ConnectingUs\'s \nPrivacy Policy and Terms &amp; Conditions</string>
     <string name="info">ConnectingUs will send an SMS message to verify your phone number. Enter your phone number.</string>
     <string name="phone_number">Phone number</string>
     <string name="next">Next</string>
