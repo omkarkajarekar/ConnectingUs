@@ -12,28 +12,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_prof_pic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="centerCrop"
-        android:transitionName="imageTransition"
-        app:shapeAppearanceOverlay="@style/circular" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_prof_pic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:transitionName="imageTransition"
+            app:shapeAppearanceOverlay="@style/circular" />
 
-    <TextView
-        android:id="@+id/tv_uname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@id/iv_prof_pic"
-        android:textSize="15sp"
-        android:transitionName="nameTransition"
-        android:textColor="@color/white"
-        android:layout_marginHorizontal="10dp"/>
+        <TextView
+            android:id="@+id/tv_uname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_toRightOf="@id/iv_prof_pic"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:transitionName="nameTransition" />
     </RelativeLayout>
 
     <ImageView
-        android:clickable="true"
         android:id="@+id/delete_selected"
         android:layout_width="20dp"
         android:layout_height="20dp"
@@ -41,6 +40,7 @@
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="10dp"
         android:background="@color/apptheme"
+        android:clickable="true"
         android:scaleType="fitCenter"
         android:src="@drawable/delete_bin" />
 </RelativeLayout>

@@ -1,7 +1,10 @@
 package com.example.connectingus.conversation;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +22,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TempDetailChatView extends AppCompatActivity {
+    static final int callRequest=1;
+    String callToModel="";
     ImageView ivProf;
     TempMsgAdapter tempMsgAdapter;
     ArrayList<TempMsgModel> tempMsgModels;
@@ -243,6 +250,15 @@ public class TempDetailChatView extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_chat_menus,menu);
         MenuItem menuItem=menu.findItem(R.id.search_chat_action);
+        MenuItem call=menu.findItem(R.id.call);
+        if(delete_selected.getVisibility()==View.VISIBLE){
+            menuItem.setVisible(false);
+            call.setVisible(false);
+        }
+        else{
+            menuItem.setVisible(true);
+            call.setVisible(true);
+        }
         SearchView searchView=(SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Search accross the chat");
@@ -276,6 +292,49 @@ public class TempDetailChatView extends AppCompatActivity {
             tempMsgModels.clear();
             tempMsgAdapter.notifyDataSetChanged();
         }
+        if(itemid==R.id.view_contact){
+            Intent intentChatProf = new Intent(getApplicationContext(), ChatProfile.class);
+            intentChatProf.putExtra("UserDetails", contactModel);
+            intentChatProf.putExtra("calling_activity","TempDetailChatView");
+            startActivity(intentChatProf);
+            finish();
+        }
+        if(itemid==R.id.call){
+            callToModel=contactModel.getNumber();
+            checkPermission();
+        }
         return super.onOptionsItemSelected(item);
+    }
+    private void checkPermission()
+    {
+        if(ContextCompat.checkSelfPermission(TempDetailChatView.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(TempDetailChatView.this,new String[]{Manifest.permission.CALL_PHONE},callRequest);
+        }
+        else
+        {
+            startCall();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //check condition
+        if(requestCode==callRequest && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+        {
+            startCall(); //when permission granted
+        }
+        else
+        {
+            checkPermission();
+        }
+    }
+
+    private void startCall()
+    {
+        Intent dial=new Intent(Intent.ACTION_CALL);
+        dial.setData(Uri.parse("tel:"+callToModel));
+        startActivity(dial);
     }
 }

@@ -27,15 +27,16 @@
             android:id="@+id/edMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
             android:background="@drawable/enter_msg_background"
             android:hint="Enter Message Here"
             android:inputType="textAutoCorrect|textMultiLine|text|textAutoComplete|textImeMultiLine"
             android:padding="10dp"
-            android:textColor="@color/black"
+            android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
-            android:scrollbarStyle="insideInset"/>
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/sendButton"

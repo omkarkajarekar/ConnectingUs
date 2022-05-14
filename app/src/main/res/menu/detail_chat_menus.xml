@@ -3,15 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/call"
+        android:title="Search"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_call_24_white"/>
+    <item
         android:id="@+id/search_chat_action"
         android:title="Search"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/search_icon"
         app:actionViewClass="android.widget.SearchView"/>
     <item
+        android:id="@+id/view_contact"
+        android:title="View Contact"/>
+
+    <item
+        android:id="@+id/export_chat"
+        android:title="Export Chat"/>
+
+    <item
         android:id="@+id/clear_chat"
         android:title="Clear Chat"/>
-    <item
-        android:id="@+id/block"
-        android:title="Block"/>
+
 </menu>
