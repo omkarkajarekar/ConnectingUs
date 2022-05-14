@@ -42,12 +42,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TempDetailChatView extends AppCompatActivity {
-    String name,userid,phone;
-    byte[] byteArray;
     ImageView ivProf;
     TempMsgAdapter tempMsgAdapter;
     ArrayList<TempMsgModel> tempMsgModels;
     public static ImageView delete_selected;
+    RelativeLayout chat_background;
     Button ibSend;
     TextView tvUname;
     EditText etM;
@@ -70,7 +69,7 @@ public class TempDetailChatView extends AppCompatActivity {
 
         //ibSend.setVisibility(View.INVISIBLE);
         ibSend.setEnabled(false);
-
+        chat_background = findViewById(R.id.chat_background);
         recyclerView=findViewById(R.id.recyclerview1);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);  // back button
 
@@ -80,6 +79,8 @@ public class TempDetailChatView extends AppCompatActivity {
         LayoutInflater layoutInflater=(LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view=layoutInflater.inflate(R.layout.custom_appbar,null);
         getSupportActionBar().setCustomView(view);
+
+        chat_background.setBackground(new CreateFolder().getWallpaper());
 
         relativeLayout=findViewById(R.id.reltvlyout);
         ivProf=findViewById(R.id.iv_prof_pic);

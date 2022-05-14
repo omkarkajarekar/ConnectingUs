@@ -1,6 +1,7 @@
 package com.example.connectingus.profile;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -11,7 +12,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -46,6 +49,7 @@ import java.util.Objects;
 public class Settings extends AppCompatActivity {
     ConstraintLayout profile_edit;
     ConstraintLayout invite_friend;
+    ConstraintLayout set_wallpaper;
     ConstraintLayout get_help;
     ConstraintLayout do_logout;
     ConstraintLayout get_account_deleted;
@@ -58,10 +62,25 @@ public class Settings extends AppCompatActivity {
     ArrayList<String> userDetails=new ArrayList<>();
     ProgressDialog progressDialog;
     String userID;
+    Uri selectedImage;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     StorageReference storageReference;
     File localFile;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 3 && data!= null){
+            selectedImage = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                Log.d(getLocalClassName(),e.getMessage());
+            }
+            new CreateFolder().saveWallpaper(Settings.this,bitmap);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +90,7 @@ public class Settings extends AppCompatActivity {
         profile_pic = findViewById(R.id.profile_pic);
         profile_edit = findViewById(R.id.profile_edit);
         get_help = findViewById(R.id.get_help);
+        set_wallpaper = findViewById(R.id.set_wallpaper);
         do_logout = findViewById(R.id.do_logout);
         get_account_deleted = findViewById(R.id.get_account_deleted);
         invite_friend = findViewById(R.id.invite_friend);
@@ -83,42 +103,49 @@ public class Settings extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(userID);
         profile_pic.setImageDrawable(new CreateFolder().getLocalImage(firebaseAuth.getUid(),CreateFolder.MY_PHOTO));
-        /*StorageReference pathReference = storageReference.child(userID).child("profile.jpg");
-
-        try {
-            localFile = File.createTempFile("profile", "jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        set_wallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                profile_pic.setImageBitmap(bmImg);
+            public void onClick(View view) {
+                AlertDialog.Builder dialog=new AlertDialog.Builder(Settings.this);
+                dialog.setTitle(userDetails.get(2)+"Do you want to set or remove Background?");
+                dialog.setMessage("Please confirm choice");
+                dialog.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(gallery,3);
+                    }
+                });
+                dialog.setNegativeButton("Remove", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new CreateFolder().removeWallpaper(Settings.this);
+                    }
+                });
+                dialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog=dialog.create();
+                alertDialog.show();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });*/
-
-
+        });
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        userDetails.clear();
-                       Log.d("enpp", "at line no 111");
-                       for(DataSnapshot Dsnapshot:snapshot.getChildren())
-                       {
-                           userDetails.add(Dsnapshot.getValue().toString());
+                userDetails.clear();
+               Log.d("enpp", "at line no 111");
+               for(DataSnapshot Dsnapshot:snapshot.getChildren())
+               {
+                   userDetails.add(Dsnapshot.getValue().toString());
 
-                           String strname=snapshot.child("name").getValue().toString();
-                           String strabout=snapshot.child("about").getValue().toString();
-                           name.setText(strname);
-                           about.setText(strabout);
-                       }
+                   String strname=snapshot.child("name").getValue().toString();
+                   String strabout=snapshot.child("about").getValue().toString();
+                   name.setText(strname);
+                   about.setText(strabout);
+               }
 
             }
 
@@ -132,16 +159,6 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
-                Pair pair[]= new Pair[3];
-                pair[0] = new Pair(profile_pic,"imageTransition");
-                pair[1] = new Pair(name,"nameTransition");
-                pair[2] = new Pair(about,"aboutTransition");
-                ActivityOptions options = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    options = ActivityOptions.makeSceneTransitionAnimation(Settings.this, pair);
-                }
-                startActivity(intent,options.toBundle());*/
                 Intent intent = new Intent(getApplicationContext(), CurrentProfile.class);
                 Pair pair = new Pair(profile_pic,"imageTransition");
                 ActivityOptions options = null;
@@ -193,7 +210,7 @@ public class Settings extends AppCompatActivity {
                     }
                 });
 
-                dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
