@@ -9,12 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -41,6 +41,7 @@ import com.example.connectingus.contact.SyncContacts;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.databinding.FragmentChatsBinding;
 import com.example.connectingus.models.ContactModel;
+import com.example.connectingus.models.DBHelper;
 import com.example.connectingus.models.ShareIds;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.profile.CurrentProfile;
@@ -64,11 +65,12 @@ import java.util.List;
 public class ChatsFragment extends Fragment {
 
     static final int callRequest=1;
-    DatabaseReference databaseReference;
-    StorageReference storageReference;
+    DBHelper DB;
     public MenuItem deleteitem;
+    Boolean checkinsertdata;
     ContactModel delete_model;
     String delete_name;
+    String delete_userId;
     ShapeableImageView profile_pic;
     public boolean openchat=true;
     static Activity activity;
@@ -87,7 +89,9 @@ public class ChatsFragment extends Fragment {
         binding=FragmentChatsBinding.inflate(inflater,container,false);
         View view=binding.getRoot();
         activity = getActivity();
-        updateList();
+        DB=new DBHelper(getContext());
+        //updateList();
+        getPreviousList();
         binding.listview.setClickable(true);
         setHasOptionsMenu(true);
         return view;
@@ -111,44 +115,94 @@ public class ChatsFragment extends Fragment {
             userId=uidobj.getUserId();
             try
             {
-                databaseReference= FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-                storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference pathReference = storageReference.child(userId).child("profile.jpg");
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        try {
-                            if(!userId.isEmpty()) {
-                                String nm=uidobj.getName();
-                                for(j=0;j<userArrayList.size();j++)
-                                {
-                                    if(nm.equals(userArrayList.get(j).getName()))
-                                    {
-                                        userArrayList.remove(j);
-                                        break;
-                                    }
-                                }
-                                userArrayList.add(0,uidobj);
-                                customAdapter=new CustomAdapter(userArrayList,getActivity());
-                                customAdapter.notifyDataSetChanged();
-                                binding.listview.setAdapter(customAdapter);
-                            }
-                        }
-                        catch(Exception exp)
+                if(!userId.isEmpty()) {
+                    String nm=uidobj.getName();
+                    for(j=0;j<userArrayList.size();j++)
+                    {
+                        if(nm.equals(userArrayList.get(j).getName()))
                         {
-                            exp.printStackTrace();
+                            userArrayList.remove(j);
+                            //code to delete entry from SQLite
+                            Boolean checkdeletedata=DB.deleteUserData(uidobj.getUserId());
+                            break;
                         }
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.d(activity.getLocalClassName(),error.getMessage());
+                    userArrayList.add(0,uidobj);
+                    try {
+                        checkinsertdata=DB.insertUserData(uidobj.getName(),uidobj.getUserId(),"","");
                     }
-                });
+                    catch(Exception exp)
+                    {
+                        exp.printStackTrace();
+                    }
+                    if(checkinsertdata)
+                        Log.i("ChatFragment.java","Chat Inserted");
+                    else
+                        Log.e("ChatFragment.java","Chat not Inserted");
+                    customAdapter=new CustomAdapter(userArrayList,getActivity());
+                    customAdapter.notifyDataSetChanged();
+                    binding.listview.setAdapter(customAdapter);
+                }
             }
             catch(Exception exp)
             {
                 exp.printStackTrace();
+            }
+        }
+    }
+
+    public void getPreviousList()
+    {
+        ContactModel contactModel=null;
+        Cursor res=DB.getData();
+        if(res.getCount()==0)
+        {
+            Toast.makeText(getActivity(),"No recent chats are available!",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Log.i("ChatFragment.java","No of records"+res.getCount());
+        while(res.moveToNext())
+        {
+            contactModel=new ContactModel();
+            contactModel.setName(res.getString(0));
+            contactModel.setUserId(res.getString(1));
+            contactModel.setLastMessage(res.getString(2));
+            contactModel.setLastMsgTime(res.getString(3));
+
+            ShareIds.getInstance().setUserId(contactModel);
+        }
+        if(contactModel!=null)
+        {
+            listuserId.clear();
+            for(ContactModel idobj : ShareIds.getInstance().getUserId())
+            {
+                listuserId.add(idobj);
+            }
+            for(ContactModel uidobj : listuserId)
+            {
+                userId=uidobj.getUserId();
+                try
+                {
+                    if(!userId.isEmpty()) {
+                        String nm=uidobj.getName();
+                        for(j=0;j<userArrayList.size();j++)
+                        {
+                            if(nm.equals(userArrayList.get(j).getName()))
+                            {
+                                userArrayList.remove(j);
+                                break;
+                            }
+                        }
+                        userArrayList.add(0,uidobj);
+                        customAdapter=new CustomAdapter(userArrayList,getActivity());
+                        customAdapter.notifyDataSetChanged();
+                        binding.listview.setAdapter(customAdapter);
+                    }
+                }
+                catch(Exception exp)
+                {
+                    exp.printStackTrace();
+                }
             }
         }
     }
@@ -273,6 +327,7 @@ public class ChatsFragment extends Fragment {
                     deleteitem.setVisible(true);
                     delete_model=itemsModelListFiltered.get(i);
                     delete_name=delete_model.getName();
+                    delete_userId=delete_model.getUserId();
                     return false;
                 }
             });
@@ -377,6 +432,11 @@ public class ChatsFragment extends Fragment {
                             ShareIds.getInstance().userIdobj.remove(k);
                         }
                     }
+                    Boolean checkdeletedata=DB.deleteUserData(delete_userId);
+                    if(checkdeletedata)
+                        Log.i("ChatFragment.java","Chat deleted");
+                    else
+                        Log.e("ChatFragment.java","Chat not deleted");
                     customAdapter=new CustomAdapter(userArrayList,getActivity());
                     customAdapter.notifyDataSetChanged();
                     binding.listview.setAdapter(customAdapter);
