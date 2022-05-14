@@ -171,9 +171,16 @@ public class TempDetailChatView extends AppCompatActivity {
                         tempMsgModels.clear();
                         for(DataSnapshot snapshot1:snapshot.getChildren()){
                             TempMsgModel model = snapshot1.getValue(TempMsgModel.class);
+                            String decrypted = encrypt.decrypt(model.getMessage());
                             model.setMessage(encrypt.decrypt(model.getMessage()));
+                            Date date=new Date(model.getTimestamp());
+                            SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
+                            String time=formatTime.format(date);
+                            contactModel.setLastMessage(decrypted);
+                            contactModel.setLastMsgTime(time);
                             tempMsgModels.add(model);
                         }
+                        ShareIds.getInstance().setUserId(contactModel);
                         tempMsgAdapter=new TempMsgAdapter(tempMsgModels,TempDetailChatView.this);
                         recyclerView.setAdapter(tempMsgAdapter);
                         tempMsgAdapter.notifyDataSetChanged();
@@ -195,8 +202,8 @@ public class TempDetailChatView extends AppCompatActivity {
                 Date date=new Date(timeStamp);
                 SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
                 String time=formatTime.format(date);
-                contactModel.setLastMessage(msg);
-                contactModel.setLastMsgTime(time);
+                /*contactModel.setLastMessage(msg);
+                contactModel.setLastMsgTime(time);*/
                 msg = encrypt.encrypt(msg);
                 final TempMsgModel model = new TempMsgModel(senderID,msg);
                 model.setId(1);
@@ -223,7 +230,7 @@ public class TempDetailChatView extends AppCompatActivity {
                                         });
                             }
                         });
-                ShareIds.getInstance().setUserId(contactModel);
+
             }
         });
 
