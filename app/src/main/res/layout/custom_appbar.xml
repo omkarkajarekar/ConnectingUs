@@ -42,5 +42,5 @@
         android:background="@color/apptheme"
         android:clickable="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/delete_bin" />
+        android:src="@drawable/ic_baseline_delete_24" />
 </RelativeLayout>

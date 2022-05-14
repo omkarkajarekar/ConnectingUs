@@ -20,7 +20,7 @@ public class PagerAdapter extends FragmentStateAdapter {
         switch (position)
         {
             case 0:
-                return new CameraFragment();
+                return new ChatsFragment();
             default:
                 return new ChatsFragment();
         }
@@ -28,6 +28,6 @@ public class PagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 1;
     }
 }
