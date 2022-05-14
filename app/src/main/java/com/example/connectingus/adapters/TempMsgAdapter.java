@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.connectingus.R;
@@ -189,4 +191,5 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
 
         }
     }
+
 }

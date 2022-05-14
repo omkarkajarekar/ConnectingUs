@@ -75,7 +75,9 @@ public class ConversationList extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.Star:
-                Toast.makeText(ConversationList.this,"Clicked on Starred Messages!",Toast.LENGTH_LONG).show();
+                Intent i=new Intent(this, StarredMessage.class);
+                startActivity(i);
+               // Toast.makeText(ConversationList.this,"Clicked on Starred Messages!",Toast.LENGTH_LONG).show();
                 break;
             case R.id.Settings:
                 Intent intent=new Intent(this, Settings.class);

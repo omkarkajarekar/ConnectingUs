@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.example.connectingus.R;
 import com.example.connectingus.adapters.TempMsgAdapter;
 import com.example.connectingus.models.ShareIds;
 import com.example.connectingus.models.ContactModel;
+import com.example.connectingus.models.StarredModel;
 import com.example.connectingus.models.TempMsgModel;
 import com.example.connectingus.profile.ChatProfile;
 import com.example.connectingus.support.CreateFolder;
@@ -70,6 +72,8 @@ public class TempDetailChatView extends AppCompatActivity {
     String receiverID;
     String senderRoom;
     String receiverRoom;
+    public static ArrayList<StarredModel> starredMessages=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,6 +186,7 @@ public class TempDetailChatView extends AppCompatActivity {
                         }
                         ShareIds.getInstance().setUserId(contactModel);
                         tempMsgAdapter=new TempMsgAdapter(tempMsgModels,TempDetailChatView.this);
+                        new ItemTouchHelper(itemTouchCallBack).attachToRecyclerView(recyclerView);
                         recyclerView.setAdapter(tempMsgAdapter);
                         tempMsgAdapter.notifyDataSetChanged();
                     }
@@ -352,5 +357,32 @@ public class TempDetailChatView extends AppCompatActivity {
         Intent dial=new Intent(Intent.ACTION_CALL);
         dial.setData(Uri.parse("tel:"+callToModel));
         startActivity(dial);
+    }
+    ItemTouchHelper.SimpleCallback itemTouchCallBack=new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+           // starredMessages.add()
+            int position=viewHolder.getAdapterPosition();
+            TempMsgModel msg=tempMsgModels.get(position);
+            StarredModel starredModel=new StarredModel(msg.getMessage(),msg.getTimestamp(),senderName);
+            starredModel.setUserId(userId);
+            /*model.setMsg(msg.getMessage());
+            //model.setUser();
+            model.setTimestamp(msg.getTimestamp());
+            model.setUser((String) getSupportActionBar().getTitle());*/
+            starredMessages.add(starredModel);
+
+            tempMsgAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+          Toast.makeText(TempDetailChatView.this,"Message marked as starred",Toast.LENGTH_LONG).show();
+        }
+    };
+    public static ArrayList<StarredModel> getStarredMessages()
+    {
+        return starredMessages;
     }
 }
