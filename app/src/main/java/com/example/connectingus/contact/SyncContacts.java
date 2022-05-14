@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+
+import com.example.connectingus.Help_Contact;
 import com.example.connectingus.R;
 import com.example.connectingus.SplashActivity;
 import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SyncContacts extends AppCompatActivity implements RecyclerViewInterface {
 
@@ -32,6 +36,10 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
         arrayList= SplashActivity.getArrayList();
+        HashSet<ContactModel> hashset = new HashSet<ContactModel>();
+        hashset.addAll(arrayList);
+        arrayList.clear();
+        arrayList.addAll(hashset );
         // set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //initialize adapter
@@ -87,8 +95,14 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
             startActivity(Intent.createChooser(intent,"Share using"));
 
         }
-        if(itemid==R.id.refresh)
-        {
+
+        if(itemid==R.id.contacts) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("content://contacts/people"));
+            startActivity(intent);
+        }
+
+        if(itemid==R.id.refresh) {
             /*SplashActivity obj=new SplashActivity();
             SplashActivity.BgTaskContacts m=new SplashActivity().BgTaskContacts();
             SplashActivity.BgTaskContacts mytask=new SplashActivity.BgTaskContacts();
@@ -96,6 +110,10 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
             mytask.execute("null");*/
             new SplashActivity().executeTask();
         }
+        if(itemid==R.id.help) {
+            startActivity(new Intent(getApplicationContext(), Help_Contact.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

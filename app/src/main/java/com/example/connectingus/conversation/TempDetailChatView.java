@@ -43,12 +43,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class TempDetailChatView extends AppCompatActivity {
     static final int callRequest=1;
     String callToModel="";
+    String senderName;
     ImageView ivProf;
     TempMsgAdapter tempMsgAdapter;
     ArrayList<TempMsgModel> tempMsgModels;
@@ -107,7 +109,8 @@ public class TempDetailChatView extends AppCompatActivity {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
             receiverID = contactModel.getUserId();
             ivProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
-            tvUname.setText(contactModel.getName());
+            senderName = contactModel.getName();
+            tvUname.setText(senderName);
             userId=contactModel.getUserId();
         }
 
@@ -188,14 +191,17 @@ public class TempDetailChatView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String msg=etM.getText().toString().trim();
-                //TempMsgModel tempMsgModel=new TempMsgModel(msg,1);
-                //tempMsgModels.add(tempMsgModel);
-                //tempMsgAdapter.notifyDataSetChanged();
+                long timeStamp=new Date().getTime();
+                Date date=new Date(timeStamp);
+                SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
+                String time=formatTime.format(date);
+                contactModel.setLastMessage(msg);
+                contactModel.setLastMsgTime(time);
                 msg = encrypt.encrypt(msg);
                 final TempMsgModel model = new TempMsgModel(senderID,msg);
                 model.setId(1);
-                model.setTimestamp(new Date().getTime());
-                etM.setText("");
+                model.setTimestamp(timeStamp);
+                etM.getText().clear();
 
                 databaseReference.child("Chats")
                         .child(senderRoom)
@@ -302,6 +308,9 @@ public class TempDetailChatView extends AppCompatActivity {
         if(itemid==R.id.call){
             callToModel=contactModel.getNumber();
             checkPermission();
+        }
+        if(itemid==R.id.export_chat){
+            new CreateFolder().exportChat(getApplicationContext(),tempMsgModels,".",senderName);
         }
         return super.onOptionsItemSelected(item);
     }

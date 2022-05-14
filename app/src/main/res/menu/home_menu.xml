@@ -17,10 +17,6 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
-        android:id="@+id/NewGroup"
-        android:title="New Group"/>
-
-    <item
         android:id="@+id/Star"
         android:title="Starred Messages"/>
 

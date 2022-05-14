@@ -49,6 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     StorageReference storageReference;
 
     static Context context;
+    static boolean checkpermission=true;
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
 
@@ -86,6 +87,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         firebaseAuth = FirebaseAuth.getInstance();
       checkPermission();
+      /*while (checkpermission)
+      {
+
+      }*/
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -178,8 +183,12 @@ public  void executeTask()
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-             Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-             new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
+                try {
+                    Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile);
+                    new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
+                }
+                catch(Exception e){}
+
                 //model.setImage(bmImg);
             }
         });
@@ -216,16 +225,22 @@ public  void executeTask()
         });
     }
     public  void checkPermission() {
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED)
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)== PackageManager.PERMISSION_GRANTED)
+        {
+            executeTask();
+        }
+
+       /* if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(SplashActivity.this,new String[]{Manifest.permission.READ_CONTACTS},100);
         }
         else
         {
+            checkpermission=false;
             BgTaskContacts mytask=new BgTaskContacts();
             //SplashActivity obj=new SplashActivity(mytask);
             mytask.execute("null");
-        }
+        }*/
 
     }
     private void getContactList() {
@@ -304,24 +319,7 @@ public  void executeTask()
     {
         return arrayList;
     }
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //check condition
-        if(requestCode==100 && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-        {
-            //when permission granted
-            //call getContactList() method
-            BgTaskContacts mytask=new BgTaskContacts();
-            //SplashActivity obj=new SplashActivity(mytask);
-            mytask.execute("null");
-        }
-        else
-        {
-            //when permission is denied
-            //call check permission method
-            checkPermission();
-        }
-    }
+
 
 
 }

@@ -4,28 +4,40 @@
     package="com.example.connectingus">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/whatsapp512px"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/whatsapp512px"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.ConnectingUs">
-        <activity android:name=".profile.About"
+        <activity
+            android:name=".Help_Contact"
             android:exported="false"
-            android:parentActivityName=".profile.CurrentProfile"/>
-        <activity android:name=".profile.CurrentProfile"
+            android:parentActivityName=".contact.SyncContacts"/>
+        <activity
+            android:name=".conversation.StarredMessage"
+            android:exported="false" />
+        <activity
+            android:name=".profile.About"
             android:exported="false"
-            android:parentActivityName=".profile.Settings"/>
+            android:parentActivityName=".profile.CurrentProfile" />
+        <activity
+            android:name=".profile.CurrentProfile"
+            android:exported="false"
+            android:parentActivityName=".profile.Settings" />
         <activity
             android:name=".profile.ChatProfile"
             android:exported="false" />
@@ -35,7 +47,7 @@
         <activity
             android:name=".ContactUs"
             android:exported="true"
-            android:parentActivityName=".profile.Settings"/>
+            android:parentActivityName=".profile.Settings" />
         <activity
             android:name=".profile.Settings"
             android:exported="false"
@@ -73,10 +85,9 @@
             android:name=".contact.SyncContacts"
             android:exported="false"
             android:parentActivityName=".conversation.ConversationList" />
-
         <activity
             android:name=".conversation.TempDetailChatView"
-            android:parentActivityName=".conversation.ConversationList"/>
+            android:parentActivityName=".conversation.ConversationList" />
     </application>
 
 </manifest>

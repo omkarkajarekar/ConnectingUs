@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Help_Contact">
+
+    <TextView
+        android:id="@+id/textView"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="If some of your friends don't appear in the contact list, we recommend the following steps: \n 1) Make sure that your friend's phone number is in your address book \n 2) Make Sure that your friend is using ConnectingUs Chat Application" />
+</androidx.constraintlayout.widget.ConstraintLayout>
