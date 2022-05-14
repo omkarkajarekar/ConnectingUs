@@ -24,6 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectingUs">
         <activity
+            android:name=".Help_Contact"
+            android:exported="false"
+            android:parentActivityName=".contact.SyncContacts"/>
+        <activity
             android:name=".conversation.StarredMessage"
             android:exported="false" />
         <activity

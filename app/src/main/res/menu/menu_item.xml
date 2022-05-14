@@ -10,8 +10,14 @@
 
     <item
         android:id="@+id/invite"
-        android:title="Invite"/>
+        android:title="Invite a friend"/>
+    <item
+        android:id="@+id/contacts"
+        android:title="Contacts"/>
     <item
         android:id="@+id/refresh"
         android:title="Refresh"/>
+    <item
+        android:id="@+id/help"
+        android:title="Help"/>
 </menu>
