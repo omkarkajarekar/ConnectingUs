@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class NumberVerify extends AppCompatActivity {
     static Context context;
     static final int smsRequest=1;
+
     ConstraintLayout layout;
     Button next;
     String number;
@@ -70,6 +71,7 @@ public class NumberVerify extends AppCompatActivity {
                 }
             }
         });
+
 
 
     }
@@ -134,6 +136,7 @@ public class NumberVerify extends AppCompatActivity {
         }
         else
         {
+
             goToVerify();
         }
     }
@@ -144,6 +147,7 @@ public class NumberVerify extends AppCompatActivity {
         //check condition
         if(requestCode==smsRequest && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
         {
+
             goToVerify(); //when permission granted
         }
         else
@@ -152,10 +156,12 @@ public class NumberVerify extends AppCompatActivity {
             //call check permission method
             checkPermission();
         }
+
     }
 
     private void goToVerify()
     {
+
         verifyPhoneNumber("+91"+number);
         Toast.makeText(getApplicationContext(),"Sent For Verification",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(NumberVerify.this, OTPVerify.class);
@@ -164,5 +170,6 @@ public class NumberVerify extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 
 }
