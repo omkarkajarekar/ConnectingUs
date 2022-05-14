@@ -62,8 +62,10 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_chat.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_contact_us.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_conversation_list.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_current_profile.xml" value="0.209375" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_detailchatview.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_expand_image.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_help_contact.xml" value="0.33" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_home_page.xml" value="0.33" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/activity_profile_edit.xml" value="0.22447916666666667" />
@@ -81,6 +83,7 @@
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/layout/verify_phone.xml" value="0.22" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/menu/detail_chat_menus.xml" value="0.7378640776699029" />
         <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/menu/home_menu.xml" value="0.22" />
+        <entry key="..\:/Users/omkar/AndroidStudioProjects/ConnectingUs/app/src/main/res/menu/menu_item.xml" value="0.209375" />
       </map>
     </option>
   </component>

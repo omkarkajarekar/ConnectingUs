@@ -125,6 +125,7 @@ public class ProfileEdit extends AppCompatActivity {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 Bitmap bmImg = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                new CreateFolder().createFolderForProfile(getApplicationContext(),firebaseAuth.getUid(),bmImg,CreateFolder.MY_PHOTO);
                 profile_pic.setImageBitmap(bmImg);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -195,13 +196,8 @@ public class ProfileEdit extends AppCompatActivity {
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChildren())
-                            {
-                                flag = true;
-                                Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
-
-                            }
-
+                            flag = true;
+                            Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
                         }
 
                         @Override

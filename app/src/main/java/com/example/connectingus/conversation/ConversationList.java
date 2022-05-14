@@ -74,9 +74,6 @@ public class ConversationList extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.NewGroup:
-                Toast.makeText(ConversationList.this,"Clicked on New Group!",Toast.LENGTH_LONG).show();
-                break;
             case R.id.Star:
                 Toast.makeText(ConversationList.this,"Clicked on Starred Messages!",Toast.LENGTH_LONG).show();
                 break;
