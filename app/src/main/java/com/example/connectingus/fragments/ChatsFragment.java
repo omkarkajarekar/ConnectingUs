@@ -129,7 +129,7 @@ public class ChatsFragment extends Fragment {
                     }
                     userArrayList.add(0,uidobj);
                     try {
-                        checkinsertdata=DB.insertUserData(uidobj.getName(),uidobj.getUserId(),"","");
+                        checkinsertdata=DB.insertUserData(uidobj.getName(),uidobj.getUserId(),uidobj.getLastMessage(),uidobj.getLastMsgTime());
                     }
                     catch(Exception exp)
                     {
