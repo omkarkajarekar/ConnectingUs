@@ -84,12 +84,14 @@ public class ProfileEdit extends AppCompatActivity {
         fileref.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(),"Profile Picture Updated",Toast.LENGTH_SHORT).show();
+                Log.d("ProfileEdit.java","Profile Picture Updated");
+                //Toast.makeText(getApplicationContext(),"Profile Picture Updated",Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),"Profile Picture Updation Failed",Toast.LENGTH_SHORT).show();
+                Log.d("ProfileEdit.java","Profile Picture Updation Failed");
+                //Toast.makeText(getApplicationContext(),"Profile Picture Updation Failed",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,7 +177,7 @@ public class ProfileEdit extends AppCompatActivity {
                     Toast.makeText(ProfileEdit.this, "Please Select Profile Photo", Toast.LENGTH_LONG).show();
                     flag = false;
                 }
-                if(name.getText().toString().isEmpty() && about.getText().toString().isEmpty()){
+                else if(name.getText().toString().isEmpty() && about.getText().toString().isEmpty()){
                     name.setError("Please fill name");
                     about.setError("Please fill about");
                     flag = false;
@@ -193,11 +195,11 @@ public class ProfileEdit extends AppCompatActivity {
                     firebaseDatabase = FirebaseDatabase.getInstance();
                     databaseReference = firebaseDatabase.getReference("users").child(userID);
                     databaseReference.setValue(users);
+                    flag = true;
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            flag = true;
-                            Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
+
                         }
 
                         @Override
@@ -208,8 +210,9 @@ public class ProfileEdit extends AppCompatActivity {
                 }
                 Intent intent=new Intent(getApplicationContext(), ConversationList.class);
                 if(flag == true) {
+                    Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
                     startActivity(intent);
-                    finish();
+                finish();
                 }
             }
         });
