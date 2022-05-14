@@ -114,9 +114,9 @@ public class FirstActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(FirstActivity.this,new String[]{Manifest.permission.READ_CONTACTS},100);
         }
-        else if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        else if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
 
         }
         else
