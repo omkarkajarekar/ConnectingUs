@@ -39,6 +39,7 @@ public class FirstActivity extends AppCompatActivity {
     TextView terms;
     static Context context;
     private int STORAGE_PERMISSION_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,7 @@ public class FirstActivity extends AppCompatActivity {
         context=getApplicationContext();
         agree = findViewById(R.id.agree);
         terms = findViewById(R.id.terms);
-        checkPermission();
-        requestStoragePermission();
+
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,17 +102,11 @@ public class FirstActivity extends AppCompatActivity {
 
         terms.setText(ss);
         terms.setMovementMethod(LinkMovementMethod.getInstance());
+        checkPermission();
     }
 
 
-    private void requestStoragePermission() {
 
-        if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-
-        }
-    }
 
     public void checkPermission()
     {
@@ -120,11 +114,17 @@ public class FirstActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(FirstActivity.this,new String[]{Manifest.permission.READ_CONTACTS},100);
         }
+        else if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+
+        }
         else
         {
             new SplashActivity().executeTask();
         }
     }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //check condition
@@ -132,6 +132,11 @@ public class FirstActivity extends AppCompatActivity {
         {
             //when permission granted
             //call getContactList() method
+            if (ContextCompat.checkSelfPermission(FirstActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+
+            }
             new SplashActivity().executeTask();
         }
         else
@@ -142,10 +147,11 @@ public class FirstActivity extends AppCompatActivity {
         {
             if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED)
             {
-              requestStoragePermission();
+               checkPermission();
             }
 
         }
+
     }
 
 
