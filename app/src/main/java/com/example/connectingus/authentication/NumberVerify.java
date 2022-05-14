@@ -1,7 +1,10 @@
 package com.example.connectingus.authentication;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.connectingus.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NumberVerify extends AppCompatActivity {
     static Context context;
+    static final int smsRequest=1;
     ConstraintLayout layout;
     Button next;
     String number;
@@ -57,13 +63,7 @@ public class NumberVerify extends AppCompatActivity {
             public void onClick(View view) {
                 number = phone_number.getText().toString();
                 if(number.length()==10){
-                    verifyPhoneNumber("+91"+number);
-                    Toast.makeText(getApplicationContext(),"Sent For Verification",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(NumberVerify.this, OTPVerify.class);
-                    intent.putExtra("number", number);
-                    intent.putExtra("verificationID", verificationID);
-                    startActivity(intent);
-                    finish();
+                    checkPermission();
                 }
                 else{
                     ph_label.setError("Please Enter Valid Phone Number");
@@ -124,4 +124,45 @@ public class NumberVerify extends AppCompatActivity {
             }
         };
     }
+
+    //SMS Permisson
+    private void checkPermission()
+    {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECEIVE_SMS},smsRequest);
+        }
+        else
+        {
+            goToVerify();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //check condition
+        if(requestCode==smsRequest && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+        {
+            goToVerify(); //when permission granted
+        }
+        else
+        {
+            //when permission is denied
+            //call check permission method
+            checkPermission();
+        }
+    }
+
+    private void goToVerify()
+    {
+        verifyPhoneNumber("+91"+number);
+        Toast.makeText(getApplicationContext(),"Sent For Verification",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(NumberVerify.this, OTPVerify.class);
+        intent.putExtra("number", number);
+        intent.putExtra("verificationID", verificationID);
+        startActivity(intent);
+        finish();
+    }
+
 }

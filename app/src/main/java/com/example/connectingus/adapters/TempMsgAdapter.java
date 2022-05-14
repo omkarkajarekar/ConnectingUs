@@ -101,6 +101,9 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
             ((SenderViewHolder)holder).senderTime.setText(time);
+            SimpleDateFormat formatDate=new SimpleDateFormat("dd-MMM-yyyy");
+            String dt=formatDate.format(date);
+            ((SenderViewHolder)holder).senderDate.setText(dt);
         }
         else
         {
@@ -110,6 +113,9 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
             ((ReceiverViewHolder)holder).receiverTime.setText(time);
+            SimpleDateFormat formatDate=new SimpleDateFormat("dd-MMM-yyyy");
+            String dt=formatDate.format(date);
+            ((ReceiverViewHolder)holder).receiverDate.setText(dt);
         }
     }
 
@@ -160,10 +166,12 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
 
         TextView receiverMsg;
         TextView receiverTime;
+        TextView receiverDate;
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             receiverMsg=itemView.findViewById(R.id.textReceived);
             receiverTime=itemView.findViewById(R.id.textReceivedTime);
+            receiverDate=itemView.findViewById(R.id.textReceivedDate);
         }
     }
 
@@ -171,11 +179,14 @@ public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
 
         TextView senderMsg;
         TextView senderTime;
+        TextView senderDate;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMsg = itemView.findViewById(R.id.textSent);
             senderTime = itemView.findViewById(R.id.textSentTime);
+            senderDate = itemView.findViewById(R.id.textSentDate);
+
         }
     }
 }

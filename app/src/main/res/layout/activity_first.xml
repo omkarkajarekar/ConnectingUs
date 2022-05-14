@@ -33,15 +33,17 @@
         app:layout_constraintStart_toStartOf="@+id/tv_uname"
         app:layout_constraintTop_toBottomOf="@+id/tv_uname" />
 
+
     <TextView
         android:id="@+id/terms"
         style="@style/TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:lineSpacingExtra="7dp"
         android:padding="10dp"
         android:text="@string/terms"
-        android:textColor="#3043BC"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/agree"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"

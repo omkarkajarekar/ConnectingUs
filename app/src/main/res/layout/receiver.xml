@@ -14,7 +14,7 @@
     android:layout_marginBottom="7dp"
     android:background="@drawable/received_background"
     android:maxWidth="300dp"
-    android:maxHeight="500dp"
+    android:minWidth="115dp"
     android:minHeight="30dp">
 
     <TextView
@@ -29,7 +29,7 @@
         android:padding="5dp"
         android:maxWidth="260dp"
         android:minWidth="50dp"
-        android:text="ReceivedReceivedReceivedReceivedReceivedReceivedReceivedReceived"
+        android:text="Hello"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/textReceivedTime"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -42,6 +42,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="00:00 A.M."
+        android:textSize="10dp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/textReceivedDate"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textReceivedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="01-JAN-1970"
         android:textSize="10dp"
         android:textAllCaps="true"
         android:textColor="@color/white"
