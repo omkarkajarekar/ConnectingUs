@@ -174,7 +174,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String sub="Download the ConnectingUs chat application \n https://play.google.com/store/apps/details?id=com.whatsapp";
+                String sub="Download the ConnectingUs chat application \n https://github.com/omkarkajarekar/ConnectingUs/releases/download/ConnectingUs/ConnectingUS.apk";
                 intent.putExtra(Intent.EXTRA_TEXT,sub);
                 startActivity(Intent.createChooser(intent,"Share using"));
             }
