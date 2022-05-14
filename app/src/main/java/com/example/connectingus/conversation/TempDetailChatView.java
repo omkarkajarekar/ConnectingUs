@@ -49,6 +49,7 @@ import java.util.Date;
 public class TempDetailChatView extends AppCompatActivity {
     static final int callRequest=1;
     String callToModel="";
+    String senderName;
     ImageView ivProf;
     TempMsgAdapter tempMsgAdapter;
     ArrayList<TempMsgModel> tempMsgModels;
@@ -107,7 +108,8 @@ public class TempDetailChatView extends AppCompatActivity {
             contactModel= (ContactModel) intent.getSerializableExtra("UserDetails");
             receiverID = contactModel.getUserId();
             ivProf.setImageDrawable(new CreateFolder().getLocalImage(contactModel.getUserId(),CreateFolder.PROFILE_PHOTO));
-            tvUname.setText(contactModel.getName());
+            senderName = contactModel.getName();
+            tvUname.setText(senderName);
             userId=contactModel.getUserId();
         }
 
@@ -302,6 +304,9 @@ public class TempDetailChatView extends AppCompatActivity {
         if(itemid==R.id.call){
             callToModel=contactModel.getNumber();
             checkPermission();
+        }
+        if(itemid==R.id.export_chat){
+            new CreateFolder().exportChat(getApplicationContext(),tempMsgModels,".",senderName);
         }
         return super.onOptionsItemSelected(item);
     }
