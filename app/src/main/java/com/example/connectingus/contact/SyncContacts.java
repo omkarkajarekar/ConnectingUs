@@ -15,6 +15,7 @@ import com.example.connectingus.adapters.MainAdapter;
 import com.example.connectingus.conversation.TempDetailChatView;
 import com.example.connectingus.models.ContactModel;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class SyncContacts extends AppCompatActivity implements RecyclerViewInterface {
 
@@ -32,6 +33,10 @@ public class SyncContacts extends AppCompatActivity implements RecyclerViewInter
         setContentView(R.layout.activity_sync_contacts);
         recyclerView=findViewById(R.id.recycler_view);
         arrayList= SplashActivity.getArrayList();
+        HashSet<ContactModel> hashset = new HashSet<ContactModel>();
+        hashset.addAll(arrayList);
+        arrayList.clear();
+        arrayList.addAll(hashset );
         // set layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //initialize adapter
