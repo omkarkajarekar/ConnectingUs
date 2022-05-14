@@ -212,7 +212,7 @@ public class ProfileEdit extends AppCompatActivity {
                 if(flag == true) {
                     Toast.makeText(getApplicationContext(),"Profile Updated",Toast.LENGTH_LONG).show();
                     startActivity(intent);
-                finish();
+                    finish();
                 }
             }
         });
