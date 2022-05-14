@@ -2,9 +2,13 @@ package com.example.connectingus.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +23,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
-public class TempMsgAdapter extends RecyclerView.Adapter
+public class TempMsgAdapter extends RecyclerView.Adapter implements Filterable
 {
     ArrayList<TempMsgModel> tempMsgModels;
+    ArrayList<TempMsgModel> tempMsgModelsFull;
     Context context;
     static int flag = 0;
     public static HashSet<Integer> positions = new HashSet<>();
     public TempMsgAdapter(){}
     public TempMsgAdapter(ArrayList<TempMsgModel> tempMsgModels, Context context) {
-        this.tempMsgModels = tempMsgModels;
+        this.tempMsgModelsFull = tempMsgModels;
+        this.tempMsgModels=new ArrayList<>(tempMsgModelsFull);
         this.context = context;
     }
 
@@ -61,6 +67,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter
 
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         TempMsgModel tempMsgModel=tempMsgModels.get(position);
@@ -75,7 +82,7 @@ public class TempMsgAdapter extends RecyclerView.Adapter
                     TempDetailChatView.delete_selected.setVisibility(View.VISIBLE);
                 }
                 else {
-                    holder.itemView.setBackgroundResource(R.color.chat_background);
+                    holder.itemView.setBackgroundResource(R.color.transparent);
                     flag--;
                     positions.remove(position);
                     //int i = positions.indexOf(position);
@@ -89,18 +96,26 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         if(holder.getClass()==SenderViewHolder.class)
         {
             ((SenderViewHolder)holder).senderMsg.setText(tempMsgModel.getMessage());
+            Linkify.addLinks(((SenderViewHolder)holder).senderMsg,Linkify.ALL);
             Date date=new Date(tempMsgModel.getTimestamp());
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
             ((SenderViewHolder)holder).senderTime.setText(time);
+            SimpleDateFormat formatDate=new SimpleDateFormat("dd-MMM-yyyy");
+            String dt=formatDate.format(date);
+            ((SenderViewHolder)holder).senderDate.setText(dt);
         }
         else
         {
             ((ReceiverViewHolder)holder).receiverMsg.setText(tempMsgModel.getMessage());
+            Linkify.addLinks(((ReceiverViewHolder)holder).receiverMsg, Linkify.ALL);
             Date date=new Date(tempMsgModel.getTimestamp());
             SimpleDateFormat formatTime=new SimpleDateFormat("hh:mm a");
             String time=formatTime.format(date);
             ((ReceiverViewHolder)holder).receiverTime.setText(time);
+            SimpleDateFormat formatDate=new SimpleDateFormat("dd-MMM-yyyy");
+            String dt=formatDate.format(date);
+            ((ReceiverViewHolder)holder).receiverDate.setText(dt);
         }
     }
 
@@ -109,14 +124,54 @@ public class TempMsgAdapter extends RecyclerView.Adapter
         return tempMsgModels.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return chatFilter;
+    }
+    private  final Filter chatFilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<TempMsgModel> filteredChatList=new ArrayList<>();
+            if(charSequence==null || charSequence.length()==0)
+            {
+                filteredChatList.addAll(tempMsgModelsFull);
+            }
+            else
+            {
+                String filterPattern=charSequence.toString().toLowerCase().trim();
+                for (TempMsgModel model:tempMsgModelsFull)
+                {
+                    if(model.getMessage().toLowerCase().contains(filterPattern))
+                    {
+                        filteredChatList.add(model);
+                    }
+                }
+            }
+            FilterResults results=new FilterResults();
+            results.values=filteredChatList;
+            results.count=filteredChatList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            tempMsgModels.clear();
+            tempMsgModels.addAll((ArrayList)filterResults.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
     public  class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         TextView receiverMsg;
         TextView receiverTime;
+        TextView receiverDate;
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             receiverMsg=itemView.findViewById(R.id.textReceived);
             receiverTime=itemView.findViewById(R.id.textReceivedTime);
+            receiverDate=itemView.findViewById(R.id.textReceivedDate);
         }
     }
 
@@ -124,11 +179,14 @@ public class TempMsgAdapter extends RecyclerView.Adapter
 
         TextView senderMsg;
         TextView senderTime;
+        TextView senderDate;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMsg = itemView.findViewById(R.id.textSent);
             senderTime = itemView.findViewById(R.id.textSentTime);
+            senderDate = itemView.findViewById(R.id.textSentDate);
+
         }
     }
 }

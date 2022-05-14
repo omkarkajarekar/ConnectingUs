@@ -1,5 +1,6 @@
 package com.example.connectingus.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
@@ -7,14 +8,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,9 +62,10 @@ import java.util.List;
 
 
 public class ChatsFragment extends Fragment {
+
+    static final int callRequest=1;
     DatabaseReference databaseReference;
     StorageReference storageReference;
-    File localFile;
     public MenuItem deleteitem;
     ContactModel delete_model;
     String delete_name;
@@ -69,7 +76,7 @@ public class ChatsFragment extends Fragment {
     FloatingActionButton fab;
     CustomAdapter customAdapter;
     String userId="";
-    TextView tv;
+    String callToModel="";
     ArrayList<ContactModel> listuserId=new ArrayList<>();
     ArrayList<ContactModel> userArrayList=new ArrayList<>();
     int j;
@@ -135,7 +142,7 @@ public class ChatsFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Log.d(activity.getLocalClassName(),error.getMessage());
                     }
                 });
             }
@@ -188,6 +195,7 @@ public class ChatsFragment extends Fragment {
             //profile_pic.setImageBitmap(itemsModelListFiltered.get(i).getImage());
 
             profile_pic.setOnClickListener(new View.OnClickListener() {
+                ContactModel model=itemsModelListFiltered.get(i);
                 @Override
                 public void onClick(View view) {
                     final Dialog dialog=new Dialog(activity);
@@ -203,7 +211,6 @@ public class ChatsFragment extends Fragment {
                     message.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            ContactModel model=itemsModelListFiltered.get(i);
                             startActivity(new Intent(activity, TempDetailChatView.class).putExtra("UserDetails",model));
                             dialog.cancel();
                         }
@@ -211,14 +218,16 @@ public class ChatsFragment extends Fragment {
                     call.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(activity,"Calling "+itemsModelListFiltered.get(i).getName(),Toast.LENGTH_LONG).show();
+                            callToModel=model.getNumber();
+                            dialog.cancel();
+                            checkPermission();
                         }
                     });
                     info.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent goChatProf = new Intent(activity, ChatProfile.class);
-                            goChatProf.putExtra("UserDetails",itemsModelListFiltered.get(i));
+                            goChatProf.putExtra("UserDetails",model);
                             goChatProf.putExtra("calling_activity","ConversationList");
                             dialog.cancel();
                             startActivity(goChatProf);
@@ -229,10 +238,8 @@ public class ChatsFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(activity, ExpandImageActivity.class);
-                            intent.putExtra("name",itemsModelListFiltered.get(i).getName());
+                            intent.putExtra("user",model);
                             intent.putExtra("calling_activity","ConversationList");
-                            intent.putExtra("image",itemsModelListFiltered.get(i).getImageId());
-                            //intent.putExtra("image",);
                             Pair pair = new Pair(expanded_pic,"imageTransition");
                             ActivityOptions options = null;
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -242,7 +249,7 @@ public class ChatsFragment extends Fragment {
                             dialog.hide();
                         }
                     });
-                    expanded_pic.setImageResource(itemsModelListFiltered.get(i).getImageId());
+                    expanded_pic.setImageDrawable(new CreateFolder().getLocalImage(model.getUserId(),CreateFolder.PROFILE_PHOTO));
 
                     dialog.show();
                 }
@@ -402,5 +409,40 @@ public class ChatsFragment extends Fragment {
             }
         });
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void checkPermission()
+    {
+        if(ContextCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CALL_PHONE},callRequest);
+        }
+        else
+        {
+            startCall();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //check condition
+        if(requestCode==callRequest && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+        {
+            startCall(); //when permission granted
+        }
+        else
+        {
+            //when permission is denied
+            //call check permission method
+            checkPermission();
+        }
+    }
+
+    private void startCall()
+    {
+        Intent dial=new Intent(Intent.ACTION_CALL);
+        dial.setData(Uri.parse("tel:"+callToModel));
+        startActivity(dial);
     }
 }

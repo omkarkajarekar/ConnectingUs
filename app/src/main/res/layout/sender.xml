@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/chat_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,12 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
         android:background="@drawable/sent_background"
         android:maxWidth="300dp"
-        android:maxHeight="500dp"
+        android:minWidth="115dp"
         android:minHeight="30dp">
 
         <androidx.constraintlayout.widget.Guideline
@@ -38,7 +37,7 @@
             android:maxWidth="260dp"
             android:minWidth="50dp"
             android:padding="5dp"
-            android:text="SentSentSentSentSentSentSentSentSentSentSent"
+            android:text="Hello"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/textSentTime"
             app:layout_constraintEnd_toStartOf="@+id/guideline1"
@@ -51,6 +50,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="00:00 A.M."
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toTopOf="@id/textSentDate"
+            app:layout_constraintEnd_toStartOf="@+id/guideline1" />
+
+        <TextView
+            android:id="@+id/textSentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="01-JAN-1970"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="10dp"

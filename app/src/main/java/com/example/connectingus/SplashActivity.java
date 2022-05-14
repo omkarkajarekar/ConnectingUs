@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.connectingus.authentication.FirstActivity;
 import com.example.connectingus.conversation.ConversationList;
@@ -44,7 +43,7 @@ import java.util.ArrayList;
 
 
 public class SplashActivity extends AppCompatActivity {
-    private static int SPLASH_SCREEN=1000;
+    private static int SPLASH_SCREEN=2000;
     FirebaseAuth firebaseAuth;
     String verifyNumber;
     StorageReference storageReference;
@@ -52,7 +51,9 @@ public class SplashActivity extends AppCompatActivity {
     static Context context;
     public static ArrayList<ContactModel> arrayList=new ArrayList<ContactModel>();
 
-    class BgTask extends AsyncTask<String,Void,Void>
+
+
+    class BgTaskContacts extends AsyncTask<String,Void,Void>
     {
         @Override
         protected void onPreExecute() {
@@ -67,12 +68,15 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... strings) {
+            //SplashActivity obj=new SplashActivity();
             arrayList.clear();
-            checkPermission();
+           getContactList();
             getUserIDs();
+
             return null;
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +85,7 @@ public class SplashActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
         firebaseAuth = FirebaseAuth.getInstance();
-        BgTask mytask=new BgTask();
-        mytask.execute("null");
+      checkPermission();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -106,7 +109,12 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
+public  void executeTask()
+{
+    BgTaskContacts mytask=new BgTaskContacts();
+    //SplashActivity obj=new SplashActivity(mytask);
+    mytask.execute("null");
+}
     public static void deleteCache()
     {
         try
@@ -120,6 +128,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
+
 
     private static boolean deleteDir(File dir) {
         if(dir!=null && dir.isDirectory())
@@ -169,8 +178,8 @@ public class SplashActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
-                new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
+             Bitmap bmImg = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_person_24);
+             new CreateFolder().createFolderForProfile(SplashActivity.this,model.getUserId(),bmImg,CreateFolder.PROFILE_PHOTO);
                 //model.setImage(bmImg);
             }
         });
@@ -213,7 +222,9 @@ public class SplashActivity extends AppCompatActivity {
         }
         else
         {
-            getContactList();
+            BgTaskContacts mytask=new BgTaskContacts();
+            //SplashActivity obj=new SplashActivity(mytask);
+            mytask.execute("null");
         }
 
     }
@@ -300,12 +311,13 @@ public class SplashActivity extends AppCompatActivity {
         {
             //when permission granted
             //call getContactList() method
-            getContactList();
+            BgTaskContacts mytask=new BgTaskContacts();
+            //SplashActivity obj=new SplashActivity(mytask);
+            mytask.execute("null");
         }
         else
         {
             //when permission is denied
-            Toast.makeText(this,"Permission Denied.",Toast.LENGTH_SHORT).show();
             //call check permission method
             checkPermission();
         }

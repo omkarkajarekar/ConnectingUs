@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -87,7 +88,7 @@ public class OTPVerify extends AppCompatActivity {
                         authenticateUser(credential);
                     }
                     catch (Exception e){
-                        Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                        Log.d(getLocalClassName(),e.getMessage());
                     }
                 }
                 else{
@@ -113,7 +114,7 @@ public class OTPVerify extends AppCompatActivity {
         firebaseAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Authentication Successful",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, ProfileEdit.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
@@ -122,7 +123,7 @@ public class OTPVerify extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+                Log.d(getLocalClassName(),e.getMessage());
             }
         });
     }
