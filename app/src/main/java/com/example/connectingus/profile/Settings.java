@@ -107,7 +107,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder dialog=new AlertDialog.Builder(Settings.this);
-                dialog.setTitle(userDetails.get(2)+"Do you want to set or remove Background?");
+                dialog.setTitle(" Do you want to set or remove Background?");
                 dialog.setMessage("Please confirm choice");
                 dialog.setPositiveButton("Set", new DialogInterface.OnClickListener() {
                     @Override
@@ -182,9 +182,36 @@ public class Settings extends AppCompatActivity {
         get_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ContactUs.class);
-                startActivity(intent);
-                finish();
+                AlertDialog.Builder dialog=new AlertDialog.Builder(Settings.this);
+                dialog.setTitle("Select Help From Following : ");
+                dialog.setMessage("Please confirm choice");
+                dialog.setPositiveButton("Feedback", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(getApplicationContext(), ContactUs.class);
+                        startActivity(intent);
+                    }
+                });
+                dialog.setNegativeButton("Privacy Policy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Uri uri=Uri.parse("https://pages.flycricket.io/connectingus-0/privacy.html");
+                        Intent privacy=new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(privacy);
+                    }
+                });
+                dialog.setNeutralButton("Terms and Conditions", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Uri uri=Uri.parse("https://pages.flycricket.io/connectingus-0/terms.html");
+                        Intent terms=new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(terms);
+                    }
+                });
+                AlertDialog alertDialog=dialog.create();
+                alertDialog.show();
+
+                //finish();
             }
         });
         do_logout.setOnClickListener(new View.OnClickListener() {
